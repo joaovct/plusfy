@@ -26,7 +26,7 @@ const Routes = () => {
     function renderHome(){
         connectUser()
         const response = isUserConnected()
-        return response.connected ? <Home user_id={response.user_id}/> : <Redirect to="/" />
+        return response.connected ? <Home user_id={response.user_id} access_token={response.access_token} /> : <Redirect to="/" />
     }
 
     return <>

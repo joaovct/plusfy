@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import {Logo, borderColor, backgroundColor} from './../../styles/style'
 import logoSrc from '../../assets/logo-minified.png'
 
-
 const HeaderHome: FunctionComponent = () => {
     const [showOptions, setShowOptions] = useState(false)
 
