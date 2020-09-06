@@ -1,11 +1,9 @@
-import {USER, IUSER, USER_SUCCESS} from '../store/user/types'
+import {USER, Iuser_action, USER_SUCCESS} from '../store/user/types'
 import {Reducer} from 'redux'
 
-interface IState{}
-
-export const userReducer:Reducer<IState, IUSER> = (state = {}, action) => {
+const userReducer: Reducer<{}, Iuser_action> = (state = {}, action) => {
     switch(action.type){
-        case action.type = USER:
+        case USER:
             return action.status === USER_SUCCESS ? {...action.payload} : {...state}    
 
         default:

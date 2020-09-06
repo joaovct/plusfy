@@ -1,4 +1,6 @@
-import { combineReducers } from "redux";
-import userDataReducer from './userReducer'
+import user from './userReducer'
+import token from './tokenReducer'
 
-export default combineReducers({user: userDataReducer})
+const allReducers = {token, user }
+
+export default allReducers

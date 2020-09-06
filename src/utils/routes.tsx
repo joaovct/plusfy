@@ -1,41 +1,49 @@
-import React from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Landing from '../components/landing/Landing'
 import Home from '../components/home/Home'
 import {disconnectUser, isUserConnected, connectUser} from './userAccess'
+import PrivateRoute from '../components/utils/PrivateRoute'
+import MyLibrary from '../components/myLibrary/MyLibrary'
 
 const Routes = () => {
-        
-    function renderLanding(){
+    const renderLanding = useCallback(() => {
         const response = isUserConnected()
-        return response.connected ? <Redirect to="/home"/> : <Landing/>
-    }
+        return response.connected
+            ? <Redirect to="/home"/>
+            : <Landing/>
+    },[])
 
-    function renderLogin(){
+    const renderLogin = useCallback(() => {
         const {REACT_APP_SERVER_URL: serverURL} = process.env
         window.location.href = `${serverURL}/login`
         return <></>
-    }
+    },[])
 
-    function renderLogoff(){
+    const renderLogoff = useCallback(() => {
         disconnectUser()
         const response = isUserConnected()
-        return response.connected ? <Redirect to="/home" /> : <Redirect to="/" />
-    }
+        return response.connected
+            ? <Redirect to="/home" />
+            : <Redirect to="/" />
+    },[])
 
-    function renderHome(){
+    const renderPrivateRoute = useCallback((Component: FunctionComponent) => {
         connectUser()
         const response = isUserConnected()
-        return response.connected ? <Home user_id={response.user_id} access_token={response.access_token} /> : <Redirect to="/" />
-    }
+        return response.connected 
+            ? <PrivateRoute Component={Component} accessToken={response.accessToken} refreshToken={response.refreshToken}/>
+            : <Redirect to="/" />
+    },[])
 
     return <>
         <BrowserRouter>
             <Switch>
                 <Route path="/" exact render={renderLanding}/>
-                <Route path="/home" render={renderHome}/>
                 <Route path="/login" exact render={renderLogin}/>
                 <Route path="/logoff" exact render={renderLogoff} />
+                <Route path="/home" render={ () => renderPrivateRoute(Home) }/>
+                <Route path="/my-library" render={ () => renderPrivateRoute(MyLibrary) }/>
             </Switch>
         </BrowserRouter>
     </>

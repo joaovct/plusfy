@@ -33,8 +33,7 @@ export function isUserConnected(){
 
     return {
         connected: sessionStorage.getItem('access_token') && sessionStorage.getItem('refresh_token') && sessionStorage.getItem('user_id') ? true : false,
-        access_token: sessionStorage.getItem('access_token') || '',
-        refresh_token: sessionStorage.getItem('refresh_token') || '',
-        user_id: sessionStorage.getItem('user_id') || ''
+        accessToken: sessionStorage.getItem('access_token') || '',
+        refreshToken: sessionStorage.getItem('refresh_token') || '',
     }
 }

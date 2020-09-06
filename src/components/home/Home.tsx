@@ -1,45 +1,25 @@
-import React, { useState, useEffect, FunctionComponent } from 'react'
+import React from 'react'
+import useConnectSocket from '../../hooks/useConnectSocket'
+import { useSelector } from 'react-redux'
+import {Istore} from '../../store/types'
+import {Iuser} from '../../store/user/types'
 import SocketIoContext from '../../contexts/socket-io-context'
-import socketIOClient from 'socket.io-client'
-import { Page, Container, Title, spacing4} from '../../styles/style'
 import styled from 'styled-components'
-import HeaderHome from './HeaderHome'
+import { Page, Container, Title, spacing4} from '../../styles/style'
 import SearchHome from './SearchHome'
 import NavigateHome from './NavigateHome'
-import actions from '../../actions/actions'
-import { useDispatch, useSelector } from 'react-redux'
 
-interface IComponent{
-    user_id: string
-    access_token: string
-}
-
-interface Isocket{
-    socket?: SocketIOClient.Socket
-}
-
-const Home: FunctionComponent<IComponent> = ({access_token}) => {
-    const [socket, setSocket] = useState<Isocket>({})
-    const dispatch = useDispatch()
-    const store = useSelector(store => store)
-
-    useEffect(() => {
-        dispatch(actions.userAction(access_token))
-        setSocket({socket: socketIOClient(process.env.REACT_APP_SERVER_URL || '')})
-    //eslint-disable-next-line
-    },[])
-
-    useEffect(() => {
-        console.log(store)
-    },[store])
+const Home = () => {
+    const socket = useConnectSocket()
+    const user = useSelector<Istore, Iuser>(store => store.user)
+    
 
     return(
         <SocketIoContext.Provider value={socket}>
             <Page>
                 <Container>
-                    <HeaderHome/>
                     <Main>
-                        <Title>Olá, João Victor</Title>
+                        <Title>Olá, {user.display_name}</Title>
                         <SearchHome/>
                         <NavigateHome/>
                     </Main>
@@ -53,7 +33,7 @@ export default Home
 
 const Main = styled.main`
     height: 100%;
-    padding: calc(${spacing4} * 4) 0 0 0;
+    padding: 0 0 0 0;
 
     @media(max-width: 768px){
         padding: calc(${spacing4} * 3) 0 0 0;

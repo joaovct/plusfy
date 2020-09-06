@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {Title, spacing2, spacing4, spacing5, borderColor} from './../../styles/style'
 import {Music, Smile, Star, Upload} from 'react-feather'
+import { Link } from 'react-router-dom'
 
 const NavigateHome = () => {
 
@@ -9,8 +10,13 @@ const NavigateHome = () => {
         <TitleNavegate>Navegar</TitleNavegate>
         <WrapperItens>
             <Item>
-                <a href="/home"><figure><Music/></figure></a>
-                <span><a href="/home">Minha biblioteca</a></span>
+
+                <Link to="/my-library">
+                    <figure><Music/></figure>
+                </Link>
+                <span>
+                    <Link to="/my-library">Minha biblioteca</Link>
+                </span>
             </Item>
             <Item>
                 <a href="/home"><figure><Smile/></figure></a>

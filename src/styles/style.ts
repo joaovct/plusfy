@@ -1,5 +1,21 @@
 import styled, {createGlobalStyle} from 'styled-components'
 
+export const backgroundColor = '#252A41'
+export const primaryGradient = "linear-gradient(136.17deg, #3552D8 21.35%, #5B4CC0 55.81%, #7E46A9 70.48%, #C53A7D 92.22%);"
+export const primaryColor = "#3552D8"
+export const secondaryCOlor = "#C53A7D"
+export const greenColor = "#1aa34a"
+export const lighterGreenColor = "#18ac4d"
+export const borderColor = '#3D4466'
+export const spacer = '1rem'
+export const spacing0 = '0'
+export const spacing1 = `calc(${spacer} * .25)`
+export const spacing2 = `calc(${spacer} * .5)`
+export const spacing3 = `calc(${spacer} * 1)`
+export const spacing4 = `calc(${spacer} * 1.5)`
+export const spacing5 = `calc(${spacer} * 3)`
+export const maxWidthContainer = '1400px'
+
 export const GlobalStyle = createGlobalStyle`
     html, body, #root{
         height: 100%;
@@ -9,6 +25,10 @@ export const GlobalStyle = createGlobalStyle`
         width: 100%;
         margin: 0;
         padding: 0;
+    }
+
+    body{
+        background: ${backgroundColor};
     }
 
     *{
@@ -35,29 +55,13 @@ export const GlobalStyle = createGlobalStyle`
     }
 `
 
-export const backgroundColor = '#252A41'
-export const primaryGradient = "linear-gradient(136.17deg, #3552D8 21.35%, #5B4CC0 55.81%, #7E46A9 70.48%, #C53A7D 92.22%);"
-export const primaryColor = "#3552D8"
-export const secondaryCOlor = "#C53A7D"
-export const greenColor = "#1aa34a"
-export const lighterGreenColor = "#18ac4d"
-export const borderColor = '#3D4466'
-export const spacer = '1rem'
-export const spacing0 = '0'
-export const spacing1 = `calc(${spacer} * .25)`
-export const spacing2 = `calc(${spacer} * .5)`
-export const spacing3 = `calc(${spacer} * .1)`
-export const spacing4 = `calc(${spacer} * 1.5)`
-export const spacing5 = `calc(${spacer} * 3)`
-
 export const Page = styled.section`
-    min-height: 100%;
     width: 100%;
-    padding: ${spacing5};
-    background: ${backgroundColor};
+    padding: 0 ${spacing5} ${spacing5} ${spacing5}; 
     color: #fff;
     display: flex;
-    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: center;
 
     @media(max-width: 768px){
         padding: ${spacing5} ${spacing4};
@@ -67,7 +71,7 @@ export const Page = styled.section`
 export const Container = styled.section`
     height: 100%;
     width: 100%;
-    max-width: 1080px;
+    max-width: ${maxWidthContainer};
 `
 
 export const Title = styled.h1`

@@ -1,27 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import { Page as page, Container as container, primaryGradient, Button, spacing2, spacing4 } from '../../styles/style'
+import { Page as page, Container as container, primaryGradient, Button, spacing2, spacing3, spacing4, spacing5 } from '../../styles/style'
 import logo from '../../assets/logo-white.png'
 
-
 const Landing = () => (
-    <>
-        <Page>
-            <Container>
-                <HeaderLogo>
-                    <img src={logo} alt="Plusfy"/>
-                </HeaderLogo>
-                <PageContent>
-                    <h1>O seu <span>Spotify</span> já conhecido, <br/> mas <span>com novas funções.</span></h1>
-                    <Link to="/login"><Button>Continuar com spotify</Button></Link>
-                </PageContent>
-            </Container>
-        </Page>
-    </>
+    <Page>
+        <Header>
+                <img src={logo} alt="Plusfy"/>
+        </Header>
+        <Container>
+            
+            <Main>
+                <h1>O seu <span>Spotify</span> já conhecido, <br/> mas <span>com novas funções.</span></h1>
+                <Link to="/login"><Button>Continuar com spotify</Button></Link>
+            </Main>
+        </Container>
+    </Page>
 )
 
-const PageContent = styled.div`
+const Main = styled.div`
     flex: 1;
     width: 100%;
     display: flex;
@@ -53,9 +51,10 @@ const PageContent = styled.div`
     }
 `
 
-const HeaderLogo = styled.div`
+const Header = styled.div`
     width: 100%;
     display: flex;
+    padding: ${spacing3} ${spacing5} ${spacing5} ${spacing5};
 
     img{
         width: 150px;
@@ -63,7 +62,6 @@ const HeaderLogo = styled.div`
 
     @media(max-width: 768px){
         justify-content: center;
-
         img{
             width: inherit;
             max-width: 200px;
