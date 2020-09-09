@@ -5,7 +5,7 @@ import {Istore} from '../../store/types'
 import {Iuser} from '../../store/user/types'
 import SocketIoContext from '../../contexts/socket-io-context'
 import styled from 'styled-components'
-import { Page, Container, Title, spacing4} from '../../styles/style'
+import { Page, Container, Title} from '../../styles/style'
 import SearchHome from './SearchHome'
 import NavigateHome from './NavigateHome'
 
@@ -34,11 +34,4 @@ export default Home
 const Main = styled.main`
     height: 100%;
     padding: 0 0 0 0;
-
-    @media(max-width: 768px){
-        padding: calc(${spacing4} * 3) 0 0 0;
-    }
-    @media(max-width: 576px){
-        padding: calc(${spacing4} * 2) 0 0 0;
-    }
 `

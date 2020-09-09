@@ -125,4 +125,8 @@ const HeaderWrapper = styled.header`
     a{
         text-decoration: none;
     }
+
+    @media(max-width: 576px){
+        padding: ${spacing3};
+    }
 `

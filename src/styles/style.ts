@@ -64,7 +64,7 @@ export const Page = styled.section`
     align-items: center;
 
     @media(max-width: 768px){
-        padding: ${spacing5} ${spacing4};
+        padding: 0 ${spacing4};
     }
 `
 
