@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Page, Container, Title } from '../../styles/style'
+import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { fetchPlaylist } from '../../api/webapi/webapi'
 import { useSelector } from 'react-redux'
 import { Istore } from '../../store/types'
 import { Itoken } from '../../store/token/types'
 import { IresponsePlaylist } from '../../api/webapi/types'
+import HeaderPlaylist from './HeaderPlaylist'
+import TablePlaylist from './TablePlaylist'
 
 const Playlist = () => {
-    const { id } = useParams()    
+    const { id } = useParams<{id: string}>()    
     const [playlist, setPlaylist] = useState<IresponsePlaylist>()
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
     const history = useHistory()
@@ -27,21 +29,25 @@ const Playlist = () => {
         }
     },[id, accessToken, history])
 
-    return(
-        <>
-            <Page>
-                <Container>
-                    <Title>Playlist</Title>
-                    {
-                        playlist ? <>
-                            <h1 style={{marginTop: 20}}>{playlist.name}</h1>
-                            <img src={ playlist.images?.length ? playlist.images[0].url : '' } alt=""/>
-                        </> : <></>
-                    }
-                </Container>
-            </Page>
-        </>
+    return( 
+        <WrapperComponent>
+            {
+                playlist
+                ? <>
+                    <HeaderPlaylist playlist={playlist}/> 
+                    <TablePlaylist playlist={playlist}/>
+                </> : <></>
+            }
+            
+        </WrapperComponent>
     )
 }
 
 export default Playlist
+
+const WrapperComponent = styled.div`
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+`

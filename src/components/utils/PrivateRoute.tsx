@@ -7,6 +7,7 @@ import NotPremium from '../home/NotPremium'
 import useDispatchUser from '../../hooks/useDispatchUser'
 import useDispatchToken from '../../hooks/useDispatchToken'
 import Header from './Header'
+import styled from 'styled-components'
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
     useDispatchUser(accessToken)
@@ -18,11 +19,17 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
         Object.keys(user).length && user.product !== "premium" ? false : true
     ),[user])
 
-    return <>
+    return <WrapperComponent>
         <Header/>
         <Component/>
         {userIsPremium() ? <></> : <NotPremium/>}
-    </>
+    </WrapperComponent>
 }
 
 export default PrivateRoute
+
+const WrapperComponent = styled.div`
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+`

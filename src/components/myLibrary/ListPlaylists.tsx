@@ -6,7 +6,7 @@ import {Itoken} from '../../store/token/types'
 import {IplaylistItem} from '../../api/webapi/types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { spacing2, spacing4, spacing5, Input as input } from '../../styles/style'
+import { metrics, Input as input } from '../../styles/style'
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {XCircle, Loader, Slash, HelpCircle} from 'react-feather'
 import {Search} from 'react-feather'
@@ -149,7 +149,7 @@ const PlaylistItem = styled.li`
     span{
         display: block;
         width: 100%;
-        margin: ${spacing2} 0 0 0;
+        margin: ${metrics.spacing2} 0 0 0;
         font-size: 24px;
         text-align: center;
 
@@ -182,10 +182,10 @@ const WrapperPlaylists = styled.ul`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: auto;
-    column-gap: ${spacing5};
-    row-gap: ${spacing5};
+    column-gap: ${metrics.spacing5};
+    row-gap: ${metrics.spacing5};
     position: relative;
-    margin: ${spacing5} 0 0 0;
+    margin: ${metrics.spacing5} 0 0 0;
     position: relative;
 
     & > figure{
@@ -215,7 +215,7 @@ const WrapperPlaylists = styled.ul`
 `
 
 const Wrapper = styled.div`
-    margin: ${spacing5} 0 0 0;
+    margin: ${metrics.spacing5} 0 0 0;
 
     & > figure,
     ${WrapperPlaylists} > figure{
@@ -223,7 +223,7 @@ const Wrapper = styled.div`
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
-        padding-top: ${spacing4};
+        padding-top: ${metrics.spacing4};
 
         opacity: 0;
         animation: fadeIn 1s forwards;
@@ -245,7 +245,7 @@ const Wrapper = styled.div`
         p{
             font-size: 20px;
             text-align: center;
-            margin: ${spacing4} 0 0 0;
+            margin: ${metrics.spacing4} 0 0 0;
         }
     }
 `

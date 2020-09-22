@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
-import { spacing4, borderColor } from '../../styles/style'
+import { metrics, colors } from '../../styles/style'
 
 interface IModal{
     content: JSX.Element
@@ -26,9 +26,9 @@ const WrapperModal = styled.main< {styleModal: string} >`
     border-radius: 14px;
     color: #000;
     background: #fff;
-    border-color: ${borderColor};
+    border-color: ${colors.border};
     box-shadow: 0 12px 24px 12px rgba(0,0,0, .16);
-    padding: ${spacing4};
+    padding: ${metrics.spacing4};
     ${ (props) => props.styleModal}
 `
 

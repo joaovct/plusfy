@@ -2,7 +2,7 @@ import React from 'react'
 import Modal from '../utils/Modal'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {Title as title, spacing2, spacing4, Button as button} from '../../styles/style'
+import {Title as title, metrics, Button as button} from '../../styles/style'
 
 const NotPremium = () => {
     const styleModal = `display: flex; align-items: center;`
@@ -32,7 +32,7 @@ const NotPremium = () => {
 export default NotPremium
 
 const Button = styled(button)`
-    margin: ${spacing4} 0 0 0;
+    margin: ${metrics.spacing4} 0 0 0;
     font-size: 14px;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -58,9 +58,9 @@ const WrapperContent = styled.div`
     position: relative;
 
     p{
-        margin: ${spacing2} 0 0 0;
+        margin: ${metrics.spacing2} 0 0 0;
         &:first-of-type{
-            margin: ${spacing4} 0 0 0;
+            margin: ${metrics.spacing4} 0 0 0;
         }
         color: #555;
         font-size: 16px;

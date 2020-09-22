@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import { Page as page, Container as container, primaryGradient, Button, spacing2, spacing3, spacing4, spacing5 } from '../../styles/style'
+import { Page as page, Container as container, colors, Button, metrics} from '../../styles/style'
 import logo from '../../assets/logo-white.png'
 
 const Landing = () => (
@@ -10,7 +10,6 @@ const Landing = () => (
                 <img src={logo} alt="Plusfy"/>
         </Header>
         <Container>
-            
             <Main>
                 <h1>O seu <span>Spotify</span> já conhecido, <br/> mas <span>com novas funções.</span></h1>
                 <Link to="/login"><Button>Continuar com spotify</Button></Link>
@@ -26,7 +25,7 @@ const Main = styled.div`
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    margin-top: ${spacing2};
+    margin-top: ${metrics.spacing2};
 
     h1{
         color: rgba(255,255,255,.6);
@@ -47,14 +46,14 @@ const Main = styled.div`
     }
 
     ${Button}{
-        margin-top: ${spacing4};
+        margin-top: ${metrics.spacing4};
     }
 `
 
 const Header = styled.div`
     width: 100%;
     display: flex;
-    padding: ${spacing3} ${spacing5} ${spacing5} ${spacing5};
+    padding: ${metrics.spacing3} ${metrics.spacing5} ${metrics.spacing5} ${metrics.spacing5};
 
     img{
         width: 150px;
@@ -86,7 +85,7 @@ const Page = styled(page)`
     height: 100%;
     justify-content: center;
     align-items: center;
-    background: ${primaryGradient};
+    background: ${colors.primaryGradient};
 `
 
 export default Landing

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Title, spacing2, spacing4, spacing5, borderColor} from './../../styles/style'
+import {Title, metrics, colors} from './../../styles/style'
 import {Music, Smile, Star, Upload} from 'react-feather'
 import { Link } from 'react-router-dom'
 
@@ -38,13 +38,13 @@ const Item = styled.li`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin: 0 calc(${spacing4} * 2) 0 0;
+    margin: 0 calc(${metrics.spacing4} * 2) 0 0;
     & > a{
         display: block;
         height: 110px;
         width: 110px;
         padding: 10px;
-        border: 1px solid ${borderColor};
+        border: 1px solid ${colors.border};
         border-radius: 12px;
         figure{
             height: 100%;
@@ -74,7 +74,7 @@ const Item = styled.li`
     }
     span{
         display: inline-block;
-        margin: calc(${spacing2}*2) 0 0 0;
+        margin: calc(${metrics.spacing2}*2) 0 0 0;
         font-style: normal;
         font-weight: 300;
         font-size: 15px;
@@ -96,7 +96,7 @@ const Item = styled.li`
     }
 
     @media(max-width: 991px){
-        margin: 0 ${spacing4} 0 0;
+        margin: 0 ${metrics.spacing4} 0 0;
     } 
     @media(max-width: 768px){
         max-width: 100px;
@@ -113,11 +113,11 @@ const Item = styled.li`
         }
     }
     @media(max-width: 576px){
-        margin-bottom: ${spacing4};
+        margin-bottom: ${metrics.spacing4};
     }
     @media(max-width: 480px){
         max-width: inherit;
-        margin-bottom: calc(${spacing4} * 2);
+        margin-bottom: calc(${metrics.spacing4} * 2);
         & > a{
             height: 125px;
             width: 125px;
@@ -137,38 +137,38 @@ const WrapperItens = styled.ul`
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: center;
-    margin: ${spacing4} 0 0 0;
+    margin: ${metrics.spacing4} 0 0 0;
 
     @media(max-width: 991px){
-        margin: calc( ${spacing4} / 1.5 ) 0 0 0;
+        margin: calc( ${metrics.spacing4} / 1.5 ) 0 0 0;
     }
     @media(max-width: 480px){
         flex-flow: column nowrap;
-        margin: ${spacing4} 0 0 0;
+        margin: ${metrics.spacing4} 0 0 0;
     }
 `
 
 const TitleNavegate = styled(Title)`
-    margin: calc(${spacing5}) 0 0 0;
+    margin: calc(${metrics.spacing5}) 0 0 0;
 
     @media(min-height: 769px) and (min-width: 992px){
-        margin: calc(${spacing5} * 2) 0 0 0;
+        margin: calc(${metrics.spacing5} * 2) 0 0 0;
     }
     @media(min-height: 991px) and (min-width: 992px){
-        margin: calc(${spacing5} * 3) 0 0 0;
+        margin: calc(${metrics.spacing5} * 3) 0 0 0;
     }
     @media(max-height: 768px) and (min-width: 992px){
-        margin: calc(${spacing5} * 1.5) 0 0 0;
+        margin: calc(${metrics.spacing5} * 1.5) 0 0 0;
     }
     @media(max-height: 576px) and (min-width: 992px){
-        margin: calc(${spacing5} * 1) 0 0 0;
+        margin: calc(${metrics.spacing5} * 1) 0 0 0;
     }
 
     @media(max-width: 768px){
-        margin: ${spacing5} 0 0 0;
+        margin: ${metrics.spacing5} 0 0 0;
     }
     @media(max-width: 576px){
-        margin: ${spacing4} 0 0 0;
+        margin: ${metrics.spacing4} 0 0 0;
     }
 `
 

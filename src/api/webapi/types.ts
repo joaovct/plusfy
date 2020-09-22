@@ -41,11 +41,18 @@ export interface IresponsePlaylist{
     owner: Iuser
     public: boolean
     snapshot_id: string
-    tracks: Array<IplaylistTrack>
+    tracks: {
+        limit: number,
+        next?: string
+        previous?: string
+        offset: number
+        total: number
+        items: Array<IplaylistTrack>
+    }
 }
 
 export interface IplaylistTrack{
-    added_at: Date
+    added_at: string
     added_by: Iuser
     is_local: boolean
     track: Itrack

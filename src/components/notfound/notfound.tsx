@@ -1,5 +1,5 @@
 import React from 'react'
-import { Page as page, Container as container, Title as title, Logo as logo, spacing3 } from '../../styles/style'
+import { Page as page, Container as container, Title as title, Logo as logo, metrics } from '../../styles/style'
 import styled from 'styled-components'
 import logoImg from '../../assets/logo.png'
 import { Link } from 'react-router-dom'
@@ -19,7 +19,7 @@ const NotFound = () => (
 )
 
 const Logo = styled(logo)`
-    margin: ${spacing3} 0 0 0;
+    margin: ${metrics.spacing3} 0 0 0;
 `
 
 const Title = styled(title)`

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {Logo, borderColor, backgroundColor, maxWidthContainer, spacing3, spacing5} from '../../styles/style'
+import {Logo, colors, metrics} from '../../styles/style'
 import logoSrc from '../../assets/logo-minified.png'
 import emptyUserPhoto from '../../assets/empty-user-photo.svg'
 import { useSelector } from 'react-redux'
@@ -46,7 +46,7 @@ const photoSize = '50px'
 const photoPadding = '15px'
 
 const Options = styled.ul<{show: boolean}>`
-    border: 1px solid ${borderColor};
+    border: 1px solid ${colors.border};
     border-radius: 14px;
     margin: 10px 0 0 0;
     box-shadow: 0 6px 12px 0px rgba(0,0,0,0.16);
@@ -57,7 +57,7 @@ const Options = styled.ul<{show: boolean}>`
     position: absolute;
     z-index: 2;
     top: 65px;
-    background: ${backgroundColor};
+    background: ${colors.background};
     min-width: 175px;
 
     ${ ({show}) => 
@@ -92,7 +92,7 @@ const HeaderUserPhoto = styled.div`
     figure{
         height: calc(${photoSize} + ${photoPadding});
         width: calc(${photoSize} + ${photoPadding});
-        border: 1px solid ${borderColor};
+        border: 1px solid ${colors.border};
         border-radius: 100%;
         display: flex;
         justify-content: center;
@@ -108,7 +108,7 @@ const HeaderUserPhoto = styled.div`
 `
 
 const HeaderInner = styled.div`
-    max-width: ${maxWidthContainer};
+    max-width: ${metrics.maxWidthContainer};
     width: 100%;
     height: auto;
     display: flex;
@@ -120,13 +120,13 @@ const HeaderWrapper = styled.header`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: ${spacing3} ${spacing5} ${spacing5} ${spacing5};
+    padding: ${metrics.spacing3} ${metrics.spacing5} ${metrics.spacing5} ${metrics.spacing5};
 
     a{
         text-decoration: none;
     }
 
     @media(max-width: 576px){
-        padding: ${spacing3};
+        padding: ${metrics.spacing3};
     }
 `

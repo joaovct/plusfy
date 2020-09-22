@@ -1,6 +1,6 @@
 import React from 'react'
 import {Search} from 'react-feather'
-import {Input as input, spacing4} from '../../styles/style'
+import {Input as input, metrics} from '../../styles/style'
 import styled from 'styled-components'
 
 const SearchHome = () => {
@@ -18,7 +18,7 @@ const Input = styled(input)`
 `
 
 const Label = styled.label`
-    padding-top: ${spacing4};
+    padding-top: ${metrics.spacing4};
     position: relative;
     display: flex;
     align-items: center;
