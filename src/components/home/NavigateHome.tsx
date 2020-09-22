@@ -19,16 +19,28 @@ const NavigateHome = () => {
                 </span>
             </Item>
             <Item>
-                <a href="/home"><figure><Smile/></figure></a>
-                <span><a href="/home">Medidor de humor</a></span>
+                <Link to="/building">
+                <figure><Smile/></figure>
+                </Link>
+                <span>
+                    <Link to="/building">Medidor de humor</Link>
+                </span>
             </Item>
             <Item>
-                <a href="/home"><figure><Star/></figure></a>
-                <span><a href="/home">Estilos preferidos</a></span>
+                <Link to="/building">
+                    <figure><Star/></figure>
+                </Link>
+                <span>
+                    <Link to="/building">Estilos preferidos</Link>
+                </span>
             </Item>
             <Item>
-                <a href="/home"><figure><Upload/></figure></a>
-                <span><a href="/home">Importar músicas</a></span>
+                <Link to="/building">
+                    <figure><Upload/></figure>
+                </Link>
+                <span>
+                    <Link to="/building">Importar músicas</Link>
+                </span>
             </Item>
         </WrapperItens>
     </>)

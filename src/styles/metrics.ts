@@ -7,15 +7,3 @@ export const spacing4 = `calc(${spacer} * 1.5)`
 export const spacing5 = `calc(${spacer} * 3)`
 export const maxWidthContainer = '1400px'
 export const borderRadius = '12px'
-
-export default {
-    spacer,
-    spacing0, 
-    spacing1,
-    spacing2,
-    spacing3,
-    spacing4,
-    spacing5,
-    maxWidthContainer,
-    borderRadius
-}

@@ -7,5 +7,3 @@ export const gray = '#bbb'
 export const green = "#1aa34a"
 export const lighterGreen = "#18ac4d"
 export const border = '#3D4466'
-
-export default {background, darkerBackground, primaryGradient, primary, secondary, gray, green, lighterGreen, border}

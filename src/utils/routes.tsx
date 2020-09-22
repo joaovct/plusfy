@@ -7,6 +7,7 @@ import PrivateRoute from '../components/utils/PrivateRoute'
 import MyLibrary from '../components/myLibrary/MyLibrary'
 import Playlist from '../components/playlist/Playlist'
 import NotFound from '../components/notfound/notfound'
+import Building from '../components/building/Building'
 
 const Routes = () => {
     const renderLanding = useCallback(() => {
@@ -47,6 +48,7 @@ const Routes = () => {
                 <Route exact path="/home" render={ () => renderPrivateRoute(Home) }/>
                 <Route exact path="/my-library" render={ () => renderPrivateRoute(MyLibrary) }/>
                 <Route exact path="/playlist/:id" render={ () => renderPrivateRoute(Playlist) } />
+                <Route exact path="/building" render={Building}/>>
                 <Route exact path="*" component={NotFound} />
             </Switch>
         </BrowserRouter>

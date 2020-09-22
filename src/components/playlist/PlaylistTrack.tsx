@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { IplaylistTrack } from '../../api/webapi/types';
 import { formatAddedAt, formatDuration } from '../../api/webapi/webapi';
 import emptyPlaylistPhoto from '../../assets/empty-user-photo.svg'
 import {Play} from 'react-feather'
+import { useSelector } from 'react-redux';
+import { Istore } from '../../store/types';
+import { playTrack } from '../../api/webapi/player';
+import { Itoken } from '../../store/token/types';
 
 interface Icomponent{
     playlistTrack: IplaylistTrack,
@@ -11,9 +15,14 @@ interface Icomponent{
 }
 
 const PlaylistTrack: React.FC<Icomponent> = ({playlistTrack, index}) => {
-  return (
+    const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
+
+    const handlePlayTrack = useCallback((uri: string) => playTrack({accessToken, uris: [uri]})
+    ,[accessToken])
+
+    return (
     <TableRow key={playlistTrack.track.id}>
-        <td>
+        <td onClick={() => {handlePlayTrack(playlistTrack.track.uri)}}>
             <span>{index + 1}</span>
             <Play/>
         </td>
@@ -42,12 +51,14 @@ const TableRow = styled.tr`
         position: relative;
 
         svg{
+            --size-icon-play: 18px;
             cursor: pointer;
             opacity: 0;
-            height: 18px;
-            width: 18px;
+            height: var(--size-icon-play);
+            width: var(--size-icon-play);
             position: absolute;
-            left: calc( (18px / 4) + 18px / 2 );
+            margin: 0 auto;
+            left: calc( var(--width-first-child) / 2 - var(--size-icon-play) / 2 ) ;
             fill: #fff;
         }
     }

@@ -1,11 +1,9 @@
 import styled from 'styled-components'
-import Colors from './colors'
-import Metrics from './metrics'
-import globalStyles from './GlobalStyles'
+import * as colors from './colors'
+import * as metrics from './metrics'
+import GlobalStyles from './GlobalStyles'
 
-export const colors = Colors
-export const metrics = Metrics
-export const GlobalStyles = globalStyles
+export {colors,metrics,GlobalStyles}
 
 export const Page = styled.section`
     flex: 1;

@@ -52,7 +52,8 @@ const TableInner = styled.table`
         color: ${colors.gray};
 
         &:first-child{
-            width: 42px;
+            --width-first-child: 100px;
+            width: var(--width-first-child);
             font-weight: 500;
             text-align: center;
         }
