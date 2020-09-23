@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { metrics, colors, Container, Page } from '../../styles/style';
-import { ChildComponent } from './types';
+import { PlaylistChildComponent } from './types';
 import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
 
-const TablePlaylist: React.FC<ChildComponent> = ({playlist}) => {
+const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
   return (
     <Table>
         <Container>
             {
                 playlist ?
-                <>
+                <> 
                     <TableInner>
                         <thead>
                             <tr>
@@ -25,7 +25,14 @@ const TablePlaylist: React.FC<ChildComponent> = ({playlist}) => {
                         </thead>
                         <tbody>
                             {
-                                playlist.tracks.items.map( (playlistTrack, index) => <PlaylistTrack key={`${playlistTrack}${index}`} playlistTrack={playlistTrack} index={index} /> )
+                                playlist.tracks.items.map( (playlistTrack, index) => 
+                                    <PlaylistTrack 
+                                        key={`${playlistTrack}${index}`}
+                                        playlist={playlist}
+                                        playlistTrack={playlistTrack}
+                                        index={index}
+                                    />
+                                )
                             }
                         </tbody>
                     </TableInner> 
@@ -42,7 +49,7 @@ export default TablePlaylist
 const TableInner = styled.table`
     width: 100%;
     table-layout: fixed;
-
+    
     thead tr th,
     tbody tr td{
         font-size: 16px;
@@ -52,7 +59,7 @@ const TableInner = styled.table`
         color: ${colors.gray};
 
         &:first-child{
-            --width-first-child: 100px;
+            --width-first-child: 60px;
             width: var(--width-first-child);
             font-weight: 500;
             text-align: center;
@@ -61,7 +68,7 @@ const TableInner = styled.table`
             width: 157px;
         }
         &:nth-child(6){
-            width: 64px;
+            width: 70px;
         }
 
         @media(max-width: 991px){

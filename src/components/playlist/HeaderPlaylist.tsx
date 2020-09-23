@@ -1,12 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Page, Container, Title, metrics } from '../../styles/style'
-import {ChildComponent} from './types'
-import emptyPlaylistPhoto from '../../assets/empty-user-photo.svg'
+import {PlaylistChildComponent} from './types'
+import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
+import PlaylistButtons from './PlaylistButtons'
+import { calculatePlaylistDuration, formatNumberTracks } from '../../api/webapi/webapi'
 
-const HeaderPlaylist: React.FC<ChildComponent> = ({playlist}) => {
-    
+const HeaderPlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
+    const playlistDuration = calculatePlaylistDuration(playlist)
+    const numberTracks = formatNumberTracks(playlist)
+
     return (
         <Header>
             <Container>
@@ -18,8 +22,11 @@ const HeaderPlaylist: React.FC<ChildComponent> = ({playlist}) => {
                             <h4>Playlist</h4>
                             <Title>{playlist.name}</Title>
                             <h6>
-                                <Link to={`/user/${playlist.owner.id}`}>{playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}</Link> - 5 hr 39 min
+                                <Link to={`/user/${playlist.owner.id}`}>
+                                    {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
+                                </Link> - { numberTracks }, {playlistDuration}
                             </h6>
+                            <PlaylistButtons playlist={playlist}/>
                         </div>
                     </HeaderInner> : <></>
                 }
@@ -48,7 +55,7 @@ const HeaderInner = styled.header`
         border-radius: ${metrics.borderRadius};
     }
 
-    div{
+    & > div{
         padding: 0 0 0 ${metrics.spacing5};
         height: calc(var(--image-size));
         display: flex;

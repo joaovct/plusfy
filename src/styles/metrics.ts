@@ -7,3 +7,4 @@ export const spacing4 = `calc(${spacer} * 1.5)`
 export const spacing5 = `calc(${spacer} * 3)`
 export const maxWidthContainer = '1400px'
 export const borderRadius = '12px'
+export const boxShadow = '0 6px 12px 0px rgba(0,0,0,0.16)'

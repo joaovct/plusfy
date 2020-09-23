@@ -5,13 +5,13 @@ import { fetchPlaylist } from '../../api/webapi/webapi'
 import { useSelector } from 'react-redux'
 import { Istore } from '../../store/types'
 import { Itoken } from '../../store/token/types'
-import { IresponsePlaylist } from '../../api/webapi/types'
+import { Iplaylist } from '../../api/webapi/types'
 import HeaderPlaylist from './HeaderPlaylist'
 import TablePlaylist from './TablePlaylist'
 
 const Playlist = () => {
     const { id } = useParams<{id: string}>()    
-    const [playlist, setPlaylist] = useState<IresponsePlaylist>()
+    const [playlist, setPlaylist] = useState<Iplaylist>()
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
     const history = useHistory()
 

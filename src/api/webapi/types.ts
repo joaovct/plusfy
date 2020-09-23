@@ -1,5 +1,5 @@
-export interface IresponseUserPlaylists{
-    items: Array<IplaylistItem>
+export interface IUserPlaylists{
+    items: Array<Iplaylist>
     limit: number
     next?: string
     offset: number
@@ -7,24 +7,7 @@ export interface IresponseUserPlaylists{
     total: number
 }
 
-export interface IplaylistItem{
-    collaborative: boolean
-    description: string
-    external_urls: {
-        spotify: string
-    }
-    href: string
-    id: string
-    images: Array<Iimage>
-    name: string
-    public?: boolean
-    snapshot_id: string
-    type: string
-    uri: string
-    owner: Iuser
-}
-
-export interface IresponsePlaylist{
+export interface Iplaylist{
     collaborative: boolean
     description: string
     external_urls: {
@@ -41,14 +24,18 @@ export interface IresponsePlaylist{
     owner: Iuser
     public: boolean
     snapshot_id: string
-    tracks: {
-        limit: number,
-        next?: string
-        previous?: string
-        offset: number
-        total: number
-        items: Array<IplaylistTrack>
-    }
+    tracks: IplaylistTracks
+    uri: string
+}
+
+export interface IplaylistTracks{
+    href: string
+    limit: number,
+    next?: string
+    previous?: string
+    offset: number
+    total: number
+    items: Array<IplaylistTrack>
 }
 
 export interface IplaylistTrack{

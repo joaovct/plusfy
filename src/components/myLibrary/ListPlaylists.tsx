@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { fetchUserPlaylists } from '../../api/webapi/webapi'
 import {Istore} from '../../store/types'
 import {Itoken} from '../../store/token/types'
-import {IplaylistItem} from '../../api/webapi/types'
+import {Iplaylist} from '../../api/webapi/types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { metrics, Input as input } from '../../styles/style'
@@ -13,8 +13,8 @@ import {Search} from 'react-feather'
 
 const ListPlaylists = () => {
     const accessToken = useSelector<Istore, Itoken['accessToken']>(store => store.token.accessToken)
-    const [playlists, setPlaylists] = useState<IplaylistItem[]>([])
-    const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<IplaylistItem[]>([])
+    const [playlists, setPlaylists] = useState<Iplaylist[]>([])
+    const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<Iplaylist[]>([])
     const [requestStatus, setRequestStatus] = useState('loading')
     const [search, setSearch] = useState('')
 

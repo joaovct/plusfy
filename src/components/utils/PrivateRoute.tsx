@@ -8,8 +8,10 @@ import useDispatchUser from '../../hooks/useDispatchUser'
 import useDispatchToken from '../../hooks/useDispatchToken'
 import Header from './Header'
 import styled from 'styled-components'
+import usePlaybackSDK from '../../hooks/usePlaybackSDK'
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
+    usePlaybackSDK()
     useDispatchUser(accessToken)
     useDispatchToken(accessToken, refreshToken)
     

@@ -49,7 +49,7 @@ const Options = styled.ul<{show: boolean}>`
     border: 1px solid ${colors.border};
     border-radius: 14px;
     margin: 10px 0 0 0;
-    box-shadow: 0 6px 12px 0px rgba(0,0,0,0.16);
+    box-shadow: ${metrics.boxShadow};
     transition: .5s opacity;
     opacity: 0;
     pointer-events: none;

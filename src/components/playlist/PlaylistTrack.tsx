@@ -2,23 +2,24 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { IplaylistTrack } from '../../api/webapi/types';
 import { formatAddedAt, formatDuration } from '../../api/webapi/webapi';
-import emptyPlaylistPhoto from '../../assets/empty-user-photo.svg'
+import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {Play} from 'react-feather'
 import { useSelector } from 'react-redux';
 import { Istore } from '../../store/types';
 import { playTrack } from '../../api/webapi/player';
 import { Itoken } from '../../store/token/types';
+import { PlaylistChildComponent } from './types';
 
-interface Icomponent{
+interface Icomponent extends PlaylistChildComponent{
     playlistTrack: IplaylistTrack,
     index: number
 }
 
-const PlaylistTrack: React.FC<Icomponent> = ({playlistTrack, index}) => {
+const PlaylistTrack: React.FC<Icomponent> = ({playlist, playlistTrack, index}) => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
-
-    const handlePlayTrack = useCallback((uri: string) => playTrack({accessToken, uris: [uri]})
-    ,[accessToken])
+    
+    const handlePlayTrack = useCallback( (uri: string) => playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
+    ,[playlist, accessToken])
 
     return (
     <TableRow key={playlistTrack.track.id}>
@@ -49,6 +50,11 @@ export default PlaylistTrack
 const TableRow = styled.tr`
     td:first-child{
         position: relative;
+
+        span{
+            width: 100%;
+            display: inline-block;
+        }
 
         svg{
             --size-icon-play: 18px;

@@ -8,13 +8,10 @@ import styled from 'styled-components'
 import { Page, Container, Title} from '../../styles/style'
 import SearchHome from './SearchHome'
 import NavigateHome from './NavigateHome'
-import usePlaybackSDK from '../../hooks/usePlaybackSDK'
 
 const Home = () => {
-    usePlaybackSDK()
     const socket = useConnectSocket()
     const user = useSelector<Istore, Iuser>(store => store.user)
-    
 
     return(
         <SocketIoContext.Provider value={socket}>
