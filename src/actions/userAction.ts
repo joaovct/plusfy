@@ -5,8 +5,8 @@ interface IUserDataResponse{
     data: {}
 }
 
-const userAction = (access_token: string) => {
-    const options = {headers: { 'Authorization': 'Bearer ' + access_token }}
+const userAction = (accessToken: string) => {
+    const options = {headers: { 'Authorization': 'Bearer ' + accessToken }}
     
     return function(dispatch: Function) {
 

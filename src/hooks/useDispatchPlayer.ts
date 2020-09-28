@@ -4,14 +4,14 @@ import actions from '../actions/actions'
 import { Itoken } from '../store/token/types'
 import { Istore } from '../store/types'
 
-const useDispatchUser = () => {
+const useDispatchPlayer = () => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         if(accessToken)
-            dispatch(actions.userAction(accessToken))
+            dispatch(actions.playerAction(accessToken))
     },[accessToken, dispatch])
 }
 
-export default useDispatchUser
+export default useDispatchPlayer

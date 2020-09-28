@@ -1,4 +1,4 @@
-export interface IUserPlaylists{
+export interface IuserPlaylists{
     items: Array<Iplaylist>
     limit: number
     next?: string
@@ -120,4 +120,39 @@ export interface Iimage{
     height: number
     width: number
     url: string
+}
+
+export interface Iplayer{
+    timestamp: number
+    progress_ms: boolean
+    is_playing: boolean
+    currently_playing_type: string
+    actions: {
+        dissallows: {
+            resuming: boolean
+        }
+    }
+    item: {}
+    shuffle_state: boolean
+    repeat_state: string
+    context: {
+        external_urls: {
+            spotify: string
+            href: string
+            type: string
+            uri: string
+        }
+    }
+    device: IplayerDevice
+    devices: Array<IplayerDevice>
+}
+
+export interface IplayerDevice{
+    id: string
+    is_active: boolean
+    is_private_session: boolean
+    is_restricted: boolean
+    name: string
+    type: string
+    volume_percent: number
 }
