@@ -2,12 +2,13 @@ import React, { FunctionComponent, useCallback } from 'react'
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Landing from '../components/landing/Landing'
 import Home from '../components/home/Home'
-import {disconnectUser, isUserConnected, connectUser} from './userAccess'
+import {isUserConnected, connectUser} from './userAccess'
 import PrivateRoute from '../components/utils/PrivateRoute'
 import MyLibrary from '../components/myLibrary/MyLibrary'
 import Playlist from '../components/playlist/Playlist'
 import NotFound from '../components/notfound/notfound'
 import Building from '../components/building/Building'
+import Logoff from '../components/utils/Logoff'
 
 const Routes = () => {
     const renderLanding = useCallback(() => {
@@ -23,14 +24,6 @@ const Routes = () => {
         return <></>
     },[])
 
-    const renderLogoff = useCallback(() => {
-        disconnectUser()
-        const response = isUserConnected()
-        return response.connected
-            ? <Redirect to="/home" />
-            : <Redirect to="/" />
-    },[])
-
     const renderPrivateRoute = useCallback((Component: FunctionComponent) => {
         connectUser()
         const response = isUserConnected()
@@ -44,11 +37,11 @@ const Routes = () => {
             <Switch>
                 <Route exact path="/" render={renderLanding}/>
                 <Route exact path="/login" render={renderLogin}/>
-                <Route exact path="/logoff" render={renderLogoff} />
+                <Route exact path="/logoff" component={Logoff} />
                 <Route exact path="/home" render={ () => renderPrivateRoute(Home) }/>
                 <Route exact path="/my-library" render={ () => renderPrivateRoute(MyLibrary) }/>
                 <Route exact path="/playlist/:id" render={ () => renderPrivateRoute(Playlist) } />
-                <Route exact path="/building" render={Building}/>>
+                <Route exact path="/building" render={Building}/>
                 <Route exact path="*" component={NotFound} />
             </Switch>
         </BrowserRouter>

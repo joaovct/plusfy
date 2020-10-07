@@ -91,3 +91,35 @@ export const Logo = styled.img`
     height: 70px;
     width: auto;
 `
+
+export const Dropdown = styled.ul<{show: Boolean}>`
+    border: 1px solid ${colors.border};
+    border-radius: 14px;
+    margin: 10px 0 0 0;
+    box-shadow: ${metrics.boxShadow};
+    transition: .5s opacity;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    position: absolute;
+    z-index: 2;
+    min-width: 175px;
+    top: 0;
+    left: 0;
+    background: ${colors.background};
+
+    ${ ({show}) => 
+    show ? `
+        opacity: 1;
+        pointer-events: all;
+        user-select: text;
+    ` : ''
+    }
+
+    li a, li span{
+        display: block;
+        text-align: left;   
+        font-size: 16px;
+        padding: 15px 15px calc(15px / 2) 15px;
+    }
+`

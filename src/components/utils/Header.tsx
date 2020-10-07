@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {Logo, colors, metrics} from '../../styles/style'
+import {Logo, colors, metrics, Dropdown} from '../../styles/style'
 import logoSrc from '../../assets/logo-minified.png'
 import emptyUserPhoto from '../../assets/empty-user-photo.svg'
 import { useSelector } from 'react-redux'
@@ -45,35 +45,14 @@ export default Header
 const photoSize = '50px'
 const photoPadding = '15px'
 
-const Options = styled.ul<{show: boolean}>`
-    border: 1px solid ${colors.border};
-    border-radius: 14px;
-    margin: 10px 0 0 0;
-    box-shadow: ${metrics.boxShadow};
-    transition: .5s opacity;
-    opacity: 0;
-    pointer-events: none;
-    user-select: none;
-    position: absolute;
-    z-index: 2;
-    top: 65px;
-    background: ${colors.background};
-    min-width: 175px;
-
-    ${ ({show}) => 
-    show ? `
-        opacity: 1;
-        pointer-events: all;
-        user-select: text;
-    ` : ''
-    }
+const Options = styled(Dropdown)`
+    top:  calc(${photoSize} + ${photoPadding});
+    right: inherit;
+    left: inherit;
 
     li{
         a{
-            display: block;
-            text-align: left;
             padding: ${photoPadding};
-            font-size: 16px;
         }
         &:first-of-type a{
             padding-bottom: calc(${photoPadding} / 2);

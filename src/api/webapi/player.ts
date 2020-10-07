@@ -1,6 +1,12 @@
 import api from "../api"
 import {Iplayer, IplayerDevice} from '../webapi/types'
 
+let player: Iplayer
+
+export const setPlayer = (currentPlayer?: Iplayer) => currentPlayer ? player = currentPlayer : null
+
+const getDeviceId = (deviceId?: string) => deviceId ? `?device_id=${deviceId}` : player.device ? `?device_id=${player.device.id}` : '' 
+
 interface IplayTrack{
     accessToken: string,
     contextUri?: string
@@ -15,9 +21,8 @@ interface IplayTrack{
 export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId}: IplayTrack) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = {uris, context_uri: contextUri, offset}
-    const isDeviceIdValid = () => deviceId ? `?device_id=${deviceId}` : ''
 
-    await api.spotify.put(`/me/player/play${isDeviceIdValid()}`, body, headers)
+    await api.spotify.put(`/me/player/play${getDeviceId(deviceId)}`, body, headers)
 }
 
 interface IgetPlayer{

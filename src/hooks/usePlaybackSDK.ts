@@ -27,6 +27,8 @@ const usePlaybackSDK = () => {
             player.addListener('ready', () => dispatch(actions.playerAction(accessToken)))
         }
     },[player, accessToken, dispatch])
+
+    return player
 }
 
 export default usePlaybackSDK

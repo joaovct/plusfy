@@ -1,6 +1,7 @@
-import { getPlayer, getPlayerDevice, transferPlayback } from "../api/webapi/player"
-import { Iplayer, IplayerDevice } from "../api/webapi/types"
+import { getPlayer, getPlayerDevice } from "../api/webapi/player"
+import { Iplayer } from "../api/webapi/types"
 import { PLAYER, Iplayer_action, PLAYER_REQUESTED, PLAYER_ERROR, PLAYER_SUCCESS } from "../store/player/types"
+import { setPlayer as setPlayerAtWebApi } from '../api/webapi/player'
 
 const playerAction = (accessToken: string) => {
 
@@ -20,6 +21,7 @@ const playerAction = (accessToken: string) => {
         }catch{
             actionReturn = {type: PLAYER, status: PLAYER_ERROR, payload: undefined}
         }finally{
+            setPlayerAtWebApi(actionReturn.payload)
             dispatch(actionReturn)
         }
     }
@@ -28,17 +30,7 @@ const playerAction = (accessToken: string) => {
 export default playerAction
 
 function manageActiveDevice(payload: Iplayer){
-    if(!payload.device.id)
-        payload.device = {...payload.devices[0]}
+    if(!payload.device)
+        payload.device = payload.devices[0]
     return payload
 }
-
-// async function activateSingleDevice(accessToken: string, actionReturn: Iplayer_action){
-//     console.log(1)
-//     console.log(actionReturn)
-//     if(actionReturn.payload?.devices && actionReturn.payload.devices.length === 1){
-//         await transferPlayback({accessToken, deviceIds: {device_ids: [actionReturn.payload.devices[0].id]}})
-//         const responsePlayerDevice = await getPlayerDevice({accessToken})
-//         return responsePlayerDevice
-//     }
-// }

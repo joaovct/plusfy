@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { metrics, colors, Container, Page } from '../../styles/style';
 import { PlaylistChildComponent } from './types';
@@ -6,8 +6,12 @@ import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
 
 const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
-  return (
-    <Table>
+    const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist.tracks.items.length).fill(false))
+    const handleShowOptions = useCallback((index: number) => setShowOptions(old => [...old.map( (_, n) => n === index ? !old[n] : false)])
+    ,[setShowOptions])
+
+    return (
+        <Table>
         <Container>
             {
                 playlist ?
@@ -21,6 +25,7 @@ const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
                                 <th>Álbum</th>
                                 <th> <Calendar/> </th>
                                 <th> <Clock/> </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,6 +36,8 @@ const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
                                         playlist={playlist}
                                         playlistTrack={playlistTrack}
                                         index={index}
+                                        showOptions={showOptions}
+                                        handleShowOptions={handleShowOptions}
                                     />
                                 )
                             }
@@ -40,11 +47,10 @@ const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
             }
         </Container>
     </Table>
-  )
+    )
 }
 
 export default TablePlaylist
-
 
 const TableInner = styled.table`
     width: 100%;
@@ -69,6 +75,9 @@ const TableInner = styled.table`
         }
         &:nth-child(6){
             width: 70px;
+        }
+        &:nth-child(7){
+            width: 50px;
         }
 
         @media(max-width: 991px){
@@ -101,7 +110,6 @@ const TableInner = styled.table`
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-
 
         &:nth-of-type(2){
             width: 100%;

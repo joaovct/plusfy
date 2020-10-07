@@ -1,4 +1,5 @@
 export const USER = 'USER'
+export const USER_LOGOFF = 'USER_LOGOFF'
 export const USER_REQUESTED = 'USER_REQUESTED'
 export const USER_SUCCESS = 'USER_SUCCESS'
 export const USER_ERROR = 'USER_ERROR'
