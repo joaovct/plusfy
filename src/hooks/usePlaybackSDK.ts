@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../actions/actions'
 import { Itoken } from '../store/token/types'
@@ -8,7 +8,6 @@ import useScript from './useScript'
 const usePlaybackSDK = () => {
     useScript('https://sdk.scdn.co/spotify-player.js')
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
-    const [player, setPlayer] = useState<Spotify.SpotifyPlayer>()
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -17,18 +16,19 @@ const usePlaybackSDK = () => {
                 name: 'Plusfy',
                 getOAuthToken: ( callback: Function ) => { callback(accessToken) }
             })
-            setPlayer(spotifyPlayer)
-        }
-    },[accessToken])
 
-    useEffect(() => {
-        if(player && accessToken){
-            player.connect()
-            player.addListener('ready', () => dispatch(actions.playerAction(accessToken)))
+            spotifyPlayer.connect()
+            spotifyPlayer.addListener('ready', () => {
+                spotifyPlayer.on('initialization_error', ({ message }) => console.error('Failed to initialize', message))
+                spotifyPlayer.on('authentication_error', ({ message }) => console.error('Failed to authenticate', message))
+                spotifyPlayer.on('account_error', ({ message }) => console.error('Failed to validate Spotify account', message))
+                spotifyPlayer.on('playback_error', ({ message }) => console.error('Failed to perform playback', message))
+                
+                dispatch(actions.playerAction(accessToken))
+                dispatch(actions.spotifyPlayerAction(spotifyPlayer))
+            })
         }
-    },[player, accessToken, dispatch])
-
-    return player
+    },[accessToken, dispatch])
 }
 
 export default usePlaybackSDK

@@ -33,7 +33,7 @@ const ListPlaylists = () => {
     useEffect(() => {
         if(search){
             return setPlaylists( nounFilteredPlaylists.filter(item => {
-                return item.name.toLowerCase().search(search.toLowerCase()) > -1
+                return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1
             }))
         }
         setPlaylists( nounFilteredPlaylists )
