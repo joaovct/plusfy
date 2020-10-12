@@ -31,16 +31,24 @@ interface IgetPlayer{
 
 export const getPlayer = async ({accessToken}: IgetPlayer) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
-    const response = await api.spotify.get<Iplayer>('/me/player', headers)
-    return response
+    try{
+        const response = await api.spotify.get<Iplayer>('/me/player', headers)
+        return response
+    }catch{
+        return null
+    }
 }
 
 interface IgetPlayerDevice extends IgetPlayer{}
 
 export const getPlayerDevice = async ({accessToken}: IgetPlayerDevice) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
-    const response = await api.spotify.get<IplayerDevice>('/me/player/devices', headers)
-    return response
+    try{
+        const response = await api.spotify.get<IplayerDevice>('/me/player/devices', headers)
+        return response
+    }catch{
+        return null
+    }
 }
 
 interface ItransferPlayback{

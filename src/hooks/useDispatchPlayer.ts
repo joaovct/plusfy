@@ -9,8 +9,13 @@ const useDispatchPlayer = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(accessToken)
+        if(accessToken){
             dispatch(actions.playerAction(accessToken))
+            setInterval( () => {
+                dispatch(actions.playerAction(accessToken))
+            },240000) // 4 minutes
+        }
+            
     },[accessToken, dispatch])
 }
 

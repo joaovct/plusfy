@@ -8,7 +8,7 @@ export {colors,metrics,GlobalStyles}
 export const Page = styled.section`
     flex: 1;
     width: 100%;
-    padding: 0 ${metrics.spacing5} ${metrics.spacing5} ${metrics.spacing5}; 
+    padding: 0 ${metrics.spacing5} ${metrics.spacing3} ${metrics.spacing5}; 
     color: #fff;
     display: flex;
     flex-flow: column nowrap;

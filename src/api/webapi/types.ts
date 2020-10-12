@@ -123,19 +123,19 @@ export interface Iimage{
 }
 
 export interface Iplayer{
-    timestamp: number
-    progress_ms: boolean
-    is_playing: boolean
-    currently_playing_type: string
-    actions: {
+    timestamp?: number
+    progress_ms?: boolean
+    is_playing?: boolean
+    currently_playing_type?: string
+    actions?: {
         dissallows: {
             resuming: boolean
         }
     }
-    item: {}
-    shuffle_state: boolean
-    repeat_state: string
-    context: {
+    item?: Itrack
+    shuffle_state?: boolean
+    repeat_state?: string
+    context?: {
         external_urls: {
             spotify: string
             href: string
@@ -143,8 +143,8 @@ export interface Iplayer{
             uri: string
         }
     }
-    device: IplayerDevice
-    devices: Array<IplayerDevice>
+    device?: IplayerDevice
+    devices?: Array<IplayerDevice>
 }
 
 export interface IplayerDevice{

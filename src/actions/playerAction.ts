@@ -8,29 +8,29 @@ const playerAction = (accessToken: string) => {
     return async (dispatch: Function) => {
         let actionReturn: Iplayer_action = {type: PLAYER, status: PLAYER_REQUESTED}
 
-        try{
-            const resPlayer = await getPlayer({accessToken})
-            try{
-                const resPlayerDevice = await getPlayerDevice({accessToken})
+        const resPlayer = await getPlayer({accessToken})
+        if(resPlayer){
+            const resPlayerDevice = await getPlayerDevice({accessToken})
+            if(resPlayerDevice){
                 const payload = manageActiveDevice({...resPlayer.data, ...resPlayerDevice.data})
                 actionReturn = {type: PLAYER, status: PLAYER_SUCCESS, payload}
-            }catch{
+            }else{
                 actionReturn = {type: PLAYER, status: PLAYER_ERROR, payload: undefined}
             }
-
-        }catch{
+        }else{
             actionReturn = {type: PLAYER, status: PLAYER_ERROR, payload: undefined}
-        }finally{
-            setPlayerAtWebApi(actionReturn.payload)
-            dispatch(actionReturn)
+
         }
-    }
+
+        setPlayerAtWebApi(actionReturn.payload)
+        dispatch(actionReturn)
+     }
 }
 
 export default playerAction
 
 function manageActiveDevice(payload: Iplayer){
-    if(!payload.device)
+    if(!payload.device && payload.devices)
         payload.device = payload.devices[0]
     return payload
 }

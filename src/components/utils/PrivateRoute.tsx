@@ -8,10 +8,11 @@ import useDispatchUser from '../../hooks/useDispatchUser'
 import useDispatchToken from '../../hooks/useDispatchToken'
 import Header from './Header'
 import styled from 'styled-components'
-import usePlaybackSDK from '../../hooks/usePlaybackSDK'
+import usePlaybackSDK from '../../hooks/useDispatchSpotifyPlayer'
 import useConnectSocket from '../../hooks/useConnectSocket'
 import SocketIoContext from '../../contexts/socket-io-context'
 import useDispatchPlayer from '../../hooks/useDispatchPlayer'
+import NowPlaying from './nowPlaying/NowPlaying'
 
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
@@ -32,6 +33,7 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
                 <Header/>
                 <Component/>
                 {userIsPremium() ? <></> : <NotPremium/>}
+                <NowPlaying/>
             </WrapperComponent>
         </SocketIoContext.Provider>
     )
@@ -40,7 +42,7 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
 export default PrivateRoute
 
 const WrapperComponent = styled.div`
-    height: 100%;
+    min-height: 100%;
     display: flex;
     flex-flow: column nowrap;
 `

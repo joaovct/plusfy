@@ -6,7 +6,7 @@ import {isUserConnected, connectUser} from './userAccess'
 import PrivateRoute from '../components/utils/PrivateRoute'
 import MyLibrary from '../components/myLibrary/MyLibrary'
 import Playlist from '../components/playlist/Playlist'
-import NotFound from '../components/notfound/notfound'
+import NotFound from '../components/notFound/NotFound'
 import Building from '../components/building/Building'
 import Logoff from '../components/utils/Logoff'
 
