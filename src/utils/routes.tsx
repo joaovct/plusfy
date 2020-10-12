@@ -9,6 +9,8 @@ import Playlist from '../components/playlist/Playlist'
 import NotFound from '../components/notFound/NotFound'
 import Building from '../components/building/Building'
 import Logoff from '../components/utils/Logoff'
+import {Provider} from 'react-redux'
+import store from '../store/store'
 
 const Routes = () => {
     const renderLanding = useCallback(() => {
@@ -28,7 +30,9 @@ const Routes = () => {
         connectUser()
         const response = isUserConnected()
         return response.connected 
-            ? <PrivateRoute Component={Component} accessToken={response.accessToken} refreshToken={response.refreshToken}/>
+            ? <Provider store={store}>
+                <PrivateRoute Component={Component} accessToken={response.accessToken} refreshToken={response.refreshToken}/>
+            </Provider>
             : <Redirect to="/" />
     },[])
 

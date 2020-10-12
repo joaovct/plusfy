@@ -10,6 +10,8 @@ import { playTrack } from '../../api/webapi/player';
 import { Itoken } from '../../store/token/types'
 import { PlaylistChildComponent } from './types';
 import TrackOptions from './TrackOptions'
+import useGetCurrentState from '../../hooks/useGetCurrentState';
+import { colors } from '../../styles/style';
 
 interface Icomponent extends PlaylistChildComponent{
     playlistTrack: IplaylistTrack,
@@ -20,11 +22,13 @@ interface Icomponent extends PlaylistChildComponent{
 
 const PlaylistTrack: React.FC<Icomponent> = ({playlist, playlistTrack, index, showOptions, handleShowOptions}) => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
+    const currentState = useGetCurrentState()
+
     const handlePlayTrack = useCallback( (uri: string) => playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
     ,[playlist, accessToken])
 
     return (
-        <TableRow key={playlistTrack.track.id}>
+        <TableRow thisIsPlaying={currentState?.item?.id === playlistTrack.track.id} key={playlistTrack.track.id}>
             <td onClick={() => {handlePlayTrack(playlistTrack.track.uri)}}>
                 <span>{index + 1}</span>
                 <Play/>
@@ -52,7 +56,7 @@ const PlaylistTrack: React.FC<Icomponent> = ({playlist, playlistTrack, index, sh
 
 export default PlaylistTrack
 
-const TableRow = styled.tr`
+const TableRow = styled.tr<{thisIsPlaying: boolean}>`
     td:first-child{
         position: relative;
 
@@ -72,6 +76,12 @@ const TableRow = styled.tr`
             left: calc( var(--width-first-child) / 2 - var(--size-icon-play) / 2 ) ;
             fill: #fff;
         }
+    }
+
+    td:first-child span,
+    td:nth-child(2){
+        color: ${({thisIsPlaying}) => thisIsPlaying ? `${colors.primary}` : '#fff'};
+        transition: color .25s;
     }
 
     td:last-child{

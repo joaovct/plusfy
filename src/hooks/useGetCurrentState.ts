@@ -14,7 +14,7 @@ const useGetCurrentState = () => {
             setInterval(async () => {
                 const state = await getPlayer({accessToken})
                 setCurrentState(state?.data || {})
-            }, 2000)
+            }, 1000)
         }
     },[accessToken])
 

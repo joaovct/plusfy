@@ -1,30 +1,22 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import { Page as page, Container as container, colors, Button, metrics} from '../../styles/style'
 import logo from '../../assets/logo-white.png'
-import { useSelector } from 'react-redux'
 
 const Landing = () => {
-
-    const store = useSelector(store => store)
-
-    useEffect(() => {
-        console.log(store)
-    },[store])
-
         return (
-        <Page>
-            <Header>
-                    <img src={logo} alt="Plusfy"/>
-            </Header>
-            <Container>
-                <Main>
-                    <h1>O seu <span>Spotify</span> já conhecido, <br/> mas <span>com novas funções.</span></h1>
-                    <Link to="/login"><Button>Continuar com spotify</Button></Link>
-                </Main>
-            </Container>
-        </Page>
+            <Page>
+                <Header>
+                        <img src={logo} alt="Plusfy"/>
+                </Header>
+                <Container>
+                    <Main>
+                        <h1>O seu <span>Spotify</span> já conhecido, <br/> mas <span>com novas funções.</span></h1>
+                        <Link to="/login"><Button>Continuar com spotify</Button></Link>
+                    </Main>
+                </Container>
+            </Page>
     )
     }
 

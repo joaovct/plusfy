@@ -129,7 +129,16 @@ export interface Iplayer{
     currently_playing_type?: string
     actions?: {
         dissallows: {
-            resuming: boolean
+            interrupting_playback?: boolean
+            resuming?: boolean
+            pausing?: boolean
+            seeking?: boolean
+            skipping_next?: boolean
+            skipping_prev?: boolean
+            toggling_repeat_context?: boolean
+            toggling_shuffle?: boolean
+            toggling_repeat_track?: boolean
+            transferring_playback?: boolean
         }
     }
     item?: Itrack

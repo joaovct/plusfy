@@ -7,8 +7,11 @@ export const setPlayer = (currentPlayer?: Iplayer) => currentPlayer ? player = c
 
 const getDeviceId = (deviceId?: string) => deviceId ? `?device_id=${deviceId}` : player.device ? `?device_id=${player.device.id}` : '' 
 
-interface IplayTrack{
-    accessToken: string,
+interface IplayerRequest{
+    accessToken?: string
+}
+
+interface IplayTrack extends IplayerRequest{
     contextUri?: string
     uris?: Array<string>
     offset?: {
@@ -25,11 +28,7 @@ export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId
     await api.spotify.put(`/me/player/play${getDeviceId(deviceId)}`, body, headers)
 }
 
-interface IgetPlayer{
-    accessToken: string
-}
-
-export const getPlayer = async ({accessToken}: IgetPlayer) => {
+export const getPlayer = async ({accessToken}: IplayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         const response = await api.spotify.get<Iplayer>('/me/player', headers)
@@ -39,9 +38,7 @@ export const getPlayer = async ({accessToken}: IgetPlayer) => {
     }
 }
 
-interface IgetPlayerDevice extends IgetPlayer{}
-
-export const getPlayerDevice = async ({accessToken}: IgetPlayerDevice) => {
+export const getPlayerDevice = async ({accessToken}: IplayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         const response = await api.spotify.get<IplayerDevice>('/me/player/devices', headers)
@@ -59,7 +56,43 @@ interface ItransferPlayback{
 }
 
 export const transferPlayback = async ({accessToken, deviceIds}: ItransferPlayback) => {
-    const headers = {headers: { 'Authorization': `Bearer ${accessToken}`}}
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = {device_ids: deviceIds}
     await api.spotify.put('/me/player', body, headers)
+}
+
+export const playPlayer = async ({accessToken}: IplayerRequest) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        await api.spotify.put('/me/player/play', {}, headers)
+    }finally{
+        return null
+    }
+}
+
+export const pausePlayer = async ({accessToken} : IplayerRequest) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        await api.spotify.put('/me/player/pause', {}, headers)
+    }finally{
+        return null
+    }
+}
+
+export const previousPlayer = async ({accessToken}: IplayerRequest) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        await api.spotify.post('/me/player/previous', {}, headers)
+    }finally{
+        return null
+    }
+}
+
+export const nextPlayer = async ({accessToken}: IplayerRequest) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        await api.spotify.post('/me/player/next', {}, headers)
+    }finally{
+        return null
+    }
 }

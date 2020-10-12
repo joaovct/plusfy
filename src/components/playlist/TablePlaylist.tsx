@@ -115,7 +115,6 @@ const TableInner = styled.table`
             width: 100%;
             display: flex;
             align-items: center;
-            color: #fff;
 
             img{
                 height: 38px;
