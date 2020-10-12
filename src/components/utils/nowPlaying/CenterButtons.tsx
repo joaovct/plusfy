@@ -27,7 +27,7 @@ const CenterButtons: React.FC<IcenterButtons> = ({currentState}) => {
 
     return(
         <WrapperButtons>
-            <ActionButton onClick={handlePrevTrackPlayer} isAvailable={currentState.actions?.dissallows?.skipping_prev ? true : false}>
+            <ActionButton onClick={handlePrevTrackPlayer} isAvailable={currentState.actions?.dissallows?.skipping_prev ? false : true}>
                 <Prev/>
             </ActionButton>
             <PlayPauseButton onClick={handlePlayPausePlayer} isPlaying={currentState.is_playing || false}>

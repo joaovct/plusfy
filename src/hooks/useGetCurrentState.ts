@@ -10,12 +10,15 @@ const useGetCurrentState = () => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
 
     useEffect(() => {
+        //eslint-disable-next-line
+        let isMounted = true
         if(accessToken){
             setInterval(async () => {
                 const state = await getPlayer({accessToken})
-                setCurrentState(state?.data || {})
+                if(isMounted) setCurrentState(state?.data || {})
             }, 1000)
         }
+        return () => {isMounted = false}
     },[accessToken])
 
     return currentState

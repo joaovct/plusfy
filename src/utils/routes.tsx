@@ -26,6 +26,12 @@ const Routes = () => {
         return <></>
     },[])
 
+    const renderLogoff = useCallback(() => 
+        <Provider store={store}>
+            <Logoff/>
+        </Provider>
+    ,[])
+
     const renderPrivateRoute = useCallback((Component: FunctionComponent) => {
         connectUser()
         const response = isUserConnected()
@@ -41,7 +47,7 @@ const Routes = () => {
             <Switch>
                 <Route exact path="/" render={renderLanding}/>
                 <Route exact path="/login" render={renderLogin}/>
-                <Route exact path="/logoff" component={Logoff} />
+                <Route exact path="/logoff" render={renderLogoff} />
                 <Route exact path="/home" render={ () => renderPrivateRoute(Home) }/>
                 <Route exact path="/my-library" render={ () => renderPrivateRoute(MyLibrary) }/>
                 <Route exact path="/playlist/:id" render={ () => renderPrivateRoute(Playlist) } />

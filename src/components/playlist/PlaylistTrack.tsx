@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { IplaylistTrack } from '../../api/webapi/types';
+import { Iplayer, IplaylistTrack } from '../../api/webapi/types';
 import { formatAddedAt, formatDuration } from '../../api/webapi/webapi';
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {Play} from 'react-feather'
@@ -10,19 +10,18 @@ import { playTrack } from '../../api/webapi/player';
 import { Itoken } from '../../store/token/types'
 import { PlaylistChildComponent } from './types';
 import TrackOptions from './TrackOptions'
-import useGetCurrentState from '../../hooks/useGetCurrentState';
 import { colors } from '../../styles/style';
 
 interface Icomponent extends PlaylistChildComponent{
-    playlistTrack: IplaylistTrack,
+    currentState: Iplayer
     index: number
+    playlistTrack: IplaylistTrack,
     showOptions: Array<Boolean>
     handleShowOptions: Function
 }
 
-const PlaylistTrack: React.FC<Icomponent> = ({playlist, playlistTrack, index, showOptions, handleShowOptions}) => {
+const PlaylistTrack: React.FC<Icomponent> = ({currentState,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
-    const currentState = useGetCurrentState()
 
     const handlePlayTrack = useCallback( (uri: string) => playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
     ,[playlist, accessToken])

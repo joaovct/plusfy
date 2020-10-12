@@ -22,10 +22,10 @@ const useDispatchToken = (accessToken: string, refreshToken: string) => {
     useEffect(() => {
         if(storedToken){
             if(timer) clearInterval(timer)
-            const interval = setInterval( () => {
-                const body = qs.stringify({refresh_token: refreshToken})
+            const interval = setInterval( () => {const body = qs.stringify({refresh_token: refreshToken})
                 Axios.get<{access_token: string}>(`${process.env.REACT_APP_SERVER_URL}/refresh_token?${body}`)
                     .then( res => dispatchToken(res.data.access_token, refreshToken) )
+                
             }, 3500000)
             setTimer(interval)
         }

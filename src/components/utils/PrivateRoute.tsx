@@ -17,8 +17,8 @@ import NowPlaying from './nowPlaying/NowPlaying'
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
     const socket = useConnectSocket()
-    usePlaybackSDK()
     useDispatchToken(accessToken, refreshToken)
+    usePlaybackSDK()
     useDispatchUser()
     useDispatchPlayer()
 

@@ -4,8 +4,10 @@ import { metrics, colors, Container, Page } from '../../styles/style';
 import { PlaylistChildComponent } from './types';
 import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
+import useGetCurrentState from '../../hooks/useGetCurrentState';
 
 const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
+    const currentState = useGetCurrentState()
     const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist.tracks.items.length).fill(false))
     const handleShowOptions = useCallback((index: number) => setShowOptions(old => [...old.map( (_, n) => n === index ? !old[n] : false)])
     ,[setShowOptions])
@@ -32,10 +34,11 @@ const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
                             {
                                 playlist.tracks.items.map( (playlistTrack, index) => 
                                     <PlaylistTrack 
-                                        key={`${playlistTrack}${index}`}
+                                        key={playlistTrack.track.id}
+                                        index={index}
+                                        currentState={currentState}
                                         playlist={playlist}
                                         playlistTrack={playlistTrack}
-                                        index={index}
                                         showOptions={showOptions}
                                         handleShowOptions={handleShowOptions}
                                     />
