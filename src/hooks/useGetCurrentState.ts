@@ -10,7 +10,6 @@ const useGetCurrentState = () => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
 
     useEffect(() => {
-        //eslint-disable-next-line
         let isMounted = true
         if(accessToken){
             setInterval(async () => {

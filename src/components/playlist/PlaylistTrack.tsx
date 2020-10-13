@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Iplayer, IplaylistTrack } from '../../api/webapi/types';
 import { formatAddedAt, formatDuration } from '../../api/webapi/webapi';
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
-import {Play} from 'react-feather'
+import {Play, Pause} from 'react-feather'
 import { useSelector } from 'react-redux';
 import { Istore } from '../../store/types';
-import { playTrack } from '../../api/webapi/player';
+import { pausePlayer, resumePlayer, playTrack } from '../../api/webapi/player';
 import { Itoken } from '../../store/token/types'
 import { PlaylistChildComponent } from './types';
 import TrackOptions from './TrackOptions'
@@ -23,14 +23,22 @@ interface Icomponent extends PlaylistChildComponent{
 const PlaylistTrack: React.FC<Icomponent> = ({currentState,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
 
-    const handlePlayTrack = useCallback( (uri: string) => playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
-    ,[playlist, accessToken])
+    const handlePlayTrack = useCallback( (uri: string) => {
+        if(currentState.item?.uri === uri){
+            return currentState.is_playing ? pausePlayer({accessToken}) : resumePlayer({accessToken})
+        }
+        return playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
+    },[playlist, accessToken, currentState])
 
     return (
         <TableRow thisIsPlaying={currentState?.item?.id === playlistTrack.track.id} key={playlistTrack.track.id}>
             <td onClick={() => {handlePlayTrack(playlistTrack.track.uri)}}>
                 <span>{index + 1}</span>
-                <Play/>
+                {
+                currentState?.item?.id === playlistTrack.track.id 
+                ? currentState.is_playing ? <Pause/> : <Play/>
+                : <Play/> 
+                }
             </td>
             <td>
                 {

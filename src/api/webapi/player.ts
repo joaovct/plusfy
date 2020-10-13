@@ -1,5 +1,6 @@
 import api from "../api"
 import {Iplayer, IplayerDevice} from '../webapi/types'
+import qs from 'query-string'
 
 let player: Iplayer
 
@@ -61,7 +62,35 @@ export const transferPlayback = async ({accessToken, deviceIds}: ItransferPlayba
     await api.spotify.put('/me/player', body, headers)
 }
 
-export const playPlayer = async ({accessToken}: IplayerRequest) => {
+interface IshufflePlayer extends IplayerRequest{
+    shuffle: boolean
+}
+
+export const shufflePlayer = async({accessToken, shuffle}: IshufflePlayer) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        const queryParam = qs.stringify({state: shuffle})
+        await api.spotify.put(`/me/player/shuffle?${queryParam}`, {}, headers)
+    }finally{
+        return null
+    }
+}
+
+interface IrepeatPlayer extends IplayerRequest{
+    state: string
+}
+
+export const repeatPlayer = async({accessToken, state}: IrepeatPlayer) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        const queryParam = qs.stringify({state})
+        await api.spotify.put(`/me/player/repeat?${queryParam}`, {}, headers)
+    }finally{
+        return null
+    }
+}
+
+export const resumePlayer = async ({accessToken}: IplayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         await api.spotify.put('/me/player/play', {}, headers)
