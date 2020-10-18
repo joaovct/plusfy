@@ -24,7 +24,6 @@ const usePlaybackSDK = () => {
                 spotifyPlayer.on('account_error', ({ message }) => console.error('Failed to validate Spotify account', message))
                 spotifyPlayer.on('playback_error', ({ message }) => console.error('Failed to perform playback', message))
 
-                dispatch(actions.playerAction(accessToken))
                 dispatch(actions.spotifyPlayerAction(spotifyPlayer))
             })
         }

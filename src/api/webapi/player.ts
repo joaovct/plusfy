@@ -1,15 +1,20 @@
 import api from "../api"
 import {Iplayer, IplayerDevice} from '../webapi/types'
 import qs from 'query-string'
-
-let player: Iplayer
-
-export const setPlayer = (currentPlayer?: Iplayer) => currentPlayer ? player = currentPlayer : null
-
-const getDeviceId = (deviceId?: string) => deviceId ? `?device_id=${deviceId}` : player.device ? `?device_id=${player.device.id}` : '' 
+import { defineActiveDevice } from "./helperWebAPI"
 
 interface IplayerRequest{
     accessToken?: string
+}
+
+export const getDevices = async({accessToken}: IplayerRequest) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    let response = null
+    try{
+        response = await api.spotify.get<{devices: Array<IplayerDevice>}>('/me/player/devices', headers)
+    }finally{
+        return response
+    }
 }
 
 interface IplayTrack extends IplayerRequest{
@@ -25,8 +30,13 @@ interface IplayTrack extends IplayerRequest{
 export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId}: IplayTrack) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = {uris, context_uri: contextUri, offset}
+    const device = defineActiveDevice((await getDevices({accessToken}))?.data.devices)
 
-    await api.spotify.put(`/me/player/play${getDeviceId(deviceId)}`, body, headers)
+    try{
+        await api.spotify.put(`/me/player/play?device_id=${deviceId || device?.id}`, body, headers)
+    }finally{
+        return null
+    }
 }
 
 export const getPlayer = async ({accessToken}: IplayerRequest) => {

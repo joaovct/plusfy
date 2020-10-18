@@ -12,7 +12,6 @@ import useCurrentState from '../../hooks/useCurrentState'
 import usePlaybackSDK from '../../hooks/useDispatchSpotifyPlayer'
 import useConnectSocket from '../../hooks/useConnectSocket'
 import SocketIoContext from '../../contexts/socket-io-context'
-import useDispatchPlayer from '../../hooks/useDispatchPlayer'
 import NowPlaying from './nowPlaying/NowPlaying'
 
 
@@ -22,7 +21,6 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
     usePlaybackSDK()
     useCurrentState()
     useDispatchUser()
-    useDispatchPlayer()
 
     const user = useSelector<Istore, Iuser>(store => store.user)
 

@@ -15,14 +15,17 @@ const useCurrentState = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(
-            Object.keys(currentState).length &&
-            currentState.context?.type === 'playlist' &&
-            isTrackDisabled({userId, playlistUri: currentState.context.uri, trackUri: currentState.item?.uri || ''}) &&
-            accessToken
-        ){
-            nextPlayer({accessToken})
-        }
+        setTimeout(() => {
+            if(
+                accessToken &&
+                Object.keys(currentState).length &&
+                currentState.context?.type === 'playlist' &&
+                currentState.item?.uri &&
+                isTrackDisabled({userId, playlistUri: currentState.context.uri, trackUri: currentState.item?.uri || ''})
+            ){
+                nextPlayer({accessToken})
+            }
+        },1000)
     },[currentState, userId, accessToken])
 
     useEffect(() => {
@@ -32,12 +35,14 @@ const useCurrentState = () => {
     },[currentState, dispatch])
 
     useEffect(() => {
+        let mounted = true
         if(accessToken){
             setInterval(async () => {
                 const state = await getPlayer({accessToken})
-                setCurrentState(state?.data || {})
+                if(mounted) setCurrentState(state?.data || {})
             }, 1000)
         }
+        return () => {mounted = false}
     },[accessToken])
 }
 
