@@ -4,13 +4,28 @@ import { metrics, colors, Container, Page } from '../../styles/style';
 import { PlaylistChildComponent } from './types';
 import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
-import useGetCurrentState from '../../hooks/useGetCurrentState';
+import { useSelector } from 'react-redux';
+import { Istore } from '../../store/types';
+import { IdisabledTracks } from '../../api/disabledTracks/types';
+import { IplaylistTrack } from '../../api/webapi/types';
+import { IcurrentState } from '../../store/currentState/types';
+
 
 const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
-    const currentState = useGetCurrentState()
     const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist.tracks.items.length).fill(false))
+    const disabledTracks = useSelector<Istore, IdisabledTracks>(store => store.disabledTracks)
+    const currentState = useSelector<Istore, IcurrentState>(store => store.currentState)
+
     const handleShowOptions = useCallback((index: number) => setShowOptions(old => [...old.map( (_, n) => n === index ? !old[n] : false)])
     ,[setShowOptions])
+
+    const isTrackDisabled = useCallback((playlistTrack: IplaylistTrack) => {
+        const playlistIncluded = disabledTracks.playlists?.find(disabledPlaylist => disabledPlaylist.uri === playlist.uri)
+        if(playlistIncluded && playlistIncluded.tracks.find(track => track === playlistTrack.track.uri)  ){
+            return true
+        }
+        return false
+    },[disabledTracks, playlist])
 
     return (
         <Table>
@@ -32,17 +47,21 @@ const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
                         </thead>
                         <tbody>
                             {
-                                playlist.tracks.items.map( (playlistTrack, index) => 
-                                    <PlaylistTrack 
-                                        key={playlistTrack.track.id}
-                                        index={index}
-                                        currentState={currentState}
-                                        playlist={playlist}
-                                        playlistTrack={playlistTrack}
-                                        showOptions={showOptions}
-                                        handleShowOptions={handleShowOptions}
-                                    />
-                                )
+                                playlist.tracks.items.map((playlistTrack, index) => {
+                                    let isDisabled = isTrackDisabled(playlistTrack)
+                                    return (
+                                        <PlaylistTrack 
+                                            key={playlistTrack.track.id}
+                                            index={index}
+                                            currentState={currentState}
+                                            playlist={playlist}
+                                            playlistTrack={playlistTrack}
+                                            showOptions={showOptions}
+                                            handleShowOptions={handleShowOptions}
+                                            isDisabled={isDisabled}
+                                        />
+                                    )
+                                })
                             }
                         </tbody>
                     </TableInner> 

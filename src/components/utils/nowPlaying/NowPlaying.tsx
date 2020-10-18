@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import useGetCurrentState from '../../../hooks/useGetCurrentState'
 import { colors, metrics } from '../../../styles/style'
 import emptyTrackPhoto from '../../../assets/empty-playlist-photo.svg'
 import CenterButtons from './CenterButtons'
+import { useSelector } from 'react-redux'
+import { Istore } from '../../../store/types'
+import { IcurrentState } from '../../../store/currentState/types'
 
 const NowPlaying: React.FC = () => {
-    const currentState = useGetCurrentState()
+    const currentState = useSelector<Istore, IcurrentState>(store => store.currentState)
 
     return <>
         {
@@ -65,13 +67,16 @@ const LeftTrackInfo = styled.div`
 `
 
 const LeftTrackImg = styled.figure`
-    height: 55px;
-    width: 55px;
+    min-height: 55px;
+    min-width: 55px;
+    max-height: 55px;
+    max-width: 55px;
     margin: 0 ${metrics.spacing3} 0 0;
 
     img{
         height: 100%;
         width: 100%;
+        object-fit: cover;
     }
 `
 

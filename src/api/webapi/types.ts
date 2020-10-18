@@ -147,10 +147,10 @@ export interface Iplayer{
     context?: {
         external_urls: {
             spotify: string
-            href: string
-            type: string
-            uri: string
         }
+        href: string
+        type: string
+        uri: string
     }
     device?: IplayerDevice
     devices?: Array<IplayerDevice>

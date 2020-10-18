@@ -15,12 +15,13 @@ import { colors } from '../../styles/style';
 interface Icomponent extends PlaylistChildComponent{
     currentState: Iplayer
     index: number
-    playlistTrack: IplaylistTrack,
+    playlistTrack: IplaylistTrack
     showOptions: Array<Boolean>
+    isDisabled: boolean
     handleShowOptions: Function
 }
 
-const PlaylistTrack: React.FC<Icomponent> = ({currentState,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
+const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
     const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
 
     const handlePlayTrack = useCallback( (uri: string) => {
@@ -31,7 +32,11 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,index,playlist,playli
     },[playlist, accessToken, currentState])
 
     return (
-        <TableRow thisIsPlaying={currentState?.item?.id === playlistTrack.track.id} key={playlistTrack.track.id}>
+        <TableRow 
+            key={playlistTrack.track.id}
+            thisIsPlaying={currentState?.item?.id === playlistTrack.track.id}
+            isDisabled={isDisabled}
+        >
             <td onClick={() => {handlePlayTrack(playlistTrack.track.uri)}}>
                 <span>{index + 1}</span>
                 {
@@ -55,7 +60,14 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,index,playlist,playli
             <td>{formatAddedAt(playlistTrack.added_at)}</td>
             <td>{formatDuration(playlistTrack.track.duration_ms)}</td>
             <td>
-                <TrackOptions showOptions={showOptions} handleShowOptions={handleShowOptions} index={index}/>
+                <TrackOptions
+                    index={index}
+                    showOptions={showOptions}
+                    handleShowOptions={handleShowOptions}
+                    playlist={playlist}
+                    isDisabled={isDisabled}
+                    playlistTrack={playlistTrack}
+                />
             </td>
         </TableRow>
   )
@@ -63,7 +75,11 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,index,playlist,playli
 
 export default PlaylistTrack
 
-const TableRow = styled.tr<{thisIsPlaying: boolean}>`
+const TableRow = styled.tr<{thisIsPlaying: boolean, isDisabled: boolean}>`
+    td{
+        transition: opacity .25s;
+    }
+
     td:first-child{
         position: relative;
 
@@ -91,6 +107,15 @@ const TableRow = styled.tr<{thisIsPlaying: boolean}>`
         transition: color .25s;
     }
 
+    td:not(:last-child){
+        ${ ({isDisabled}) =>  isDisabled ?
+        `
+            opacity: .4;
+            pointer-events: none;
+        `
+        : '' }
+    }
+
     td:last-child{
         overflow: visible;
         position: relative;
@@ -101,11 +126,16 @@ const TableRow = styled.tr<{thisIsPlaying: boolean}>`
     }
 
     &:hover td:first-child{
-        span{
-            opacity: 0;
-        }
-        svg{
-            opacity: 1;
+        ${ ({isDisabled}) => !isDisabled ? 
+            `
+            span{
+                opacity: 0;
+            }
+            svg{
+                opacity: 1;
+            }
+            `
+            : ''
         }
     }
 `

@@ -9,7 +9,7 @@ const Logoff: React.FC = () => {
     const spotifyPlayer = useSelector<Istore, IspotifyPlayer>(store => store.spotifyPlayer)
 
     useEffect(() => {
-        if(spotifyPlayer){
+        if(spotifyPlayer && spotifyPlayer.disconnect){
             spotifyPlayer.disconnect()
         }
     },[spotifyPlayer])

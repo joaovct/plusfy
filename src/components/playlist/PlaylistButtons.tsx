@@ -51,7 +51,7 @@ const Options = styled.ul<{show: boolean}>`
     min-width: 250px;
 
     li{
-        padding: 10px;
+        padding: 12px 16px;
         cursor: pointer;
     }
 

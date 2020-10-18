@@ -8,6 +8,7 @@ import useDispatchUser from '../../hooks/useDispatchUser'
 import useDispatchToken from '../../hooks/useDispatchToken'
 import Header from './Header'
 import styled from 'styled-components'
+import useCurrentState from '../../hooks/useCurrentState'
 import usePlaybackSDK from '../../hooks/useDispatchSpotifyPlayer'
 import useConnectSocket from '../../hooks/useConnectSocket'
 import SocketIoContext from '../../contexts/socket-io-context'
@@ -19,6 +20,7 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
     const socket = useConnectSocket()
     useDispatchToken(accessToken, refreshToken)
     usePlaybackSDK()
+    useCurrentState()
     useDispatchUser()
     useDispatchPlayer()
 

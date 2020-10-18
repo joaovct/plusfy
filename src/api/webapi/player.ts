@@ -125,3 +125,17 @@ export const nextPlayer = async ({accessToken}: IplayerRequest) => {
         return null
     }
 }
+
+interface IaddToQueue extends IplayerRequest{
+    uri: string
+}
+
+export const addToQueue = async ({accessToken, uri}: IaddToQueue) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    try{
+        const queryParam = qs.stringify({uri})
+        await api.spotify.post(`/me/player/queue?${queryParam}`, {}, headers)
+    }finally{
+        return null
+    }
+}

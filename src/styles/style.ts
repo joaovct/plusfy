@@ -120,6 +120,6 @@ export const Dropdown = styled.ul<{show: Boolean}>`
         display: block;
         text-align: left;   
         font-size: 16px;
-        padding: 15px 15px calc(15px / 2) 15px;
+        padding: 12px 16px;
     }
 `
