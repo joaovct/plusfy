@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../actions/actions'
 import { isTrackDisabled } from '../api/disabledTracks/disabledTracks'
-import { getPlayer, nextPlayer } from '../api/webapi/player'
+import { preventDoubleNextPlayer } from '../api/webapi/helperWebAPI'
+import { getPlayer } from '../api/webapi/player'
 import { Iplayer } from '../api/webapi/types'
 import { Itoken } from '../store/token/types'
 import { Istore } from '../store/types'
@@ -15,17 +16,12 @@ const useCurrentState = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        setTimeout(() => {
-            if(
-                accessToken &&
-                Object.keys(currentState).length &&
-                currentState.context?.type === 'playlist' &&
-                currentState.item?.uri &&
-                isTrackDisabled({userId, playlistUri: currentState.context.uri, trackUri: currentState.item?.uri || ''})
-            ){
-                nextPlayer({accessToken})
-            }
-        },1000)
+        if(
+            isTrackDisabled({userId, playlistUri: currentState.context?.uri || '', trackUri: currentState.item?.uri || ''}) &&
+            currentState.context?.type === 'playlist' && currentState.item?.uri
+        ){
+            preventDoubleNextPlayer(currentState.item.uri, accessToken)
+        }
     },[currentState, userId, accessToken])
 
     useEffect(() => {
