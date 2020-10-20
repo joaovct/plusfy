@@ -4,12 +4,12 @@ export const USER_REQUESTED = 'USER_REQUESTED'
 export const USER_SUCCESS = 'USER_SUCCESS'
 export const USER_ERROR = 'USER_ERROR'
 
-export interface Iuser_action{
+export interface IUser_action{
     type: string
     status: string
     payload?: {}
 }
-export interface Iuser{
+export interface IUser{
     country: string
     display_name: string
     email: string
@@ -26,12 +26,12 @@ export interface Iuser{
     }
     href: string
     id: string
-    images: Iimages,
+    images: IImages,
     product: string
     type: string
     uri: string
 }
 
-interface Iimages{
+interface IImages{
     [index: number]: {url: string}
 }

@@ -1,5 +1,9 @@
-export interface IuserPlaylists{
-    items: Array<Iplaylist>
+export interface IWebAPIRequest{
+    accessToken: string
+}
+
+export interface IUserPlaylists{
+    items: Array<IPlaylist>
     limit: number
     next?: string
     offset: number
@@ -7,7 +11,7 @@ export interface IuserPlaylists{
     total: number
 }
 
-export interface Iplaylist{
+export interface IPlaylist{
     collaborative: boolean
     description: string
     external_urls: {
@@ -21,33 +25,33 @@ export interface Iplaylist{
     id: string
     images: Array<Iimage>
     name: string
-    owner: Iuser
+    owner: IUser
     public: boolean
     snapshot_id: string
-    tracks: IplaylistTracks
+    tracks: IPlaylistTracks
     uri: string
 }
 
-export interface IplaylistTracks{
+export interface IPlaylistTracks{
     href: string
     limit: number,
     next?: string
     previous?: string
     offset: number
     total: number
-    items: Array<IplaylistTrack>
+    items: Array<IPlaylistTrack>
 }
 
-export interface IplaylistTrack{
+export interface IPlaylistTrack{
     added_at: string
-    added_by: Iuser
+    added_by: IUser
     is_local: boolean
-    track: Itrack
+    track: ITrack
 }
 
-export interface Itrack{
-    album: Ialbum
-    artists: Array<Iartist>
+export interface ITrack{
+    album: IAlbum
+    artists: Array<IArtist>
     available_markets: Array<string>
     disc_number: number
     duration_ms: number
@@ -67,7 +71,7 @@ export interface Itrack{
     is_local: boolean
 }
 
-export interface Iartist{
+export interface IArtist{
     external_urls: {
         spotify: string
     }
@@ -78,7 +82,7 @@ export interface Iartist{
     uri: string
 }
 
-export interface Ialbum{
+export interface IAlbum{
     album_group?: string
     album_type: string
     artists: {
@@ -105,7 +109,7 @@ export interface Ialbum{
     uri: string
 }
 
-export interface Iuser{
+export interface IUser{
     display_name?: string
     externals_urls: {spotify: string}
     followers: {}
@@ -122,7 +126,7 @@ export interface Iimage{
     url: string
 }
 
-export interface Iplayer{
+export interface IPlayer{
     timestamp?: number
     progress_ms?: boolean
     is_playing?: boolean
@@ -141,7 +145,7 @@ export interface Iplayer{
             transferring_playback?: boolean
         }
     }
-    item?: Itrack
+    item?: ITrack
     shuffle_state?: boolean
     repeat_state?: string
     context?: {
@@ -152,11 +156,11 @@ export interface Iplayer{
         type: string
         uri: string
     }
-    device?: IplayerDevice
-    devices?: Array<IplayerDevice>
+    device?: IPlayerDevice
+    devices?: Array<IPlayerDevice>
 }
 
-export interface IplayerDevice{
+export interface IPlayerDevice{
     id: string
     is_active: boolean
     is_private_session: boolean

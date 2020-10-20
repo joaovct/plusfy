@@ -1,4 +1,4 @@
-import { Iplaylist } from './types'
+import { IPlaylist } from './types'
 
 export * from './playlists'
 
@@ -21,7 +21,7 @@ export const formatDuration = (totalMs: number) => {
     return `${hours ? `${hours}:` : ''}${minutes}:${seconds}` 
 }
 
-export const calculatePlaylistDuration = (playlist: Iplaylist) => {
+export const calculatePlaylistDuration = (playlist: IPlaylist) => {
     let totalMs = 0
     playlist.tracks.items.forEach(item => totalMs += item.track.duration_ms)
     const durationSplited = formatDuration(totalMs).split(':')
@@ -31,4 +31,4 @@ export const calculatePlaylistDuration = (playlist: Iplaylist) => {
         : `${durationSplited[0]} min ${durationSplited[1]} sec`
  }
 
-export const formatNumberTracks = (playlist: Iplaylist) => `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`
+export const formatNumberTracks = (playlist: IPlaylist) => `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`

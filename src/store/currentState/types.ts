@@ -1,10 +1,10 @@
-import { Iplayer } from "../../api/webapi/types";
+import { IPlayer } from "../../api/webapi/types";
 
 export const CURRENT_STATE = 'CURRENT_STATE'
 
-export interface IcurrentState_action{
+export interface ICurrentState_action{
     type: string
-    payload: Iplayer
+    payload: IPlayer
 }
 
-export interface IcurrentState extends Iplayer{}
+export interface ICurrentState extends IPlayer{}

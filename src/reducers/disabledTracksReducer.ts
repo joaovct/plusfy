@@ -1,7 +1,7 @@
 import { Reducer } from 'redux'
-import { DISABLED_TRACKS, IdisabledTracks_action } from '../store/disabledTracks/types'
+import { DISABLED_TRACKS, IDisabledTracks_action } from '../store/disabledTracks/types'
 
-const disabledTracks: Reducer<{}, IdisabledTracks_action> = (state = {}, action) => {
+const disabledTracks: Reducer<{}, IDisabledTracks_action> = (state = {}, action) => {
     switch(action.type){
         case DISABLED_TRACKS:
             return {...action.payload}

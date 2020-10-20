@@ -1,13 +1,13 @@
 import {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../actions/actions'
-import { Itoken } from '../store/token/types'
-import { Istore } from '../store/types'
+import { IToken } from '../store/token/types'
+import { IStore } from '../store/types'
 import useScript from './useScript'
 
 const usePlaybackSDK = () => {
     useScript('https://sdk.scdn.co/spotify-player.js')
-    const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
+    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const dispatch = useDispatch()
 
     useEffect(() => {

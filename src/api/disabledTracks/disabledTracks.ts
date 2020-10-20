@@ -1,4 +1,4 @@
-import { IdisabledTracks } from "./types"
+import { IDisabledTracks } from "./types"
 
 interface Idisable{
     userId: string
@@ -11,7 +11,7 @@ export const initDisabledTracks = ({userId}: Idisable) => {
     return getDisabledTracks({userId})
 }
 
-export const getDisabledTracks = ({userId}: Idisable): IdisabledTracks => {
+export const getDisabledTracks = ({userId}: Idisable): IDisabledTracks => {
     const disabledTracks = localStorage.getItem(`${localStoragePrefix}${userId}`)
     return disabledTracks ? JSON.parse(disabledTracks) : {}
 }

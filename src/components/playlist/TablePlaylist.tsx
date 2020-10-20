@@ -1,25 +1,25 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { metrics, colors, Container, Page } from '../../styles/style';
-import { PlaylistChildComponent } from './types';
+import { IPlaylistChildComponent } from './types';
 import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
 import { useSelector } from 'react-redux';
-import { Istore } from '../../store/types';
-import { IdisabledTracks } from '../../api/disabledTracks/types';
-import { IplaylistTrack } from '../../api/webapi/types';
-import { IcurrentState } from '../../store/currentState/types';
+import { IStore } from '../../store/types';
+import { IDisabledTracks } from '../../api/disabledTracks/types';
+import { IPlaylistTrack } from '../../api/webapi/types';
+import { ICurrentState } from '../../store/currentState/types';
 
 
-const TablePlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
+const TablePlaylist: React.FC<IPlaylistChildComponent> = ({playlist}) => {
     const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist.tracks.items.length).fill(false))
-    const disabledTracks = useSelector<Istore, IdisabledTracks>(store => store.disabledTracks)
-    const currentState = useSelector<Istore, IcurrentState>(store => store.currentState)
+    const disabledTracks = useSelector<IStore, IDisabledTracks>(store => store.disabledTracks)
+    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
 
     const handleShowOptions = useCallback((index: number) => setShowOptions(old => [...old.map( (_, n) => n === index ? !old[n] : false)])
     ,[setShowOptions])
 
-    const isTrackDisabled = useCallback((playlistTrack: IplaylistTrack) => {
+    const isTrackDisabled = useCallback((playlistTrack: IPlaylistTrack) => {
         const playlistIncluded = disabledTracks.playlists?.find(disabledPlaylist => disabledPlaylist.uri === playlist.uri)
         if(playlistIncluded && playlistIncluded.tracks.find(track => track === playlistTrack.track.uri)  ){
             return true

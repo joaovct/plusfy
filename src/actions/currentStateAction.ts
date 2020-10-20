@@ -1,7 +1,7 @@
-import { IcurrentState_action, IcurrentState, CURRENT_STATE } from '../store/currentState/types'
+import { ICurrentState_action, ICurrentState, CURRENT_STATE } from '../store/currentState/types'
 
-const currentStateAction = (currentState: IcurrentState) => {
-    const actionReturn: IcurrentState_action = {
+const currentStateAction = (currentState: ICurrentState) => {
+    const actionReturn: ICurrentState_action = {
         type: CURRENT_STATE,
         payload: currentState
     }

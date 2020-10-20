@@ -2,8 +2,8 @@ import {useCallback, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../actions/actions'
 import { setDisabledTrack, deleteDisabledTrack, getDisabledTracks, initDisabledTracks } from '../api/disabledTracks/disabledTracks'
-import { Istore } from '../store/types'
-import { Iuser } from '../store/user/types'
+import { IStore } from '../store/types'
+import { IUser } from '../store/user/types'
 
 interface Iaction{
     action: string
@@ -12,7 +12,7 @@ interface Iaction{
 }
 
 const useDisabledTracks = () => {
-    const {id: userId} = useSelector<Istore, Iuser>(store => store.user)
+    const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const dispatch = useDispatch()
 
     useEffect(() => {

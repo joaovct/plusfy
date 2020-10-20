@@ -4,17 +4,17 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { saveToLibrary } from '../../api/webapi/library'
 import { addToQueue } from '../../api/webapi/player'
-import { IplaylistTrack } from '../../api/webapi/types'
+import { IPlaylistTrack } from '../../api/webapi/types'
 import { positionOptionsElement } from '../../helpers/HelperUI'
 import useDisabledTracks from '../../hooks/useDisabledTracks'
-import { Itoken } from '../../store/token/types'
-import { Istore } from '../../store/types'
+import { IToken } from '../../store/token/types'
+import { IStore } from '../../store/types'
 import { Dropdown } from '../../styles/style'
-import { PlaylistChildComponent } from './types'
+import { IPlaylistChildComponent } from './types'
 
-interface ITrackOptions extends PlaylistChildComponent{
+interface ITrackOptions extends IPlaylistChildComponent{
     index: number
-    playlistTrack: IplaylistTrack
+    playlistTrack: IPlaylistTrack
     showOptions: Array<Boolean>
     isDisabled: boolean
     handleShowOptions: Function
@@ -22,7 +22,7 @@ interface ITrackOptions extends PlaylistChildComponent{
 
 const TrackOptions: React.FC<ITrackOptions> = ({showOptions, handleShowOptions, index, playlist, playlistTrack, isDisabled}) => {
     const optionsRef = useRef<HTMLUListElement>(null)
-    const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
+    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const action = useDisabledTracks()
 
     useEffect(() => optionsRef.current ? positionOptionsElement(optionsRef.current) : () => {},[optionsRef])

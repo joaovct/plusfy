@@ -1,15 +1,15 @@
 import qs from 'query-string'
 import api from '../api'
-import {IuserPlaylists, Iplaylist, IplaylistTracks} from './types'
+import {IUserPlaylists, IPlaylist, IPlaylistTracks} from './types'
 
 export const fetchUserPlaylists = async (accessToken: string) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = qs.stringify({limit: 50})
-    let items: Array<Iplaylist> = []
+    let items: Array<IPlaylist> = []
     let status = 'empty'
 
     try{
-        const response = await api.spotify.get<IuserPlaylists>(`/me/playlists?${body}`, headers)
+        const response = await api.spotify.get<IUserPlaylists>(`/me/playlists?${body}`, headers)
         items = response.data.items
         status = 'success'
 
@@ -17,7 +17,7 @@ export const fetchUserPlaylists = async (accessToken: string) => {
         while(urlNext){
             let data
             try{
-                const resLoop = await api.spotify.get<IuserPlaylists>(urlNext, headers)
+                const resLoop = await api.spotify.get<IUserPlaylists>(urlNext, headers)
                 data = resLoop.data
                 urlNext = data.next
             }finally{
@@ -35,14 +35,14 @@ export const fetchPlaylist = async (accessToken: string, id: string) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let data
     try{
-        const res = await api.spotify.get<Iplaylist>(`/playlists/${id}`, headers)
+        const res = await api.spotify.get<IPlaylist>(`/playlists/${id}`, headers)
         data = {...res.data}
 
         let urlNext = data.tracks.next
         while(urlNext){
             let dataLoop
             try{
-                const resLoop = await api.spotify.get<IplaylistTracks>(urlNext, headers)
+                const resLoop = await api.spotify.get<IPlaylistTracks>(urlNext, headers)
                 dataLoop = resLoop.data
                 urlNext = dataLoop.next
             }finally{
@@ -57,3 +57,4 @@ export const fetchPlaylist = async (accessToken: string, id: string) => {
         return data
     }
 }
+

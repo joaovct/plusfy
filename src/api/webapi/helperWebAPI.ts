@@ -1,7 +1,7 @@
 import { nextPlayer } from "./player";
-import { IplayerDevice } from "./types";
+import { IPlayerDevice } from "./types";
 
-export const defineActiveDevice = (devices?: Array<IplayerDevice>): IplayerDevice | null => (
+export const defineActiveDevice = (devices?: Array<IPlayerDevice>): IPlayerDevice | null => (
     devices ? devices.find(device => device.is_active) || devices[0] : null
 )
 

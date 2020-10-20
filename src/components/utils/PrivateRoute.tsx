@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import { IPrivateRoute } from '../../utils/types'
 import { useSelector } from 'react-redux'
-import { Istore } from '../../store/types'
-import { Iuser } from '../../store/user/types'
+import { IStore } from '../../store/types'
+import { IUser } from '../../store/user/types'
 import NotPremium from '../home/NotPremium'
 import useDispatchUser from '../../hooks/useDispatchUser'
 import useDispatchToken from '../../hooks/useDispatchToken'
@@ -22,7 +22,7 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
     useCurrentState()
     useDispatchUser()
 
-    const user = useSelector<Istore, Iuser>(store => store.user)
+    const user = useSelector<IStore, IUser>(store => store.user)
 
     const userIsPremium = useCallback(() => Object.keys(user).length && user.product !== "premium" ? false : true
     ,[user])

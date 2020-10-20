@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Page, Container, Title, metrics } from '../../styles/style'
-import {PlaylistChildComponent} from './types'
+import {IPlaylistChildComponent} from './types'
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
 import PlaylistButtons from './PlaylistButtons'
-import { calculatePlaylistDuration, formatNumberTracks } from '../../api/webapi/webapi'
+import { calculatePlaylistDuration, formatNumberTracks } from '../../api/webapi/webAPI'
 
-const HeaderPlaylist: React.FC<PlaylistChildComponent> = ({playlist}) => {
+const HeaderPlaylist: React.FC<IPlaylistChildComponent> = ({playlist}) => {
     const playlistDuration = calculatePlaylistDuration(playlist)
     const numberTracks = formatNumberTracks(playlist)
 

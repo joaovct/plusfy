@@ -1,11 +1,11 @@
 export const TOKEN = 'TOKEN'
 
-export interface Itoken_action{
+export interface IToken_action{
     type: string,
-    payload: Itoken
+    payload: IToken
 }
 
-export interface Itoken{
+export interface IToken{
     accessToken: string
     refreshToken: string
 }

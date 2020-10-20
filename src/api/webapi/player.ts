@@ -1,5 +1,5 @@
 import api from "../api"
-import {Iplayer, IplayerDevice} from '../webapi/types'
+import {IPlayer, IPlayerDevice} from '../webapi/types'
 import qs from 'query-string'
 import { defineActiveDevice } from "./helperWebAPI"
 
@@ -11,7 +11,7 @@ export const getDevices = async({accessToken}: IplayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let response = null
     try{
-        response = await api.spotify.get<{devices: Array<IplayerDevice>}>('/me/player/devices', headers)
+        response = await api.spotify.get<{devices: Array<IPlayerDevice>}>('/me/player/devices', headers)
     }finally{
         return response
     }
@@ -42,7 +42,7 @@ export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId
 export const getPlayer = async ({accessToken}: IplayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
-        const response = await api.spotify.get<Iplayer>('/me/player', headers)
+        const response = await api.spotify.get<IPlayer>('/me/player', headers)
         return response
     }catch{
         return null
@@ -52,7 +52,7 @@ export const getPlayer = async ({accessToken}: IplayerRequest) => {
 export const getPlayerDevice = async ({accessToken}: IplayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
-        const response = await api.spotify.get<IplayerDevice>('/me/player/devices', headers)
+        const response = await api.spotify.get<IPlayerDevice>('/me/player/devices', headers)
         return response
     }catch{
         return null

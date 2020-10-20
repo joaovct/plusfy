@@ -5,12 +5,12 @@ import {Logo, colors, metrics, Dropdown} from '../../styles/style'
 import logoSrc from '../../assets/logo-minified.png'
 import emptyUserPhoto from '../../assets/empty-user-photo.svg'
 import { useSelector } from 'react-redux'
-import { Istore } from '../../store/types'
-import { Iuser } from '../../store/user/types'
+import { IStore } from '../../store/types'
+import { IUser } from '../../store/user/types'
 
 const Header: FunctionComponent = () => {
     const [showOptions, setShowOptions] = useState(false)
-    const user = useSelector<Istore, Iuser>(store => store.user)
+    const user = useSelector<IStore, IUser>(store => store.user)
 
     const toggleOptions = () => {
         setShowOptions(value => !value)

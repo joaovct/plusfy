@@ -1,14 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import {Istore} from '../../store/types'
-import {Iuser} from '../../store/user/types'
+import {IStore} from '../../store/types'
+import {IUser} from '../../store/user/types'
 import styled from 'styled-components'
 import { Page, Container, Title} from '../../styles/style'
 import SearchHome from './SearchHome'
 import NavigateHome from './NavigateHome'
 
 const Home = () => {
-    const user = useSelector<Istore, Iuser>(store => store.user)
+    const user = useSelector<IStore, IUser>(store => store.user)
 
     return(
         <Page>

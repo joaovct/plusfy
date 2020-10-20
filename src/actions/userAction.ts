@@ -1,5 +1,5 @@
 import api from '../api/api'
-import {USER, Iuser_action, USER_SUCCESS, USER_REQUESTED, USER_ERROR} from '../store/user/types'
+import {USER, IUser_action, USER_SUCCESS, USER_REQUESTED, USER_ERROR} from '../store/user/types'
 
 interface IUserDataResponse{
     data: {}
@@ -10,7 +10,7 @@ const userAction = (accessToken: string) => {
     
     return function(dispatch: Function) {
 
-        let actionReturn: Iuser_action = {type: USER, status: USER_REQUESTED}
+        let actionReturn: IUser_action = {type: USER, status: USER_REQUESTED}
         dispatch( actionReturn )
 
         api.spotify.get<IUserDataResponse>('/me', options).then( response => {

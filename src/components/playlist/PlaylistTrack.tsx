@@ -1,28 +1,28 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Iplayer, IplaylistTrack } from '../../api/webapi/types';
-import { formatAddedAt, formatDuration } from '../../api/webapi/webapi';
+import { IPlayer, IPlaylistTrack } from '../../api/webapi/types';
+import { formatAddedAt, formatDuration } from '../../api/webapi/webAPI';
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {Play, Pause} from 'react-feather'
 import { useSelector } from 'react-redux';
-import { Istore } from '../../store/types';
+import { IStore } from '../../store/types';
 import { pausePlayer, resumePlayer, playTrack } from '../../api/webapi/player';
-import { Itoken } from '../../store/token/types'
-import { PlaylistChildComponent } from './types';
+import { IToken } from '../../store/token/types'
+import { IPlaylistChildComponent } from './types';
 import TrackOptions from './TrackOptions'
 import { colors } from '../../styles/style';
 
-interface Icomponent extends PlaylistChildComponent{
-    currentState: Iplayer
+interface Icomponent extends IPlaylistChildComponent{
+    currentState: IPlayer
     index: number
-    playlistTrack: IplaylistTrack
+    playlistTrack: IPlaylistTrack
     showOptions: Array<Boolean>
     isDisabled: boolean
     handleShowOptions: Function
 }
 
 const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
-    const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
+    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
 
     const handlePlayTrack = useCallback( (uri: string) => {
         if(currentState.item?.uri === uri){

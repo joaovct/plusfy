@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
-import { fetchPlaylist } from '../../api/webapi/webapi'
+import { fetchPlaylist } from '../../api/webapi/webAPI'
 import { useSelector } from 'react-redux'
-import { Istore } from '../../store/types'
-import { Itoken } from '../../store/token/types'
-import { Iplaylist } from '../../api/webapi/types'
+import { IStore } from '../../store/types'
+import { IToken } from '../../store/token/types'
+import { IPlaylist } from '../../api/webapi/types'
 import HeaderPlaylist from './HeaderPlaylist'
 import TablePlaylist from './TablePlaylist'
 
 const Playlist = () => {
     const { id } = useParams<{id: string}>()    
-    const [playlist, setPlaylist] = useState<Iplaylist>()
-    const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
+    const [playlist, setPlaylist] = useState<IPlaylist>()
+    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const history = useHistory()
 
     useEffect(() => {

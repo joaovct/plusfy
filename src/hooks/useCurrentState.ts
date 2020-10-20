@@ -4,15 +4,15 @@ import actions from '../actions/actions'
 import { isTrackDisabled } from '../api/disabledTracks/disabledTracks'
 import { preventDoubleNextPlayer } from '../api/webapi/helperWebAPI'
 import { getPlayer } from '../api/webapi/player'
-import { Iplayer } from '../api/webapi/types'
-import { Itoken } from '../store/token/types'
-import { Istore } from '../store/types'
-import { Iuser } from '../store/user/types'
+import { IPlayer } from '../api/webapi/types'
+import { IToken } from '../store/token/types'
+import { IStore } from '../store/types'
+import { IUser } from '../store/user/types'
 
 const useCurrentState = () => {
-    const [currentState, setCurrentState] = useState<Iplayer>({})
-    const {accessToken} = useSelector<Istore, Itoken>(store => store.token)
-    const {id: userId} = useSelector<Istore, Iuser>(store => store.user)
+    const [currentState, setCurrentState] = useState<IPlayer>({})
+    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
+    const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const dispatch = useDispatch()
 
     useEffect(() => {

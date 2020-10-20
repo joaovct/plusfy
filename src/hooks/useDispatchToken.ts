@@ -2,14 +2,14 @@ import Axios from 'axios'
 import {useCallback, useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../actions/actions'
-import { Itoken } from '../store/token/types'
-import { Istore } from '../store/types'
+import { IToken } from '../store/token/types'
+import { IStore } from '../store/types'
 import qs from 'query-string'
 
 const useDispatchToken = (accessToken: string, refreshToken: string) => {
     const dispatch = useDispatch()
     const [timer, setTimer] = useState(0)
-    const {accessToken: storedToken} = useSelector<Istore, Itoken>(store => store.token)
+    const {accessToken: storedToken} = useSelector<IStore, IToken>(store => store.token)
 
     const dispatchToken = useCallback( (accessToken: string, refreshToken: string) => {
         if(accessToken && refreshToken) dispatch( actions.tokenAction(accessToken, refreshToken) )

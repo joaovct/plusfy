@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
-import { fetchUserPlaylists } from '../../api/webapi/webapi'
-import {Istore} from '../../store/types'
-import {Itoken} from '../../store/token/types'
-import {Iplaylist} from '../../api/webapi/types'
+import { fetchUserPlaylists } from '../../api/webapi/webAPI'
+import {IStore} from '../../store/types'
+import {IToken} from '../../store/token/types'
+import {IPlaylist} from '../../api/webapi/types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { metrics, Input as input } from '../../styles/style'
@@ -12,9 +12,9 @@ import {XCircle, Loader, Slash, HelpCircle} from 'react-feather'
 import {Search} from 'react-feather'
 
 const ListPlaylists = () => {
-    const accessToken = useSelector<Istore, Itoken['accessToken']>(store => store.token.accessToken)
-    const [playlists, setPlaylists] = useState<Iplaylist[]>([])
-    const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<Iplaylist[]>([])
+    const accessToken = useSelector<IStore, IToken['accessToken']>(store => store.token.accessToken)
+    const [playlists, setPlaylists] = useState<IPlaylist[]>([])
+    const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<IPlaylist[]>([])
     const [requestStatus, setRequestStatus] = useState('loading')
     const [search, setSearch] = useState('')
 

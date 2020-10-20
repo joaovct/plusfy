@@ -1,5 +1,5 @@
-import { Iplaylist } from '../../api/webapi/types'
+import { IPlaylist } from '../../api/webapi/types'
 
-export interface PlaylistChildComponent{
-    playlist: Iplaylist
+export interface IPlaylistChildComponent{
+    playlist: IPlaylist
 }

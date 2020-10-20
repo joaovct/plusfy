@@ -1,12 +1,12 @@
-import {Itoken_action, TOKEN, Itoken} from '../store/token/types'
+import {IToken_action, TOKEN, IToken} from '../store/token/types'
 import { Reducer } from 'redux'
 
-const intialState: Itoken = {
+const intialState: IToken = {
     accessToken: '',
     refreshToken: ''
 }
 
-const tokenReducer: Reducer<{}, Itoken_action> = (state = intialState, action) => {
+const tokenReducer: Reducer<{}, IToken_action> = (state = intialState, action) => {
     switch(action.type){
         case TOKEN:
             return {...action.payload}
