@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { fetchPlaylist } from '../../api/webapi/webAPI'
@@ -8,6 +8,7 @@ import { IToken } from '../../store/token/types'
 import { IPlaylist } from '../../api/webapi/types'
 import HeaderPlaylist from './HeaderPlaylist'
 import TablePlaylist from './TablePlaylist'
+import ContextPlaylist from './ContextPlaylist'
 
 const Playlist = () => {
     const { id } = useParams<{id: string}>()    
@@ -16,30 +17,31 @@ const Playlist = () => {
     const history = useHistory()
 
     useEffect(() => {
-        if(id && accessToken){
+        if(id && accessToken)
             fetchData()
-        } 
         async function fetchData(){
-            const data = await fetchPlaylist(accessToken, id || '')
-
-            if(data)
-                return setPlaylist(data)
-            else if(!data && id && accessToken)
-                return history.push("/invalid-id")
+            const data = await fetchPlaylist(accessToken, id)
+            return data ? setPlaylist(data) : !data && id && accessToken ? history.push("/invalid-id") : null
         }
     },[id, accessToken, history])
 
+    const updatePlaylists = useCallback(async () => {
+        const data = await fetchPlaylist(accessToken, id)
+        if(data) setPlaylist(data)
+    },[id, accessToken])
+
     return( 
-        <WrapperComponent>
-            {
-                playlist
-                ? <>
-                    <HeaderPlaylist playlist={playlist}/> 
-                    <TablePlaylist playlist={playlist}/>
-                </> : <></>
-            }
-            
-        </WrapperComponent>
+        <ContextPlaylist.Provider value={{updatePlaylists}}>
+            <WrapperComponent>
+                {
+                    playlist
+                    ? <>
+                        <HeaderPlaylist playlist={playlist}/> 
+                        <TablePlaylist playlist={playlist}/>
+                    </> : <></>
+                }
+            </WrapperComponent>
+        </ContextPlaylist.Provider>
     )
 }
 

@@ -24,12 +24,9 @@ interface Icomponent extends IPlaylistChildComponent{
 const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
 
-    const handlePlayTrack = useCallback( (uri: string) => {
-        if(currentState.item?.uri === uri){
-            return currentState.is_playing ? pausePlayer({accessToken}) : resumePlayer({accessToken})
-        }
-        return playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
-    },[playlist, accessToken, currentState])
+    const handlePlayTrack = useCallback( (uri: string) => currentState.item?.uri === uri
+        ? currentState.is_playing ? pausePlayer({accessToken}) : resumePlayer({accessToken}) : playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
+    ,[playlist, accessToken, currentState])
 
     return (
         <TableRow 

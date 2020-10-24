@@ -1,14 +1,9 @@
-import React, {useCallback, useEffect, useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import {MoreVertical} from 'react-feather'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { saveToLibrary } from '../../api/webapi/library'
-import { addToQueue } from '../../api/webapi/player'
 import { IPlaylistTrack } from '../../api/webapi/types'
 import { positionOptionsElement } from '../../helpers/HelperUI'
-import useDisabledTracks from '../../hooks/useDisabledTracks'
-import { IToken } from '../../store/token/types'
-import { IStore } from '../../store/types'
+import useTrackOptionsAction from '../../hooks/useTrackOptionsActions'
 import { Dropdown } from '../../styles/style'
 import { IPlaylistChildComponent } from './types'
 
@@ -20,60 +15,40 @@ interface ITrackOptions extends IPlaylistChildComponent{
     handleShowOptions: Function
 }
 
-const TrackOptions: React.FC<ITrackOptions> = ({showOptions, handleShowOptions, index, playlist, playlistTrack, isDisabled}) => {
+const TrackOptions: React.FC<ITrackOptions> = ({
+    index, playlist, playlistTrack, isDisabled, handleShowOptions, showOptions
+}) => {
     const optionsRef = useRef<HTMLUListElement>(null)
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const action = useDisabledTracks()
+    const {actionSaveToLibrary, actionRemoveTrack, actionAddToQueue, actionDisableTrack, actionEnableTrack} = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
 
     useEffect(() => optionsRef.current ? positionOptionsElement(optionsRef.current) : () => {},[optionsRef])
-    
-    const handleSaveToLibrary = useCallback(() => {
-        if(accessToken){
-            saveToLibrary({accessToken, ids: [playlistTrack.track.id]})
-            handleShowOptions(index)
-        }
-    },[accessToken, playlistTrack, handleShowOptions, index])
-
-    const handleAddToQueue = useCallback(() => {
-        if(accessToken){
-            handleShowOptions(index)
-            addToQueue({accessToken, uri: playlistTrack.track.uri})
-        }
-    },[accessToken, playlistTrack, handleShowOptions, index])
-
-    const handleEnableTrack = useCallback(() => {
-        handleShowOptions(index)
-        setTimeout(() => action({action: 'delete', playlistUri: playlist.uri, uri: playlistTrack.track.uri}) ,250)
-    },[action, playlist, playlistTrack, handleShowOptions, index])
-
-    const handleDisableTrack = useCallback(() => {
-        handleShowOptions(index)
-        setTimeout(() => action({action: 'set', playlistUri: playlist.uri, uri: playlistTrack.track.uri}) ,250)
-    },[action, playlist, playlistTrack, handleShowOptions, index])
 
     return (
         <>
             <MoreVertical onClick={ () => handleShowOptions(index)} />
             <Options ref={optionsRef} show={showOptions[index]}>
-                <li onClick={handleSaveToLibrary}>
+                <li onClick={actionSaveToLibrary}>
                     <span>Salvar na biblioteca</span>
                 </li>
                 {
                 isDisabled
                 ?
-                <li onClick={handleEnableTrack}>
+                <li onClick={actionEnableTrack}>
                     <span>Habilitar nessa playlist</span>
                 </li> 
                 : 
                 <>
-                    <li onClick={handleAddToQueue}>
+                    <li onClick={actionAddToQueue}>
                         <span>Adicionar a fila</span>
                     </li>
-                    <li onClick={handleDisableTrack}>
+                    <li onClick={actionDisableTrack}>
                         <span>Desabilitar nessa playlist</span>
                     </li>
                 </>
                 }
+                <li onClick={actionRemoveTrack}>
+                    <span>Remover dessa playlist</span>
+                </li>
             </Options>
         </>
     )

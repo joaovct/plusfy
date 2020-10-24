@@ -31,11 +31,11 @@ export const fetchUserPlaylists = async (accessToken: string) => {
     }
 }
 
-export const fetchPlaylist = async (accessToken: string, id: string) => {
+export const fetchPlaylist = async (accessToken: string, playlistId: string) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
-    let data
+    let data = null
     try{
-        const res = await api.spotify.get<IPlaylist>(`/playlists/${id}`, headers)
+        const res = await api.spotify.get<IPlaylist>(`/playlists/${playlistId}`, headers)
         data = {...res.data}
 
         let urlNext = data.tracks.next
@@ -49,12 +49,31 @@ export const fetchPlaylist = async (accessToken: string, id: string) => {
                 data.tracks.items = data.tracks.items.concat( dataLoop?.items || [] )
             }
         }
-
-
-    }catch(e){
-        console.error(e)
     }finally{
         return data
+    }
+}
+
+interface IconfigsRemoveTracks{
+    playlistId: string,
+    tracks: Array<{
+        uri: string,
+        positions?: Array<number>
+    }>,
+}
+
+export const removeTracksPlaylist = async (accessToken: string, configs: IconfigsRemoveTracks ) => {
+    const headers = {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}
+    let res
+    try{
+        res = await api.spotify.request({
+            method: "DELETE",
+            url: `/playlists/${configs.playlistId}/tracks`,
+            headers,
+            data: { tracks: configs.tracks }
+        })
+    }finally{
+        return res?.status || 400
     }
 }
 
