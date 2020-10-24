@@ -49,6 +49,21 @@ export interface IPlaylistTrack{
     track: ITrack
 }
 
+export interface ISavedTracks{
+    href: string
+    items: Array<ISavedTrack>
+    limit: number
+    next: string
+    offset: number
+    previous: string | null
+    total: number
+}
+
+export interface ISavedTrack{
+    added_at: string
+    track: ITrack
+}
+
 export interface ITrack{
     album: IAlbum
     artists: Array<IArtist>

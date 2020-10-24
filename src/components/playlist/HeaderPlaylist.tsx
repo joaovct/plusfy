@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Page, Container, Title, metrics } from '../../styles/style'
-import {IPlaylistChildComponent} from './types'
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
 import PlaylistButtons from './PlaylistButtons'
 import { calculatePlaylistDuration, formatNumberTracks } from '../../api/webapi/webAPI'
+import ContextPlaylist from './ContextPlaylist'
 
-const HeaderPlaylist: React.FC<IPlaylistChildComponent> = ({playlist}) => {
+const HeaderPlaylist = () => {
+    const {playlist} = useContext(ContextPlaylist)
     const playlistDuration = calculatePlaylistDuration(playlist)
     const numberTracks = formatNumberTracks(playlist)
 
@@ -26,7 +27,7 @@ const HeaderPlaylist: React.FC<IPlaylistChildComponent> = ({playlist}) => {
                                     {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
                                 </Link> - { numberTracks }, {playlistDuration}
                             </h6>
-                            <PlaylistButtons playlist={playlist}/>
+                            <PlaylistButtons/>
                         </div>
                     </HeaderInner> : <></>
                 }

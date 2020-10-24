@@ -1,13 +1,13 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useContext, useEffect, useRef, useState} from 'react'
 import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
 import { IPlaylistTrack } from '../../api/webapi/types'
 import { positionOptionsElement } from '../../helpers/HelperUI'
 import useTrackOptionsAction from '../../hooks/useTrackOptionsActions'
 import { Dropdown } from '../../styles/style'
-import { IPlaylistChildComponent } from './types'
+import ContextPlaylist from './ContextPlaylist'
 
-interface ITrackOptions extends IPlaylistChildComponent{
+interface ITrackOptions{
     index: number
     playlistTrack: IPlaylistTrack
     showOptions: Array<Boolean>
@@ -15,21 +15,51 @@ interface ITrackOptions extends IPlaylistChildComponent{
     handleShowOptions: Function
 }
 
-const TrackOptions: React.FC<ITrackOptions> = ({
-    index, playlist, playlistTrack, isDisabled, handleShowOptions, showOptions
-}) => {
+const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled, handleShowOptions, showOptions}) => {
+    const [isTrackSaved, setIsTrackSaved] = useState<Boolean | null>(null)
+    const {playlist, savedTracks} = useContext(ContextPlaylist)
     const optionsRef = useRef<HTMLUListElement>(null)
-    const {actionSaveToLibrary, actionRemoveTrack, actionAddToQueue, actionDisableTrack, actionEnableTrack} = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
+    const {
+        actionSaveTrack,
+        actionRemoveSavedTrack,
+        actionRemoveTrack,
+        actionAddToQueue,
+        actionDisableTrack,
+        actionEnableTrack
+    } = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
 
     useEffect(() => optionsRef.current ? positionOptionsElement(optionsRef.current) : () => {},[optionsRef])
+
+    useEffect(() => {
+        const isIncluded = savedTracks?.items.findIndex(item => item.track.uri === playlistTrack.track.uri)
+        return isIncluded !== undefined
+        ? isIncluded > -1
+            ? setIsTrackSaved(true)
+            : setIsTrackSaved(false)
+        : setIsTrackSaved(null)
+    },[savedTracks, playlistTrack])
 
     return (
         <>
             <MoreVertical onClick={ () => handleShowOptions(index)} />
             <Options ref={optionsRef} show={showOptions[index]}>
-                <li onClick={actionSaveToLibrary}>
-                    <span>Salvar na biblioteca</span>
-                </li>
+                {
+                    isTrackSaved !== null ?
+                        <>
+                            {
+                                isTrackSaved
+                                ?
+                                <li onClick={actionRemoveSavedTrack}>
+                                    <span>Remover da biblioteca</span>
+                                </li>
+                                :
+                                <li onClick={actionSaveTrack}>
+                                    <span>Salvar na biblioteca</span>
+                                </li>
+                            }
+                        </>
+                    : <></>
+                }
                 {
                 isDisabled
                 ?

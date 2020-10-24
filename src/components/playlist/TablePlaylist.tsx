@@ -1,7 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { metrics, colors, Container, Page } from '../../styles/style';
-import { IPlaylistChildComponent } from './types';
 import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
 import { useSelector } from 'react-redux';
@@ -9,10 +8,12 @@ import { IStore } from '../../store/types';
 import { ICurrentState } from '../../store/currentState/types';
 import { isTrackDisabled } from '../../api/disabledTracks/disabledTracks';
 import { IUser } from '../../store/user/types';
+import ContextPlaylist from './ContextPlaylist';
 
 
-const TablePlaylist: React.FC<IPlaylistChildComponent> = ({playlist}) => {
-    const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist.tracks.items.length).fill(false))
+const TablePlaylist = () => {
+    const {playlist} = useContext(ContextPlaylist)
+    const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist ? playlist.tracks.items.length : 0).fill(false))
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     
@@ -46,7 +47,6 @@ const TablePlaylist: React.FC<IPlaylistChildComponent> = ({playlist}) => {
                                             <PlaylistTrack 
                                                 key={playlistTrack.track.id}
                                                 index={index}
-                                                playlist={playlist}
                                                 playlistTrack={playlistTrack}
                                                 isDisabled={isDisabled}
                                                 currentState={currentState}

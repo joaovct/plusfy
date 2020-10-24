@@ -1,7 +1,5 @@
 import { IPlaylist } from './types'
 
-export * from './playlists'
-
 export const formatAddedAt = (trackAddedAt: string) => {
     const date = new Date(trackAddedAt)
     return date.toLocaleDateString('pt-br', {month: 'short', day: '2-digit', year: '2-digit'})
@@ -21,14 +19,19 @@ export const formatDuration = (totalMs: number) => {
     return `${hours ? `${hours}:` : ''}${minutes}:${seconds}` 
 }
 
-export const calculatePlaylistDuration = (playlist: IPlaylist) => {
-    let totalMs = 0
-    playlist.tracks.items.forEach(item => totalMs += item.track.duration_ms)
-    const durationSplited = formatDuration(totalMs).split(':')
-
-    return durationSplited.length > 2
-        ? `${durationSplited[0]} hr  ${durationSplited[1]} min`
-        : `${durationSplited[0]} min ${durationSplited[1]} sec`
+export const calculatePlaylistDuration = (playlist: IPlaylist | null) => {
+    if(playlist){
+        let totalMs = 0
+        playlist.tracks.items.forEach(item => totalMs += item.track.duration_ms)
+        const durationSplited = formatDuration(totalMs).split(':')
+    
+        return durationSplited.length > 2
+            ? `${durationSplited[0]} hr  ${durationSplited[1]} min`
+            : `${durationSplited[0]} min ${durationSplited[1]} sec`
+    }
+    return ''
  }
 
-export const formatNumberTracks = (playlist: IPlaylist) => `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`
+export const formatNumberTracks = (playlist: IPlaylist | null) => playlist
+    ? `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`
+    : ''

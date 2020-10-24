@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
-import { fetchUserPlaylists } from '../../api/webapi/webAPI'
+import { fetchUserPlaylists } from '../../api/webapi/playlists'
 import {IStore} from '../../store/types'
 import {IToken} from '../../store/token/types'
 import {IPlaylist} from '../../api/webapi/types'

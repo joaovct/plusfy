@@ -1,23 +1,25 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { Button, colors, metrics } from '../../styles/style'
 import styled from 'styled-components'
 import {MoreHorizontal} from 'react-feather'
-import { IPlaylistChildComponent } from './types'
 import { playTrack } from '../../api/webapi/player'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../store/types'
 import { IToken } from '../../store/token/types'
+import ContextPlaylist from './ContextPlaylist'
 
-const PlaylistButtons: React.FC<IPlaylistChildComponent> = ({playlist}) => {
+const PlaylistButtons = () => {
+    const {playlist} = useContext(ContextPlaylist)
     const [showOptions, setShowOptions] = useState(false)
     const toggleOptions = useCallback(() => setShowOptions(old => !old),[])
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
 
-    const handlePlayPlaylist = useCallback(() => 
-        playTrack({accessToken, contextUri: playlist.uri})
+    const handlePlayPlaylist = useCallback(() => playlist
+        ? playTrack({accessToken, contextUri: playlist.uri})
+        : null
     ,[playlist, accessToken])
 
-    return (
+    return ( 
         <WrapperButtons>
             <Button onClick={handlePlayPlaylist}> Play </Button>
             <MoreOptions>

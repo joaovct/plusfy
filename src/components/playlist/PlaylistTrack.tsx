@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
 import { IPlayer, IPlaylistTrack } from '../../api/webapi/types';
 import { formatAddedAt, formatDuration } from '../../api/webapi/webAPI';
@@ -8,11 +8,11 @@ import { useSelector } from 'react-redux';
 import { IStore } from '../../store/types';
 import { pausePlayer, resumePlayer, playTrack } from '../../api/webapi/player';
 import { IToken } from '../../store/token/types'
-import { IPlaylistChildComponent } from './types';
 import TrackOptions from './TrackOptions'
 import { colors } from '../../styles/style';
+import ContextPlaylist from './ContextPlaylist';
 
-interface Icomponent extends IPlaylistChildComponent{
+interface Icomponent{
     currentState: IPlayer
     index: number
     playlistTrack: IPlaylistTrack
@@ -21,11 +21,17 @@ interface Icomponent extends IPlaylistChildComponent{
     handleShowOptions: Function
 }
 
-const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,playlist,playlistTrack,showOptions,handleShowOptions}) => {
+const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,playlistTrack,showOptions,handleShowOptions}) => {
+    const {playlist} = useContext(ContextPlaylist)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
 
-    const handlePlayTrack = useCallback( (uri: string) => currentState.item?.uri === uri
-        ? currentState.is_playing ? pausePlayer({accessToken}) : resumePlayer({accessToken}) : playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
+    const handlePlayTrack = useCallback((uri: string) => playlist
+        ? currentState?.item?.uri === uri
+            ? currentState.is_playing
+                ? pausePlayer({accessToken})
+                : resumePlayer({accessToken}) 
+            : playTrack({accessToken, contextUri: playlist.uri, offset: {uri}})
+        : null
     ,[playlist, accessToken, currentState])
 
     return (
@@ -61,7 +67,6 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,play
                     index={index}
                     showOptions={showOptions}
                     handleShowOptions={handleShowOptions}
-                    playlist={playlist}
                     isDisabled={isDisabled}
                     playlistTrack={playlistTrack}
                 />

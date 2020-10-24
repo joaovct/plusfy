@@ -36,7 +36,7 @@ export const fetchPlaylist = async (accessToken: string, playlistId: string) => 
     let data = null
     try{
         const res = await api.spotify.get<IPlaylist>(`/playlists/${playlistId}`, headers)
-        data = {...res.data}
+        data = res.data
 
         let urlNext = data.tracks.next
         while(urlNext){
