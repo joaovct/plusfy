@@ -1,9 +1,9 @@
 import Axios from 'axios'
 import {useCallback, useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import actions from '../actions/actions'
-import { IToken } from '../store/token/types'
-import { IStore } from '../store/types'
+import actions from '../redux/actions/actions'
+import { IToken } from '../redux/store/token/types'
+import { IStore } from '../redux/store/types'
 import qs from 'query-string'
 
 const useDispatchToken = (accessToken: string, refreshToken: string) => {

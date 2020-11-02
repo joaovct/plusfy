@@ -4,8 +4,8 @@ import {colors, metrics} from '../../../../styles/style'
 import emptyTrackPhoto from '../../../../assets/empty-playlist-photo.svg'
 import CenterButtons from './CenterButtons'
 import { useSelector } from 'react-redux'
-import { IStore } from '../../../../store/types'
-import {ICurrentState} from '../../../../store/currentState/types'
+import { IStore } from '../../../../redux/store/types'
+import {ICurrentState} from '../../../../redux/store/currentState/types'
 
 const NowPlaying: React.FC = () => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)

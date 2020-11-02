@@ -1,9 +1,9 @@
 import {useCallback, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import actions from '../actions/actions'
+import actions from '../redux/actions/actions'
 import { setDisabledTrack, deleteDisabledTrack, getDisabledTracks, initDisabledTracks } from '../api/disabledTracks/disabledTracks'
-import { IStore } from '../store/types'
-import { IUser } from '../store/user/types'
+import { IStore } from '../redux/store/types'
+import { IUser } from '../redux/store/user/types'
 
 interface Iaction{
     action: string

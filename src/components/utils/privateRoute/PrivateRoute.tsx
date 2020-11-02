@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import { IPrivateRoute } from '../routes/types'
 import { useSelector } from 'react-redux'
-import { IStore } from '../../../store/types'
-import { IUser } from '../../../store/user/types'
+import { IStore } from '../../../redux/store/types'
+import { IUser } from '../../../redux/store/user/types'
 import NotPremium from './NotPremium'
 import useDispatchUser from '../../../hooks/useDispatchUser'
 import useDispatchToken from '../../../hooks/useDispatchToken'
@@ -10,13 +10,10 @@ import Header from './Header'
 import styled from 'styled-components'
 import useCurrentState from '../../../hooks/useCurrentState'
 import usePlaybackSDK from '../../../hooks/useDispatchSpotifyPlayer'
-import useConnectSocket from '../../../hooks/useConnectSocket'
-import SocketIoContext from '../../../contexts/socket-io-context'
 import NowPlaying from './nowPlaying/NowPlaying'
 
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
-    const socket = useConnectSocket()
     useDispatchToken(accessToken, refreshToken)
     usePlaybackSDK()
     useCurrentState()
@@ -29,14 +26,12 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
     ,[user])
 
     return (
-        <SocketIoContext.Provider value={socket}>
-            <WrapperComponent>
-                <Header/>
-                <Component/>
-                {userIsPremium() ? <></> : <NotPremium/>}
-                <NowPlaying/>
-            </WrapperComponent>
-        </SocketIoContext.Provider>
+        <WrapperComponent>
+            <Header/>
+            <Component/>
+            {userIsPremium() ? <></> : <NotPremium/>}
+            <NowPlaying/>
+        </WrapperComponent>
     )
 }
 

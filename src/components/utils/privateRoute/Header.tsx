@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import {Logo, colors, metrics, Dropdown} from '../../../styles/style'
 import logoSrc from '../../../assets/logo-minified.png'
 import emptyUserPhoto from '../../../assets/empty-user-photo.svg'
-import { IStore } from '../../../store/types'
-import { IUser } from '../../../store/user/types'
+import { IStore } from '../../../redux/store/types'
+import { IUser } from '../../../redux/store/user/types'
 
 const Header: FunctionComponent = () => {
     const [showOptions, setShowOptions] = useState(false)

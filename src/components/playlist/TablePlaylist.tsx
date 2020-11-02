@@ -4,10 +4,10 @@ import { metrics, colors, Container, Page } from '../../styles/style';
 import {Calendar, Clock} from 'react-feather'
 import PlaylistTrack from './PlaylistTrack';
 import { useSelector } from 'react-redux';
-import { IStore } from '../../store/types';
-import { ICurrentState } from '../../store/currentState/types';
+import { IStore } from '../../redux/store/types';
+import { ICurrentState } from '../../redux/store/currentState/types';
 import { isTrackDisabled } from '../../api/disabledTracks/disabledTracks';
-import { IUser } from '../../store/user/types';
+import { IUser } from '../../redux/store/user/types';
 import ContextPlaylist from './ContextPlaylist';
 
 

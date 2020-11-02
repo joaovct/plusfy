@@ -1,4 +1,4 @@
-import { IPlayer } from "../../api/webapi/types";
+import { IPlayer } from "../../../api/webapi/types";
 
 export const CURRENT_STATE = 'CURRENT_STATE'
 

@@ -5,9 +5,9 @@ import { formatAddedAt, formatDuration } from '../../api/webapi/webAPI';
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {Play, Pause} from 'react-feather'
 import { useSelector } from 'react-redux';
-import { IStore } from '../../store/types';
+import { IStore } from '../../redux/store/types';
 import { pausePlayer, resumePlayer, playTrack } from '../../api/webapi/player';
-import { IToken } from '../../store/token/types'
+import { IToken } from '../../redux/store/token/types'
 import TrackOptions from './TrackOptions'
 import { colors } from '../../styles/style';
 import ContextPlaylist from './ContextPlaylist';

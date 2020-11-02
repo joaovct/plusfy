@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import {MoreHorizontal} from 'react-feather'
 import { playTrack } from '../../api/webapi/player'
 import { useSelector } from 'react-redux'
-import { IStore } from '../../store/types'
-import { IToken } from '../../store/token/types'
+import { IStore } from '../../redux/store/types'
+import { IToken } from '../../redux/store/token/types'
 import ContextPlaylist from './ContextPlaylist'
 
 const PlaylistButtons = () => {

@@ -1,13 +1,13 @@
 import {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import actions from '../actions/actions'
+import actions from '../redux/actions/actions'
 import { isTrackDisabled } from '../api/disabledTracks/disabledTracks'
 import { preventDoubleNextPlayer } from '../api/webapi/helperWebAPI'
 import { getPlayer } from '../api/webapi/player'
 import { IPlayer } from '../api/webapi/types'
-import { IToken } from '../store/token/types'
-import { IStore } from '../store/types'
-import { IUser } from '../store/user/types'
+import { IToken } from '../redux/store/token/types'
+import { IStore } from '../redux/store/types'
+import { IUser } from '../redux/store/user/types'
 
 const useCurrentState = () => {
     const [currentState, setCurrentState] = useState<IPlayer>({})

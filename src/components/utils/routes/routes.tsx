@@ -10,7 +10,7 @@ import NotFound from '../../notFound/NotFound'
 import Building from '../../building/Building'
 import Logoff from './Logoff'
 import {Provider} from 'react-redux'
-import store from '../../../store/store'
+import store from '../../../redux/store/store'
 
 const Routes = () => {
     const renderLanding = useCallback(() => {
