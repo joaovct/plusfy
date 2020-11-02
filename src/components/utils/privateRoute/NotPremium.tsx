@@ -1,8 +1,8 @@
 import React from 'react'
-import Modal from '../utils/Modal'
+import Modal from '../modal/Modal'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {Title as title, metrics, Button as button} from '../../styles/style'
+import {Title as title, metrics, Button as button} from '../../../styles/style'
 
 const NotPremium = () => {
     const styleModal = `display: flex; align-items: center;`
@@ -62,8 +62,8 @@ const WrapperContent = styled.div`
         &:first-of-type{
             margin: ${metrics.spacing4} 0 0 0;
         }
-        color: #555;
+        color: #222;
         font-size: 16px;
-        letter-spacing: 1.4px;
+        letter-spacing: 1.2px;
     }
 `

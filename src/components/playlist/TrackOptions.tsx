@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState} from 'react'
 import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
 import { IPlaylistTrack } from '../../api/webapi/types'
-import { positionOptionsElement } from '../../helpers/HelperUI'
+import { positionOptionsElement } from '../../helpers/helperUI'
 import useTrackOptionsAction from '../../hooks/useTrackOptionsActions'
 import { Dropdown } from '../../styles/style'
 import ContextPlaylist from './ContextPlaylist'
@@ -20,12 +20,7 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
     const {playlist, savedTracks} = useContext(ContextPlaylist)
     const optionsRef = useRef<HTMLUListElement>(null)
     const {
-        actionSaveTrack,
-        actionRemoveSavedTrack,
-        actionRemoveTrack,
-        actionAddToQueue,
-        actionDisableTrack,
-        actionEnableTrack
+        actionRemoveSavedTrack,actionSaveTrack,actionEnableTrack,actionAddToQueue,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack
     } = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
 
     useEffect(() => optionsRef.current ? positionOptionsElement(optionsRef.current) : () => {},[optionsRef])
@@ -44,21 +39,21 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
             <MoreVertical onClick={ () => handleShowOptions(index)} />
             <Options ref={optionsRef} show={showOptions[index]}>
                 {
-                    isTrackSaved !== null ?
-                        <>
-                            {
-                                isTrackSaved
-                                ?
-                                <li onClick={actionRemoveSavedTrack}>
-                                    <span>Remover da biblioteca</span>
-                                </li>
-                                :
-                                <li onClick={actionSaveTrack}>
-                                    <span>Salvar na biblioteca</span>
-                                </li>
-                            }
-                        </>
-                    : <></>
+                isTrackSaved !== null
+                ?
+                <>
+                    {
+                    isTrackSaved
+                    ?
+                    <li onClick={actionRemoveSavedTrack}>
+                        <span>Remover da biblioteca</span>
+                    </li>
+                    :
+                    <li onClick={actionSaveTrack}>
+                        <span>Salvar na biblioteca</span>
+                    </li>
+                    }
+                </> : <></>
                 }
                 {
                 isDisabled
@@ -76,6 +71,9 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
                     </li>
                 </>
                 }
+                <li onClick={actionAddToPlaylist}>
+                    <span>Adicionar a playlist</span>
+                </li>
                 <li onClick={actionRemoveTrack}>
                     <span>Remover dessa playlist</span>
                 </li>

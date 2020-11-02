@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useState } from 'react'
+import { useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {Logo, colors, metrics, Dropdown} from '../../styles/style'
-import logoSrc from '../../assets/logo-minified.png'
-import emptyUserPhoto from '../../assets/empty-user-photo.svg'
-import { useSelector } from 'react-redux'
-import { IStore } from '../../store/types'
-import { IUser } from '../../store/user/types'
+import {Logo, colors, metrics, Dropdown} from '../../../styles/style'
+import logoSrc from '../../../assets/logo-minified.png'
+import emptyUserPhoto from '../../../assets/empty-user-photo.svg'
+import { IStore } from '../../../store/types'
+import { IUser } from '../../../store/user/types'
 
 const Header: FunctionComponent = () => {
     const [showOptions, setShowOptions] = useState(false)

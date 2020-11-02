@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
-import { metrics, colors } from '../../styles/style'
+import { metrics, colors } from '../../../styles/style'
 
 interface IModal{
     content: JSX.Element

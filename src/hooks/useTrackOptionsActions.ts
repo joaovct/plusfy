@@ -62,6 +62,10 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
         }
     },[action, playlist, track, handleShowOptions, index])
 
+    const actionAddToPlaylist = useCallback(async () => {
+        
+    },[])
+
     const actionRemoveTrack = useCallback(async () => {
         if(accessToken && playlist){
             handleShowOptions(index)
@@ -75,7 +79,7 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
         }
     },[index,accessToken,playlist,track,handleShowOptions, updatePlaylists])
 
-    return {actionSaveTrack,actionRemoveSavedTrack,actionAddToQueue,actionEnableTrack,actionDisableTrack,actionRemoveTrack}
+    return {actionSaveTrack,actionRemoveSavedTrack,actionAddToQueue,actionEnableTrack,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack}
 }
 
 export default useTrackOptionsAction

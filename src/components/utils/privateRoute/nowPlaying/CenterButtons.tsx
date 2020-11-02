@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import {PlayCircle as Play, PauseCircle as Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
 import {IChildComponent as IcenterButtons} from './types'
 import { useSelector } from 'react-redux';
-import { IStore } from '../../../store/types';
-import { IToken } from '../../../store/token/types';
-import { nextPlayer, pausePlayer, resumePlayer, previousPlayer, shufflePlayer, repeatPlayer } from '../../../api/webapi/player';
-import { colors, metrics } from '../../../styles/style';
+import { IStore } from '../../../../store/types';
+import { IToken } from '../../../../store/token/types';
+import { nextPlayer, pausePlayer, resumePlayer, previousPlayer, shufflePlayer, repeatPlayer } from '../../../../api/webapi/player';
+import { colors, metrics } from '../../../../styles/style';
 
 const CenterButtons: React.FC<IcenterButtons> = ({currentState}) => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
