@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from '../modal/Modal'
+import Modal from '../../common/modal/Modal'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {Title as title, metrics, Button as button} from '../../../styles/style'

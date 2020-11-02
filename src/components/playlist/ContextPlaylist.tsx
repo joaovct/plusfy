@@ -1,5 +1,5 @@
 import {createContext} from 'react'
-import { IPlaylist, ISavedTracks } from '../../api/webapi/types'
+import { IPlaylist, ISavedTracks } from '../../common/api/webapi/types'
 
 export interface IContextProps{
     updatePlaylists: Function

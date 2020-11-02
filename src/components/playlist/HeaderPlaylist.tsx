@@ -4,7 +4,7 @@ import { Page, Container, Title, metrics } from '../../styles/style'
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
 import PlaylistButtons from './PlaylistButtons'
-import { calculatePlaylistDuration, formatNumberTracks } from '../../api/webapi/webAPI'
+import { calculatePlaylistDuration, formatNumberTracks } from '../../common/api/webapi/webAPI'
 import ContextPlaylist from './ContextPlaylist'
 
 const HeaderPlaylist = () => {

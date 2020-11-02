@@ -1,12 +1,12 @@
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { IPlayer, IPlaylistTrack } from '../../api/webapi/types';
-import { formatAddedAt, formatDuration } from '../../api/webapi/webAPI';
+import { IPlayer, IPlaylistTrack } from '../../common/api/webapi/types';
+import { formatAddedAt, formatDuration } from '../../common/api/webapi/webAPI';
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {Play, Pause} from 'react-feather'
 import { useSelector } from 'react-redux';
 import { IStore } from '../../redux/store/types';
-import { pausePlayer, resumePlayer, playTrack } from '../../api/webapi/player';
+import { pausePlayer, resumePlayer, playTrack } from '../../common/api/webapi/player';
 import { IToken } from '../../redux/store/token/types'
 import TrackOptions from './TrackOptions'
 import { colors } from '../../styles/style';

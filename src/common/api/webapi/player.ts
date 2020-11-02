@@ -1,5 +1,5 @@
 import api from "../api"
-import {IPlayer, IPlayerDevice} from '../webapi/types'
+import {IPlayer, IPlayerDevice} from './types'
 import qs from 'query-string'
 import { defineActiveDevice } from "./helperWebAPI"
 

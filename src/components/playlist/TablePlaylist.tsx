@@ -6,7 +6,7 @@ import PlaylistTrack from './PlaylistTrack';
 import { useSelector } from 'react-redux';
 import { IStore } from '../../redux/store/types';
 import { ICurrentState } from '../../redux/store/currentState/types';
-import { isTrackDisabled } from '../../api/disabledTracks/disabledTracks';
+import { isTrackDisabled } from '../../common/api/disabledTracks/disabledTracks';
 import { IUser } from '../../redux/store/user/types';
 import ContextPlaylist from './ContextPlaylist';
 

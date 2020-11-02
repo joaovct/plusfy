@@ -1,4 +1,4 @@
-import { IDisabledTracks } from '../../api/disabledTracks/types'
+import { IDisabledTracks } from '../../common/api/disabledTracks/types'
 import {IDisabledTracks_action, DISABLED_TRACKS} from '../store/disabledTracks/types'
 
 const disabledTracksAction = (disabledTracks: IDisabledTracks) => {

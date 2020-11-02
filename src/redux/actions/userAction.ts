@@ -1,4 +1,4 @@
-import api from '../../api/api'
+import api from '../../common/api/api'
 import {USER, IUser_action, USER_SUCCESS, USER_REQUESTED, USER_ERROR} from '../store/user/types'
 
 interface IUserDataResponse{

@@ -1,4 +1,4 @@
-import { IDisabledTracks } from "../../../api/disabledTracks/types";
+import { IDisabledTracks } from "../../../common/api/disabledTracks/types";
 
 export const DISABLED_TRACKS = 'DISABLED_TRACKS'
 

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { ISpotifyPlayer } from '../../../redux/store/spotifyPlayer/types';
 import { IStore } from '../../../redux/store/types';
-import { disconnectUser, isUserConnected } from '../../../helpers/helperUserAccess';
+import { disconnectUser, isUserConnected } from '../../../common/helpers/helperUserAccess';
 
 const Logoff: React.FC = () => {
     const spotifyPlayer = useSelector<IStore, ISpotifyPlayer>(store => store.spotifyPlayer)

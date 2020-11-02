@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState} from 'react'
 import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
-import { IPlaylistTrack } from '../../api/webapi/types'
-import { positionOptionsElement } from '../../helpers/helperUI'
-import useTrackOptionsAction from '../../hooks/useTrackOptionsActions'
+import { IPlaylistTrack } from '../../common/api/webapi/types'
+import { positionOptionsElement } from '../../common/helpers/helperUI'
+import useTrackOptionsAction from '../../common/hooks/useTrackOptionsActions'
 import { Dropdown } from '../../styles/style'
 import ContextPlaylist from './ContextPlaylist'
 

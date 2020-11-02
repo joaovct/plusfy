@@ -4,9 +4,9 @@ import { removeSavedTrack, saveTrack } from "../api/webapi/library"
 import { addToQueue } from "../api/webapi/player"
 import { IPlaylist, ITrack } from "../api/webapi/types"
 import { removeTracksPlaylist } from "../api/webapi/playlists"
-import ContextPlaylist from "../components/playlist/ContextPlaylist"
-import { IToken } from "../redux/store/token/types"
-import { IStore } from "../redux/store/types"
+import ContextPlaylist from "../../components/playlist/ContextPlaylist"
+import { IToken } from "../../redux/store/token/types"
+import { IStore } from "../../redux/store/types"
 import useDisabledTracks from "./useDisabledTracks"
 
 interface IPropsHook{
