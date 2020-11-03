@@ -18,7 +18,7 @@ const Playlist = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const history = useHistory()
 
-    const updatePlaylists = useCallback(async () => {
+    const updatePlaylist = useCallback(async () => {
         const playlistResponse = await fetchPlaylist(accessToken, id)
         return playlistResponse
             ? setPlaylist(playlistResponse)
@@ -31,11 +31,11 @@ const Playlist = () => {
         return savedTracksResponse ? setSavedTracks(savedTracksResponse) : setSavedTracks(null)
     },[accessToken])
 
-    useEffect(() => {updatePlaylists()},[updatePlaylists])
+    useEffect(() => {updatePlaylist()},[updatePlaylist])
     useEffect(() => {updateSavedTracks()},[updateSavedTracks])
 
     return( 
-        <ContextPlaylist.Provider value={{updatePlaylists, updateSavedTracks, playlist, savedTracks}}>
+        <ContextPlaylist.Provider value={{updatePlaylist, updateSavedTracks, playlist, savedTracks}}>
             <WrapperComponent>
                 {
                     playlist

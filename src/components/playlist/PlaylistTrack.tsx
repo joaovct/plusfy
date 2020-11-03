@@ -36,7 +36,7 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,isDisabled,index,play
 
     return (
         <TableRow 
-            key={playlistTrack.track.id}
+            key={`${playlistTrack.track.id}-${playlistTrack.added_at}-TableRow`}
             thisIsPlaying={currentState?.item?.id === playlistTrack.track.id}
             isDisabled={isDisabled}
         >

@@ -11,7 +11,8 @@ import styled from 'styled-components'
 import useCurrentState from '../../../common/hooks/useCurrentState'
 import usePlaybackSDK from '../../../common/hooks/useDispatchSpotifyPlayer'
 import NowPlaying from './nowPlaying/NowPlaying'
-
+import AddPlaylistProvider from '../../../common/providers/AddPlaylistProvider'
+import AddPlaylist from '../../common/addPlaylist/AddPlaylist'
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
     useDispatchToken(accessToken, refreshToken)
@@ -26,12 +27,20 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
     ,[user])
 
     return (
-        <WrapperComponent>
-            <Header/>
-            <Component/>
-            {userIsPremium() ? <></> : <NotPremium/>}
-            <NowPlaying/>
-        </WrapperComponent>
+        <AddPlaylistProvider>
+            <>
+                <WrapperComponent>
+                    <Header/>
+                    <Component/>
+                    {userIsPremium()
+                        ? <></>
+                        : <NotPremium/>
+                    }
+                    <NowPlaying/>
+                </WrapperComponent>
+                <AddPlaylist/>
+            </>
+        </AddPlaylistProvider>
     )
 }
 

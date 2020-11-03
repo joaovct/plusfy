@@ -1,6 +1,6 @@
-const useAddPlaylist = () => {
+import { useContext } from 'react'
+import {AddPlaylistContext} from '../providers/AddPlaylistProvider'
 
-    return null
-}
+const useAddPlaylist = () => useContext(AddPlaylistContext)
 
 export default useAddPlaylist

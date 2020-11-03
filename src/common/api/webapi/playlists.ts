@@ -2,11 +2,13 @@ import qs from 'query-string'
 import api from '../api'
 import {IUserPlaylists, IPlaylist, IPlaylistTracks} from './types'
 
+export type Status = 'empty' | 'success' | 'fail'
+
 export const fetchUserPlaylists = async (accessToken: string) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = qs.stringify({limit: 50})
     let items: Array<IPlaylist> = []
-    let status = 'empty'
+    let status: Status = 'empty'
 
     try{
         const response = await api.spotify.get<IUserPlaylists>(`/me/playlists?${body}`, headers)
@@ -54,7 +56,7 @@ export const fetchPlaylist = async (accessToken: string, playlistId: string) => 
     }
 }
 
-interface IconfigsRemoveTracks{
+interface ConfigsRemoveTracks{
     playlistId: string,
     tracks: Array<{
         uri: string,
@@ -62,7 +64,7 @@ interface IconfigsRemoveTracks{
     }>,
 }
 
-export const removeTracksPlaylist = async (accessToken: string, configs: IconfigsRemoveTracks ) => {
+export const removeTracksPlaylist = async (accessToken: string, configs: ConfigsRemoveTracks ) => {
     const headers = {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}
     let res
     try{
@@ -77,3 +79,27 @@ export const removeTracksPlaylist = async (accessToken: string, configs: Iconfig
     }
 }
 
+interface ConfigAddItemsToPlaylist{
+    playlistId: string
+    uris: Array<string>
+    position?: number
+}
+
+interface AddItemsToPlaylist{
+    (acessToken: string, configs: {
+        playlistId: string
+        uris: Array<string>
+        position?: number
+    }): Promise<{snapshot_id: string} | null>
+}
+
+export const addItemsToPlaylist: AddItemsToPlaylist = async (accessToken, configs) => {
+    const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
+    let res
+    try{
+        const data = {uris: configs.uris, position: configs.position}
+        res = await api.spotify.post(`/playlists/${configs.playlistId}/tracks`, data, headers)
+    }finally{
+        return res?.data || null
+    }
+}

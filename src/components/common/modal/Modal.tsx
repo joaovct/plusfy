@@ -1,15 +1,16 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { metrics, colors } from '../../../styles/style'
 
 interface IModal{
     content: JSX.Element
     styleModal?: string
+    styleModalPage?: string
 }
 
-const Modal: FunctionComponent<IModal> = props => {
+const Modal: React.FC<IModal> = props => {
     return(
-        <Fullpage>
+        <Fullpage stylePage={props.styleModalPage || ''}>
             <WrapperModal styleModal={props.styleModal || ''}>
                 {props.content}
             </WrapperModal>
@@ -32,7 +33,7 @@ const WrapperModal = styled.main< {styleModal: string} >`
     ${ (props) => props.styleModal}
 `
 
-const Fullpage = styled.div`
+const Fullpage = styled.div< {stylePage: string} >`
     height: 100vh;
     width: 100vw;
     position: fixed;
@@ -44,6 +45,7 @@ const Fullpage = styled.div`
     backdrop-filter: blur(2px);
     animation: fadeIn .5s;
     animation-fill-mode: forwards;
+    ${ (props) => props.stylePage}
 
     @keyframes fadeIn{
         from{
@@ -51,6 +53,15 @@ const Fullpage = styled.div`
         }
         to{
             opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut{
+        from{
+            opacity: 1;
+        }
+        to{
+            opacity: 0;
         }
     }
 `

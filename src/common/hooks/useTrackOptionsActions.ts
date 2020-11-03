@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { removeSavedTrack, saveTrack } from "../api/webapi/library"
 import { addToQueue } from "../api/webapi/player"
@@ -8,6 +8,7 @@ import ContextPlaylist from "../../components/playlist/ContextPlaylist"
 import { IToken } from "../../redux/store/token/types"
 import { IStore } from "../../redux/store/types"
 import useDisabledTracks from "./useDisabledTracks"
+import useAddPlaylist from "./useAddPlaylist"
 
 interface IPropsHook{
     playlist: IPlaylist | null
@@ -18,8 +19,9 @@ interface IPropsHook{
 
 const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPropsHook) => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
+    const {updatePlaylist, updateSavedTracks} = useContext(ContextPlaylist)
     const action = useDisabledTracks()
-    const {updatePlaylists, updateSavedTracks} = useContext(ContextPlaylist)
+    const {status: addPlaylistStatus, addPlaylist} = useAddPlaylist()
 
     const actionSaveTrack = useCallback(async () => {
         if(accessToken){
@@ -62,9 +64,14 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
         }
     },[action, playlist, track, handleShowOptions, index])
 
-    const actionAddToPlaylist = useCallback(async () => {
-        
-    },[])
+    const actionAddToPlaylist = useCallback(() => addPlaylist('track', [track.uri])
+    ,[track, addPlaylist])
+
+    useEffect(() => {
+        if(addPlaylistStatus?.state === 'added')
+            updatePlaylist()
+    //eslint-disable-next-line
+    },[addPlaylistStatus])
 
     const actionRemoveTrack = useCallback(async () => {
         if(accessToken && playlist){
@@ -74,10 +81,10 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
                 tracks: [{uri: track.uri, positions: [index]}]
             })
             if(status === 200){
-                updatePlaylists()
+                updatePlaylist()
             }
         }
-    },[index,accessToken,playlist,track,handleShowOptions, updatePlaylists])
+    },[index,accessToken,playlist,track,handleShowOptions, updatePlaylist])
 
     return {actionSaveTrack,actionRemoveSavedTrack,actionAddToQueue,actionEnableTrack,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack}
 }

@@ -45,7 +45,7 @@ const TablePlaylist = () => {
                                         let isDisabled = isTrackDisabled({userId, trackUri: playlistTrack.track.uri, playlistUri: playlist.uri})
                                         return (
                                             <PlaylistTrack 
-                                                key={playlistTrack.track.id}
+                                                key={`${playlistTrack.track.id}-${playlistTrack.added_at}-PlaylistTrack`}
                                                 index={index}
                                                 playlistTrack={playlistTrack}
                                                 isDisabled={isDisabled}

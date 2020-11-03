@@ -64,7 +64,7 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
                 : 
                 <>
                     <li onClick={actionAddToQueue}>
-                        <span>Adicionar a fila</span>
+                        <span>Adicionar à fila</span>
                     </li>
                     <li onClick={actionDisableTrack}>
                         <span>Desabilitar nessa playlist</span>
@@ -72,7 +72,7 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
                 </>
                 }
                 <li onClick={actionAddToPlaylist}>
-                    <span>Adicionar a playlist</span>
+                    <span>Adicionar à playlist</span>
                 </li>
                 <li onClick={actionRemoveTrack}>
                     <span>Remover dessa playlist</span>

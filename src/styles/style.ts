@@ -123,3 +123,89 @@ export const Dropdown = styled.ul<{show: Boolean}>`
         padding: 12px 16px;
     }
 `
+
+export const Playlists = styled.ul`
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto;
+    column-gap: ${metrics.spacing5};
+    row-gap: ${metrics.spacing5};
+    position: relative;
+    margin: ${metrics.spacing5} 0 0 0;
+    position: relative;
+
+    & > figure{
+        position: absolute;
+    }
+
+    @media(max-width: 1200px){
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media(max-width: 991px){
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media(max-width: 768px){
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media(max-width: 576px){
+        grid-template-columns: repeat(1, .7fr);
+        justify-content: center;
+    }
+
+    @media(min-width: 1400px){
+        grid-template-columns: repeat(6, 1fr);
+    }
+`
+
+export const PlaylistItem = styled.li`
+    height: 100%;
+    width: 100%;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+
+    & > a,
+    & > button{
+        background: inherit;
+        position: relative;
+        cursor: pointer;
+
+        figure{
+            height: auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 15px 10px rgba(0,0,0,0.12);
+            border-radius: 12px;
+            background: #353535;
+
+            img{
+                height: 100%;
+                width: 100%;
+                border-radius: 12px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    span{
+        display: block;
+        width: 100%;
+        margin: ${metrics.spacing2} 0 0 0;
+        font-size: 24px;
+        text-align: center;
+
+        @media(max-width: 768px){
+            font-size: 24;
+        }
+
+        @media(max-width: 576px){
+            font-size: 26px;
+        }
+    }
+`

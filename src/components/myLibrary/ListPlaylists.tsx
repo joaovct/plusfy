@@ -6,7 +6,7 @@ import {IToken} from '../../redux/store/token/types'
 import {IPlaylist} from '../../common/api/webapi/types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { metrics, Input as input } from '../../styles/style'
+import { metrics, Input as input, Playlists as WrapperPlaylists, PlaylistItem } from '../../styles/style'
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {XCircle, Loader, Slash, HelpCircle} from 'react-feather'
 import {Search} from 'react-feather'
@@ -47,22 +47,21 @@ const ListPlaylists = () => {
         <Wrapper>
             {
                 requestStatus === 'loading' ? 
-                    <LoadingStatus>
+                    <IconStatus status={requestStatus}>
                         <Loader />
-                    </LoadingStatus>
+                    </IconStatus>
 
                 : requestStatus === 'fail' ? 
-                    <figure>
+                    <IconStatus status={requestStatus}>
                         <XCircle/>
                         <p>Desculpe, tivemos um erro ao carregar as suas playlists.</p>
-                    </figure>
+                    </IconStatus>
 
                 : requestStatus === 'empty' ? 
-                    <figure>
+                    <IconStatus status={requestStatus}>
                         <Slash/>
                         <p>Parece que você ainda não tem nenhuma playlist.</p>
-                    </figure>
-                
+                    </IconStatus>                
                 : <>
                     <Label>
                         <Search/>
@@ -74,7 +73,7 @@ const ListPlaylists = () => {
                             <PlaylistItem key={item.uri}>
                                 <Link to={`/playlist/${item.id}`}>
                                     <figure>
-                                        <img src={item.images.length ? item.images[0].url : emptyPlaylistPhoto} alt={`Playlist ${item.name}`} />
+                                        <img src={item.images.length ? item.images[0].url : emptyPlaylistPhoto} alt={item.name} />
                                     </figure>
                                 </Link>
                                 <span>
@@ -117,55 +116,29 @@ const Label = styled.label`
     }
 `
 
-const PlaylistItem = styled.li`
-    height: 100%;
+const IconStatus = styled.figure<{status: 'loading' | string}>`
     width: 100%;
-    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: ${metrics.spacing4};
     opacity: 0;
     animation: fadeIn 1s forwards;
 
-    & > a{
-        position: relative;
-        
-        figure{
-            height: auto;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 3px 15px 10px rgba(0,0,0,0.12);
-            border-radius: 12px;
-            background: #353535;
-
-            img{
-                height: 100%;
-                width: 100%;
-                border-radius: 12px;
-                object-fit: contain;
-            }
+    @keyframes fadeIn{
+        from{
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
         }
     }
 
-    span{
-        display: block;
-        width: 100%;
-        margin: ${metrics.spacing2} 0 0 0;
-        font-size: 24px;
-        text-align: center;
-
-        @media(max-width: 768px){
-            font-size: 24;
-        }
-
-        @media(max-width: 576px){
-            font-size: 26px;
-        }
-    }
-`
-
-const LoadingStatus = styled.figure`
     svg{
-        animation: rotation 3s infinite linear;
+        height: 75px;
+        width: 75px;
+        ${({status}) => status === 'loading' ? 'animation: rotation 3s infinite linear;' : '' }
+
         @keyframes rotation{
             from{
                 transform: rotate(0deg);
@@ -175,56 +148,25 @@ const LoadingStatus = styled.figure`
             }
         }
     }
-`
-
-const WrapperPlaylists = styled.ul`
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: auto;
-    column-gap: ${metrics.spacing5};
-    row-gap: ${metrics.spacing5};
-    position: relative;
-    margin: ${metrics.spacing5} 0 0 0;
-    position: relative;
-
-    & > figure{
-        position: absolute;
-    }
-
-    @media(max-width: 1200px){
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media(max-width: 991px){
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media(max-width: 768px){
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media(max-width: 576px){
-        grid-template-columns: repeat(1, .7fr);
-        justify-content: center;
-    }
-
-    @media(min-width: 1400px){
-        grid-template-columns: repeat(6, 1fr);
+    
+    p{
+        font-size: 20px;
+        text-align: center;
+        margin: ${metrics.spacing4} 0 0 0;
     }
 `
+
+
 
 const Wrapper = styled.div`
     margin: ${metrics.spacing5} 0 0 0;
 
-    & > figure,
     ${WrapperPlaylists} > figure{
         width: 100%;
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
         padding-top: ${metrics.spacing4};
-
         opacity: 0;
         animation: fadeIn 1s forwards;
 
