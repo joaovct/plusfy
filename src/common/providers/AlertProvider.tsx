@@ -1,21 +1,37 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 
-type CallAlert = () => void
+export type TypeAlert = 'success' | 'warning' | 'error' | 'normal'
+type MessageAlert = string | JSX.Element
+interface ConfigsAlert{
+    timing_sec: number
+    backgroundColor?: string
+}
+
+type CreateAlert = (type: TypeAlert, message: MessageAlert, configs?: ConfigsAlert) => void
+type RemoveAlert = (index: number) => void
+type Alert = {type: TypeAlert, message: MessageAlert, configs: ConfigsAlert}
+type Alerts = Array<Alert>
 
 interface ContextValue{
-    callAlert: CallAlert
+    createAlert: CreateAlert
+    removeAlert: RemoveAlert
+    alerts: Alerts
 }
 
 export const AlertContext = createContext<ContextValue>({
-    callAlert: () => {}
+    createAlert: () => {},
+    removeAlert: () => {},
+    alerts: []
 })
 
 const AlertProvider = ({children}: {children: JSX.Element}) => {
+    const [alerts, setAlerts] = useState<Alerts>([])
 
-    const callAlert: CallAlert = () => {}
+    const createAlert: CreateAlert = (type, message, configs = {timing_sec: 3}) => setAlerts(old => [...old, {type, message, configs}])
+    const removeAlert: RemoveAlert = (index) => setAlerts(old => old.filter((_, i) => i !== index))
 
     return(
-        <AlertContext.Provider value={{callAlert}}>
+        <AlertContext.Provider value={{createAlert, removeAlert, alerts}}>
             {children}
         </AlertContext.Provider>
     )

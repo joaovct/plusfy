@@ -13,6 +13,8 @@ import usePlaybackSDK from '../../../common/hooks/useDispatchSpotifyPlayer'
 import NowPlaying from './nowPlaying/NowPlaying'
 import AddPlaylistProvider from '../../../common/providers/AddPlaylistProvider'
 import AddPlaylist from '../../common/addPlaylist/AddPlaylist'
+import AlertProvider from '../../../common/providers/AlertProvider'
+import Alerts from '../../common/alert/Alert'
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
     useDispatchToken(accessToken, refreshToken)
@@ -27,20 +29,22 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
     ,[user])
 
     return (
-        <AddPlaylistProvider>
-            <>
-                <WrapperComponent>
-                    <Header/>
-                    <Component/>
-                    {userIsPremium()
-                        ? <></>
-                        : <NotPremium/>
-                    }
-                    <NowPlaying/>
-                </WrapperComponent>
-                <AddPlaylist/>
-            </>
-        </AddPlaylistProvider>
+        <AlertProvider>
+            <AddPlaylistProvider>
+                <>
+                    <WrapperComponent>
+                        <Header/>
+                        <Component/>
+                        {!userIsPremium() ? <NotPremium/> : <></>}
+                        <StickyElements>
+                            <Alerts/>
+                            <NowPlaying/>
+                        </StickyElements>
+                    </WrapperComponent>
+                    <AddPlaylist/>
+                </>
+            </AddPlaylistProvider>
+        </AlertProvider>
     )
 }
 
@@ -50,4 +54,12 @@ const WrapperComponent = styled.div`
     min-height: 100%;
     display: flex;
     flex-flow: column nowrap;
+`
+
+const StickyElements = styled.div`
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
 `

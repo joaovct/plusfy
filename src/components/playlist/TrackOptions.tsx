@@ -19,9 +19,7 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
     const [isTrackSaved, setIsTrackSaved] = useState<Boolean | null>(null)
     const {playlist, savedTracks} = useContext(ContextPlaylist)
     const optionsRef = useRef<HTMLUListElement>(null)
-    const {
-        actionRemoveSavedTrack,actionSaveTrack,actionEnableTrack,actionAddToQueue,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack
-    } = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
+    const {actionRemoveSavedTrack,actionSaveTrack,actionEnableTrack,actionAddToQueue,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack} = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
 
     useEffect(() => optionsRef.current ? positionOptionsElement(optionsRef.current) : () => {},[optionsRef])
 

@@ -11,10 +11,12 @@ import Modal from '../modal/Modal'
 import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import {X as Close} from 'react-feather'
 import useModal from '../../../common/hooks/useModal'
+import useAlert from '../../../common/hooks/useAlert'
 
 const AddPlaylist = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {status, updateStatus} = useAddPlaylist()
+    const {createAlert} = useAlert()
     const [requestStatus, setRequestStatus] = useState<RequestStatus | ''>('')
     const [playlists, setPlaylists] = useState<IPlaylist[]>([])
     const [itemsAdded, setItemsAdded] = useState<boolean | null>(null)
@@ -45,19 +47,17 @@ const AddPlaylist = () => {
             updateStatus('added')
         else if(itemsAdded === false)
             updateStatus('error')
-
-        if(itemsAdded !== null) closeModal()
+        if(itemsAdded !== null)
+            closeModal()
     //eslint-disable-next-line
     },[itemsAdded])
 
     useEffect(() => {
-        if(status && status.state === 'added'){
-            // console.log('added')
-            // call success alert
-        }else if(status && status.state === 'error'){
-            // console.log('error')
-            // call error alert
-        }
+        if(status && status.state === 'added')
+            createAlert('success','Música adicionada à playlist 🎉')
+        else if(status && status.state === 'error')
+            createAlert('error','Ocorreu um erro ao adicionar a música à playlist.')
+    //eslint-disable-next-line
     },[status])
 
     return <>{
@@ -94,7 +94,7 @@ const modalCSS = `
     max-width: inherit;
     width: 100%;
     height: 100%;
-    background: ${colors.backgroundTrnaslucent};
+    background: ${colors.backgroundTranslucent};
     border-radius: 0;
     overflow-y: auto;
 `

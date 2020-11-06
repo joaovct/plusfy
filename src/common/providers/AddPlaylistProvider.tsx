@@ -32,7 +32,6 @@ export const AddPlaylistContext = createContext<ContextValue>({
 
 const AddPlaylistProvider = ({children}: {children: JSX.Element}) => {
     const [status, setStatus] = useState<Status>(null)
-    // const [status, setStatus] = useState<Status>({state: 'adding', action: 'track', uris: []})
 
     const addPlaylist: AddPlaylist = (action, uris) => 
         setStatus({state: 'adding', action, uris})

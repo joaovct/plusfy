@@ -16,7 +16,7 @@ const TablePlaylist = () => {
     const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist ? playlist.tracks.items.length : 0).fill(false))
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
-    
+
     const handleShowOptions = useCallback((index: number) =>
         setShowOptions(old => [...old.map( (_, n) => n === index ? !old[n] : false)])
     ,[setShowOptions])

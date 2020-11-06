@@ -64,8 +64,10 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
         }
     },[action, playlist, track, handleShowOptions, index])
 
-    const actionAddToPlaylist = useCallback(() => addPlaylist('track', [track.uri])
-    ,[track, addPlaylist])
+    const actionAddToPlaylist = useCallback(() => {
+        handleShowOptions(index)
+        addPlaylist('track', [track.uri])
+    },[track, addPlaylist, handleShowOptions, index])
 
     useEffect(() => {
         if(addPlaylistStatus?.state === 'added')

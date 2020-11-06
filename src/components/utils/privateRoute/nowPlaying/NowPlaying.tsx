@@ -95,9 +95,6 @@ const NowPlayingInner = styled.div`
 
 const NowPlayingWrapper = styled.div`
     width: 100%;
-    position: sticky;
-    bottom: 0;
-    left: 0;
     padding: ${metrics.spacing3} ${metrics.spacing4};
     box-shadow: ${metrics.boxShadowInverse};
     background: ${colors.darkerBackground};
