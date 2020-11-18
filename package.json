@@ -7,6 +7,7 @@
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.2.4",
     "react-feather": "^2.0.8",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
@@ -48,7 +49,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/socket.io-client": "^1.4.33",
-    "@types/styled-components": "^5.1.2",
-    "@types/spotify-web-playback-sdk": "^0.1.7"
+    "@types/spotify-web-playback-sdk": "^0.1.7",
+    "@types/styled-components": "^5.1.2"
   }
 }

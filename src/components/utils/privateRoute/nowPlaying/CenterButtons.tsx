@@ -165,7 +165,7 @@ const WrapperButtons = styled.div`
 
         svg{
             cursor: pointer;
-            transition: .25s;
+            transition: .15s;
         }
 
         &:hover{

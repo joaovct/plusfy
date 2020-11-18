@@ -96,6 +96,7 @@ const NowPlayingInner = styled.div`
 const NowPlayingWrapper = styled.div`
     width: 100%;
     padding: ${metrics.spacing3} ${metrics.spacing4};
-    box-shadow: ${metrics.boxShadowInverse};
+    box-shadow: 0 0px 12px -6px rgba(0,0,0,0.16);
+    border-top: 2px solid ${colors.border};
     background: ${colors.darkerBackground};
 `

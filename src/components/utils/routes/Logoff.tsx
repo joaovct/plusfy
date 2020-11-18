@@ -17,10 +17,7 @@ const Logoff: React.FC = () => {
     disconnectUser()
     const response = isUserConnected()
 
-
-    return response.connected
-        ? <Redirect to="/home" />
-        : <Redirect to="/" />
+    return response.connected ? <Redirect to="/home" /> : <Redirect to="/" />
 }
 
 export default Logoff

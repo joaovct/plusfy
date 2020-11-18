@@ -39,6 +39,15 @@ export const Title = styled.h1`
     }
 `
 
+export const Text = styled.p`
+    display: block;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: #fff;
+    margin: ${metrics.spacing3} 0 0 0;
+`
+
 export const Input = styled.input`
     width: 100%;
     padding: 16px 40px;
