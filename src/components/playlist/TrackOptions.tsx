@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState} from 'react'
 import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
-import { IPlaylistTrack } from '../../common/api/webapi/types'
+import { PlaylistTrack } from '../../common/api/webapi/types'
 import { positionOptionsElement } from '../../common/helpers/helperUI'
 import useTrackOptionsAction from '../../common/hooks/useTrackOptionsActions'
 import { Dropdown } from '../../styles/style'
@@ -9,7 +9,7 @@ import ContextPlaylist from './ContextPlaylist'
 
 interface ITrackOptions{
     index: number
-    playlistTrack: IPlaylistTrack
+    playlistTrack: PlaylistTrack
     showOptions: Array<Boolean>
     isDisabled: boolean
     handleShowOptions: Function

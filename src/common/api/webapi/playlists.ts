@@ -1,6 +1,6 @@
 import qs from 'query-string'
 import api from '../api'
-import {IUserPlaylists, IPlaylist, IPlaylistTracks} from './types'
+import {Playlists, IPlaylist, PlaylistTracks} from './types'
 
 export type Status = 'empty' | 'success' | 'fail'
 
@@ -11,7 +11,7 @@ export const fetchUserPlaylists = async (accessToken: string) => {
     let status: Status = 'empty'
 
     try{
-        const response = await api.spotify.get<IUserPlaylists>(`/me/playlists?${body}`, headers)
+        const response = await api.spotify.get<Playlists>(`/me/playlists?${body}`, headers)
         items = response.data.items
         status = 'success'
 
@@ -19,7 +19,7 @@ export const fetchUserPlaylists = async (accessToken: string) => {
         while(urlNext){
             let data
             try{
-                const resLoop = await api.spotify.get<IUserPlaylists>(urlNext, headers)
+                const resLoop = await api.spotify.get<Playlists>(urlNext, headers)
                 data = resLoop.data
                 urlNext = data.next
             }finally{
@@ -44,7 +44,7 @@ export const fetchPlaylist = async (accessToken: string, playlistId: string) => 
         while(urlNext){
             let dataLoop
             try{
-                const resLoop = await api.spotify.get<IPlaylistTracks>(urlNext, headers)
+                const resLoop = await api.spotify.get<PlaylistTracks>(urlNext, headers)
                 dataLoop = resLoop.data
                 urlNext = dataLoop.next
             }finally{

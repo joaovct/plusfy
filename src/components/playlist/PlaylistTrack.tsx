@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { IPlayer, IPlaylistTrack } from '../../common/api/webapi/types';
-import { formatAddedAt, formatDuration } from '../../common/api/webapi/webAPI';
+import { IPlayer, PlaylistTrack as IPlaylistTrack} from '../../common/api/webapi/types';
+import { formatAddedAt, formatDuration } from '../../common/api/webapi/helperWebAPI';
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {Play, Pause} from 'react-feather'
 import { useSelector } from 'react-redux';

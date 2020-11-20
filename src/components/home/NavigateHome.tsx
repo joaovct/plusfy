@@ -161,6 +161,8 @@ const WrapperItens = styled.ul`
 `
 
 const TitleNavegate = styled(Title)`
+    margin: calc(${metrics.spacing5}) 0 0 0;
+    
     @media(min-height: 769px) and (min-width: 992px){
         margin: calc(${metrics.spacing5} * 2) 0 0 0;
     }
@@ -168,12 +170,11 @@ const TitleNavegate = styled(Title)`
         margin: calc(${metrics.spacing5} * 3) 0 0 0;
     }
     @media(max-height: 768px) and (min-width: 992px){
-        margin: calc(${metrics.spacing5} * 1) 0 0 0;
+        margin: calc(${metrics.spacing5} * 1.5) 0 0 0;
     }
     @media(max-height: 576px) and (min-width: 992px){
         margin: calc(${metrics.spacing5} * 1) 0 0 0;
     }
-
     @media(max-width: 768px){
         margin: ${metrics.spacing5} 0 0 0;
     }

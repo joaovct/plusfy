@@ -2,7 +2,7 @@ export interface IWebAPIRequest{
     accessToken: string
 }
 
-export interface IUserPlaylists{
+export interface Playlists{
     items: Array<IPlaylist>
     limit: number
     next?: string
@@ -28,43 +28,38 @@ export interface IPlaylist{
     owner: IUser
     public: boolean
     snapshot_id: string
-    tracks: IPlaylistTracks
+    tracks: PlaylistTracks
     uri: string
 }
 
-export interface IPlaylistTracks{
+export interface PlaylistTracks{
     href: string
     limit: number,
     next?: string
     previous?: string
     offset: number
     total: number
-    items: Array<IPlaylistTrack>
+    items: Array<PlaylistTrack>
 }
 
-export interface IPlaylistTrack{
+export interface PlaylistTrack{
     added_at: string
     added_by: IUser
     is_local: boolean
-    track: ITrack
+    track: Track
 }
 
-export interface ISavedTracks{
+export interface Tracks{
     href: string
-    items: Array<ISavedTrack>
-    limit: number
-    next: string
+    limit: number,
+    next?: string
+    previous?: string
     offset: number
-    previous: string | null
     total: number
+    items: Array<Track>
 }
 
-export interface ISavedTrack{
-    added_at: string
-    track: ITrack
-}
-
-export interface ITrack{
+export interface Track{
     album: IAlbum
     artists: Array<IArtist>
     available_markets: Array<string>
@@ -86,6 +81,31 @@ export interface ITrack{
     is_local: boolean
 }
 
+export interface ISavedTracks{
+    href: string
+    items: Array<ISavedTrack>
+    limit: number
+    next: string
+    offset: number
+    previous: string | null
+    total: number
+}
+
+export interface ISavedTrack{
+    added_at: string
+    track: Track
+}
+
+export interface Artists{
+    href: string
+    items: Array<IArtist>
+    limit: number
+    next: string | null
+    offset: number
+    previous: string | null
+    total: number
+}
+
 export interface IArtist{
     external_urls: {
         spotify: string
@@ -97,19 +117,20 @@ export interface IArtist{
     uri: string
 }
 
+export interface Albums{
+    href: string
+    items: Array<IAlbum>
+    limit: 20
+    next: string | null
+    offset: number
+    previous: string | null
+    total: number
+}
+
 export interface IAlbum{
     album_group?: string
     album_type: string
-    artists: {
-        external_urls: {
-            spotify: string
-        }
-        href: string
-        id: string
-        name: string
-        type: string
-        uri: string
-    }
+    artists: Array<IArtist>
     available_markets: Array<string>
     external_urls:{
         spotify: string
@@ -121,6 +142,67 @@ export interface IAlbum{
     release_date: string
     release_date_precision: string
     type: string
+    uri: string
+}
+
+interface Shows{
+    href: string
+    items: Array<Show>
+    limit: number
+    next: string | null
+    offset: number
+    previous: string | null 
+    total: number
+}
+
+export interface Show{
+    available_markets: Array<string>
+    copyrights: Array<{text: string, type: string}>
+    description: string
+    explicit: boolean
+    external_urls: {
+        spotify: string
+    }
+    href: string
+    id: string
+    images: Array<Iimage>
+    is_externally_hosted: boolean
+    languages: Array<string>
+    media_type: string
+    name: string
+    publisher: string
+    type: 'show'
+    uri: string
+}
+
+export interface Episodes{
+    href: string
+    items: Array<Episode>
+    limit: number
+    next: string | null
+    offset: number
+    previous: string | null 
+    total: number
+}
+
+export interface Episode{
+    audio_preview_url: string
+    description: string
+    duration_ms: number
+    explicit: boolean
+    external_urls: {
+        spotify: string
+    }
+    href: string
+    id: string
+    images: Array<Iimage>
+    is_externally_hosted: boolean
+    is_playable: boolean
+    languages: Array<string>
+    name: string
+    release_date: string
+    release_date_precision: string
+    type: "episode"
     uri: string
 }
 
@@ -160,7 +242,7 @@ export interface IPlayer{
             transferring_playback?: boolean
         }
     }
-    item?: ITrack
+    item?: Track
     shuffle_state?: boolean
     repeat_state?: string
     context?: {
@@ -184,3 +266,18 @@ export interface IPlayerDevice{
     type: string
     volume_percent: number
 }
+
+
+type SearchTypes = 'album' | 'artist' | 'playlist' | 'track' | 'show' | 'episode'
+type SearchConfigs = {market: string, limit: number, offset: number, include_external: 'audio'}
+
+type SearchResult = {
+    albums?: Albums
+    tracks?: Tracks
+    playlists?: Playlists
+    artists?: Artists
+    shows?: Shows
+    episodes?: Episodes
+}
+
+export type Search = (accessToken: string, query: string, type: SearchTypes, configs?: SearchConfigs) => Promise<SearchResult>

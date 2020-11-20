@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { removeSavedTrack, saveTrack } from "../api/webapi/library"
 import { addToQueue } from "../api/webapi/player"
-import { IPlaylist, ITrack } from "../api/webapi/types"
+import { IPlaylist, Track } from "../api/webapi/types"
 import { removeTracksPlaylist } from "../api/webapi/playlists"
 import ContextPlaylist from "../../components/playlist/ContextPlaylist"
 import { IToken } from "../../redux/store/token/types"
@@ -12,7 +12,7 @@ import useAddPlaylist from "./useAddPlaylist"
 
 interface IPropsHook{
     playlist: IPlaylist | null
-    track: ITrack
+    track: Track
     index: number
     handleShowOptions: Function
 }

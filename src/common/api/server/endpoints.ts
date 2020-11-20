@@ -3,8 +3,8 @@ import { FindTrack, FindTrackResponse } from "./types";
 
 export const findTrack: FindTrack = (files, callback) => {
     const formData = new FormData() 
-        
-    const appendBlob = ((file: File, callback: Function) => {
+    
+    const appendBlob = ((file: File, callback: () => void) => {
         const reader = new FileReader()
         reader.onload = e => {
             if(e?.target?.result){
@@ -18,11 +18,15 @@ export const findTrack: FindTrack = (files, callback) => {
 
     const readers = files.map(file => new Promise(resolve => appendBlob(file, resolve)))
 
-    Promise.all(readers).then(() => {
-        api.server.post<FindTrackResponse>('/find-track', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then( res => {
-            callback(res.data.results)
-        })
-    }).catch(err => {
-        console.log(err)
-    })
+    Promise.all(readers).then(async () => {
+        let response: FindTrackResponse = {results: []}
+
+        try{
+            response = (await api.server.post<FindTrackResponse>('/find-track', formData, {headers: {'Content-Type': 'multipart/form-data'}})).data
+        }catch(err){
+            console.log(err)
+        }finally{
+            callback(response.results)
+        }
+    }).catch(err => console.log(err))
 }

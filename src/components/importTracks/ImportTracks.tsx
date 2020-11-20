@@ -1,16 +1,21 @@
-import React, { useCallback } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Container, Page, Title, Text, metrics } from '../../styles/style'
 import {Upload} from 'react-feather'
 import {useDropzone} from 'react-dropzone'
-import {findTrack} from '../../common/api/server/endpoints'
+import useImportTracks from '../../common/hooks/useImportTracks'
 
 const ImportTracks = () => {
-    const onDrop = useCallback((files: Array<File>) => findTrack(files, (results) => {
-        console.log(results)
-    }),[])
+    const {foundTracks, status, actionFindTrack} = useImportTracks()
+    const {getRootProps,getInputProps} = useDropzone({accept: 'audio/*', onDrop: actionFindTrack, multiple: true})
 
-    const {getRootProps,getInputProps} = useDropzone({accept: 'audio/*', onDrop, multiple: true})
+    useEffect(() => {
+        console.log(foundTracks)
+    },[foundTracks])
+    
+    useEffect(() => {
+        console.log(status)
+    },[status])
 
     return (
         <Page>
