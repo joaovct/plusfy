@@ -139,7 +139,7 @@ export const Playlists = styled.ul`
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: auto;
     column-gap: ${metrics.spacing5};
-    row-gap: ${metrics.spacing5};
+    row-gap: ${metrics.spacing4};
     position: relative;
     margin: ${metrics.spacing5} 0 0 0;
     position: relative;
@@ -205,8 +205,8 @@ export const PlaylistItem = styled.li`
     span{
         display: block;
         width: 100%;
-        margin: ${metrics.spacing2} 0 0 0;
-        font-size: 24px;
+        margin: ${metrics.spacing3} 0 0 0;
+        font-size: 1.25rem;
         text-align: center;
 
         @media(max-width: 768px){

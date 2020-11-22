@@ -5,6 +5,7 @@ export const primaryGradient = "linear-gradient(136.17deg, #3552D8 21.35%, #5B4C
 export const primary = "#3552D8"
 export const secondary = "#C53A7D"
 export const gray = '#bbb'
+export const darkerGray = '#4F4F4F'
 export const green = "#1aa34a"
 export const lighterGreen = "#18ac4d"
 export const red = '#cd0a0a'

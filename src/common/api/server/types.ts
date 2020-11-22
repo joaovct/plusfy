@@ -6,8 +6,8 @@ export interface FindTrackResponse{
     results: Array<FindTrackResult>
 }
 
-type FindTrackResult = {
-    fileName: string
+export type FindTrackResult = {
+    file: File
     track: {
         id: string;
         title: string;

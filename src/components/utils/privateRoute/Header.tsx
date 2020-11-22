@@ -99,7 +99,7 @@ const HeaderWrapper = styled.header`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: ${metrics.spacing3} ${metrics.spacing5} ${metrics.spacing5} ${metrics.spacing5};
+    padding: ${metrics.spacing3} ${metrics.spacing5} ${metrics.spacing4} ${metrics.spacing5};
 
     a{
         text-decoration: none;
