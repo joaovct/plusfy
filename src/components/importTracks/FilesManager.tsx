@@ -1,64 +1,46 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { colors, metrics, Text } from '../../styles/style'
+import { Button, colors, metrics, Text } from '../../styles/style'
 import {Upload, Trash} from 'react-feather'
 import { useDropzone } from 'react-dropzone'
-import { compareTwoFiles, getTrackFileMetaData, preventRepeatedFile } from '../../common/helpers/helperImportTracks'
 import emptyAlbumPhoto from '../../assets/empty-playlist-photo.svg'
+import useFilesPreview from '../../common/hooks/useFilesPreview'
+import { ActionFindTrack } from '../../common/hooks/useImportTracks'
 
-type FilePreview = {
-    name: string
-    size: number
-    type: string
-    imgURL?: string
-} | null
+interface FilesManager{
+    actionFindTrack: ActionFindTrack
+}
 
+type PreviewStatus = 'show' | 'hide' | 'empty'
 
-const FilesManager = () => {
-    const [droppedFiles, setDroppedFiles] = useState<File[]>([])
-    const [filesPreview, setFilesPreview] = useState<FilePreview[]>()
-
-    const getMetaData = (droppedFile: File) => new Promise<FilePreview>(resolve =>
-        getTrackFileMetaData(droppedFile, (err, metadata) => {
-            if(err){
-                console.error(metadata)
-                return resolve(null)
-            }
-            let imgURL = undefined
-            if(metadata.picture[0]){
-                const blob = new Blob([metadata.picture[0].data], {type: `image/${metadata.picture[0].format}`})
-                imgURL = window.URL.createObjectURL(blob)
-            }
-            resolve({name: droppedFile.name, type: droppedFile.type, size: droppedFile.size, imgURL})
-        })
-    )
-
-    const onDrop = useCallback((newFiles: File[]) => {
-        const newDroppedFiles = preventRepeatedFile(droppedFiles, newFiles)
-        setDroppedFiles(newDroppedFiles)
-        Promise.all(newDroppedFiles.map(getMetaData)).then(setFilesPreview)
-    },[droppedFiles])
-
+const FilesManager: React.FC<FilesManager> = ({actionFindTrack}) => {
+    const [previewStatus, setPreviewStatus] = useState<PreviewStatus>('empty')
+    const {droppedFiles, filesPreview, removeFile, onDrop} = useFilesPreview()
     const {getRootProps,getInputProps} = useDropzone({accept: 'audio/*', onDrop, multiple: true})
 
-    const removeFile = useCallback((filePreview: FilePreview) => {
-        if(filePreview)
-            setDroppedFiles(droppedFiles => droppedFiles.filter(droppedFile => !compareTwoFiles(droppedFile, filePreview)))
-    },[])
-
     useEffect(() => {
-        Promise.all(droppedFiles.map(getMetaData)).then(setFilesPreview)
-    },[droppedFiles])
+        setPreviewStatus(previewStatus => {
+            if(filesPreview.length)
+                return 'show'
+            else if(previewStatus !== 'empty' && !filesPreview.length)
+                return 'hide'
+            return previewStatus
+        })
+    },[filesPreview])
 
+    const handleFindTrack = useCallback(() =>
+        actionFindTrack(droppedFiles)
+    ,[actionFindTrack, droppedFiles])
+    
     return(
         <Flex>
             <Content>
-                <DropArea {...getRootProps()} showBorder={droppedFiles.length && filesPreview?.length ? true : false}>
+                <DropArea {...getRootProps()} showBorder={previewStatus === 'show' ? true : false}>
                     <input {...getInputProps()}/>
                     <Upload/>
                     <Text>Solte aqui ou clique <br/> para selecionar <br/> suas músicas</Text>  
                 </DropArea>
-                <ListFiles show={droppedFiles.length && filesPreview?.length ? true : false}>
+                <ListFiles previewStatus={previewStatus}>
                     <ListFilesWrapper>
                         <ListFilesContent>
                             {
@@ -77,6 +59,9 @@ const FilesManager = () => {
                                 })
                             }
                         </ListFilesContent>
+                        <WrapperSearchSpotify>
+                            <Button onClick={handleFindTrack}>Buscar no spotify</Button>
+                        </WrapperSearchSpotify>
                     </ListFilesWrapper>
                 </ListFiles>
             </Content>
@@ -84,6 +69,27 @@ const FilesManager = () => {
     )
 }
 
+const WrapperSearchSpotify = styled.div`
+    height: var(--height-wrapperbutton);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(4px);
+    padding: 0 ${metrics.spacing2};
+    border-bottom-right-radius: ${metrics.borderRadius};
+
+    ${Button}{
+        width: auto;
+        min-width: inherit;
+        font-size: 14px;
+        padding: 8px 24px;
+    }
+`
 
 const ListFilesContent = styled.ul`
     position: relative;
@@ -92,6 +98,7 @@ const ListFilesContent = styled.ul`
     display: flex;
     flex-flow: column nowrap;
     overflow-y: scroll;
+    padding: 0 0 var(--height-wrapperbutton) 0;
 
     &::-webkit-scrollbar {
         width: 0px;
@@ -113,6 +120,7 @@ const ListFilesContent = styled.ul`
         img{
             height: 40px;
             width: 40px;
+            user-select: none;
         }
 
         span{
@@ -136,6 +144,7 @@ const ListFilesContent = styled.ul`
             width: 20px;
             margin: 0 0 0 auto;
             cursor: pointer;
+            user-select: none;
         }
 
         *{
@@ -155,7 +164,7 @@ const ListFilesWrapper = styled.div`
     }
 `
 
-const ListFiles = styled.div<{show: boolean}>`
+const ListFiles = styled.div<{previewStatus: PreviewStatus}>`
     width: 0;
     height: 100%;
     transition: width .5s;
@@ -165,6 +174,7 @@ const ListFiles = styled.div<{show: boolean}>`
     position: relative;
     overflow: hidden;
     --width-content: 350px;
+    --height-wrapperbutton: 60px;
 
     @keyframes growUp{
         from{
@@ -184,7 +194,12 @@ const ListFiles = styled.div<{show: boolean}>`
         }
     }
 
-    ${props => props.show ? `animation: growUp 1s forwards;` : 'animation: shrink 1s forwards;'}
+    ${({previewStatus}) => {
+        if(previewStatus === 'show')
+            return 'animation: growUp 1s forwards;'
+        else if(previewStatus === 'hide')
+            return 'animation: shrink 1s forwards;'
+    }}
 `
 
 const DropArea = styled.div<{showBorder: boolean}>`

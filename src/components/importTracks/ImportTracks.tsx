@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import useImportTracks from '../../common/hooks/useImportTracks'
 import { Container, Page, Title, Text, metrics} from '../../styles/style'
 import FilesManager from './FilesManager'
 
 const ImportTracks = () => {
+    const {actionFindTrack, foundTracks, status} = useImportTracks()
+
+    useEffect(() => console.log(status),[status])
+
+    useEffect(() => console.log(foundTracks),[foundTracks])
+
     return (
         <Page>
             <Container>
                 <Main>
                     <Title>Importar músicas</Title>
                     <Text>Importe suas músicas locais para o Spotify facilmente. Selecione ou arraste suas músicas para a área abaixo e iremos buscar automaticamente por elas na biblioteca do Spotify.</Text>
-                    <FilesManager/>
+                    <FilesManager actionFindTrack={actionFindTrack}/>
                 </Main>
             </Container>
         </Page>

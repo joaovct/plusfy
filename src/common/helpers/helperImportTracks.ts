@@ -1,3 +1,7 @@
+import { FindTrackResult } from "../api/server/types"
+import searchItem from "../api/webapi/search"
+import { Track } from "../api/webapi/types"
+
 interface PreventRepeatedFile{
     (droppedFiles: Array<File>, newFiles: Array<File>): Array<File>
 }
@@ -55,4 +59,54 @@ interface NoOf {
 interface Picture {
     format: string;
     data: Buffer;
+}
+
+export interface FoundTrack{
+    file: {
+        fieldname: string
+        size: number
+        type: string
+    }
+    track: Track | null
+    search: string | null
+}
+
+export const searchFoundTrack = (track: FindTrackResult, accessToken: string) => {
+    return new Promise<FoundTrack>( async (resolve, reject) => {
+        const finalTrack: FoundTrack = {
+            file: {
+                fieldname: track.file.fieldname,
+                type: track.file.mimetype,
+                size: track.file.size
+            },
+            track: null,
+            search: null
+        }
+
+        if(track.track){
+            finalTrack.search = `${track.track.title} ${track.track.artists[0].name}` 
+            const query = `${track.track.title} artist:${track.track?.artists[0].name}`
+            const searchResult = await searchItem(accessToken, query, 'track')
+            
+            if(searchResult.tracks?.items.length){
+                finalTrack.track = searchResult.tracks?.items[0]
+                return resolve(finalTrack)
+            }
+        }
+
+        const file = new File([new Uint8Array(track.file.buffer.data)], track.file.fieldname, {type: track.file.mimetype})
+        
+        getTrackFileMetaData(file, async (err, metadata) => {
+            if(err){
+                reject(err)
+            }
+
+            const search = `${metadata.title} ${metadata.artist[0]}`
+            const query = `${metadata.title} artist:${metadata.artist[0]}`
+            const searchResult = await searchItem(accessToken, query, 'track')
+            if(searchResult.tracks?.items.length)
+                return resolve({...finalTrack, search, track: searchResult.tracks?.items[0]})
+            resolve(finalTrack)
+        })
+    })
 }
