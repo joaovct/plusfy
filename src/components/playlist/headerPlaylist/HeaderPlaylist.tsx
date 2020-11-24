@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Page, Container, Title, metrics } from '../../styles/style'
-import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
+import { Page, Container, Title, metrics } from '../../../styles/style'
+import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
-import PlaylistButtons from './PlaylistButtons'
-import { calculatePlaylistDuration, formatNumberTracks } from '../../common/api/webapi/helperWebAPI'
-import ContextPlaylist from './ContextPlaylist'
+import HeaderPlaylistButtons from './HeaderPlaylistButtons'
+// import { calculatePlaylistDuration, formatNumberTracks } from '../../../common/api/webapi/helperWebAPI'
+import ContextPlaylist from '../ContextPlaylist'
+import { calculatePlaylistDuration, formatNumberTracks } from '../../../common/helpers/helperPlaylistTable'
+
 
 const HeaderPlaylist = () => {
     const {playlist} = useContext(ContextPlaylist)
@@ -27,7 +29,7 @@ const HeaderPlaylist = () => {
                                     {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
                                 </Link> - { numberTracks }, {playlistDuration}
                             </h6>
-                            <PlaylistButtons/>
+                            <HeaderPlaylistButtons/>
                         </div>
                     </HeaderInner> : <></>
                 }

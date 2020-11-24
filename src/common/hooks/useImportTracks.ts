@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { IToken } from "../../redux/store/token/types"
 import { IStore } from "../../redux/store/types"
 import { findTrack } from "../api/server/endpoints"
 import { FoundTrack, searchFoundTrack } from "../helpers/helperImportTracks"
 
-type Status = 'none' | 'loading' | 'success' | 'error'
+export type Status = 'none' | 'loading' | 'success' | 'error'
 
 export interface ActionFindTrack{
     (files: Array<File>): void

@@ -1,36 +1,36 @@
 import React, { useContext, useEffect, useRef, useState} from 'react'
 import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
-import { PlaylistTrack } from '../../common/api/webapi/types'
-import { positionOptionsElement } from '../../common/helpers/helperUI'
-import useTrackOptionsAction from '../../common/hooks/useTrackOptionsActions'
-import { Dropdown } from '../../styles/style'
-import ContextPlaylist from './ContextPlaylist'
+import { PlaylistTrack } from '../../../common/api/webapi/types'
+import { positionOptionsElement } from '../../../common/helpers/helperUI'
+import useTrackOptionsAction from '../../../common/hooks/useTrackOptionsActions'
+import { Dropdown } from '../../../styles/style'
+import ContextPlaylist from '../ContextPlaylist'
 
 interface ITrackOptions{
     index: number
-    playlistTrack: PlaylistTrack
+    track: PlaylistTrack
     showOptions: Array<Boolean>
-    isDisabled: boolean
+    disabled: boolean
     handleShowOptions: Function
 }
 
-const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled, handleShowOptions, showOptions}) => {
+const TrackOptions: React.FC<ITrackOptions> = ({index, track, disabled, handleShowOptions, showOptions}) => {
     const [isTrackSaved, setIsTrackSaved] = useState<Boolean | null>(null)
     const {playlist, savedTracks} = useContext(ContextPlaylist)
     const optionsRef = useRef<HTMLUListElement>(null)
-    const {actionRemoveSavedTrack,actionSaveTrack,actionEnableTrack,actionAddToQueue,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack} = useTrackOptionsAction({playlist, track: playlistTrack.track, index, handleShowOptions})
+    const {actionRemoveSavedTrack,actionSaveTrack,actionEnableTrack,actionAddToQueue,actionDisableTrack,actionAddToPlaylist,actionRemoveTrack} = useTrackOptionsAction({playlist, track: track.track, index, handleShowOptions})
 
     useEffect(() => optionsRef.current ? positionOptionsElement(optionsRef.current) : () => {},[optionsRef])
 
     useEffect(() => {
-        const isIncluded = savedTracks?.items.findIndex(item => item.track.uri === playlistTrack.track.uri)
+        const isIncluded = savedTracks?.items.findIndex(item => item.track.uri === track.track.uri)
         return isIncluded !== undefined
         ? isIncluded > -1
             ? setIsTrackSaved(true)
             : setIsTrackSaved(false)
         : setIsTrackSaved(null)
-    },[savedTracks, playlistTrack])
+    },[savedTracks, track])
 
     return (
         <>
@@ -54,7 +54,7 @@ const TrackOptions: React.FC<ITrackOptions> = ({index, playlistTrack, isDisabled
                 </> : <></>
                 }
                 {
-                isDisabled
+                disabled
                 ?
                 <li onClick={actionEnableTrack}>
                     <span>Habilitar nessa playlist</span>

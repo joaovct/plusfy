@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux'
 import { IStore } from '../../redux/store/types'
 import { IToken } from '../../redux/store/token/types'
 import { IPlaylist, ISavedTracks } from '../../common/api/webapi/types'
-import HeaderPlaylist from './HeaderPlaylist'
-import TablePlaylist from './TablePlaylist'
+import HeaderPlaylist from './headerPlaylist/HeaderPlaylist'
+import PlaylistTracks from './tablePlaylist/PlaylistTracks'
 import ContextPlaylist from './ContextPlaylist'
 
 const Playlist = () => {
@@ -41,7 +41,7 @@ const Playlist = () => {
                     playlist
                     ? <>
                         <HeaderPlaylist/> 
-                        <TablePlaylist/>
+                        <PlaylistTracks/>
                     </> : <></>
                 }
             </WrapperComponent>

@@ -1,19 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, colors, metrics, Text } from '../../styles/style'
+import { Button, colors, metrics, Text, Title } from '../../styles/style'
 import {Upload, Trash} from 'react-feather'
 import { useDropzone } from 'react-dropzone'
 import emptyAlbumPhoto from '../../assets/empty-playlist-photo.svg'
 import useFilesPreview from '../../common/hooks/useFilesPreview'
-import { ActionFindTrack } from '../../common/hooks/useImportTracks'
+import { ActionFindTrack, Status } from '../../common/hooks/useImportTracks'
 
 interface FilesManager{
     actionFindTrack: ActionFindTrack
+    status: Status
 }
 
 type PreviewStatus = 'show' | 'hide' | 'empty'
 
-const FilesManager: React.FC<FilesManager> = ({actionFindTrack}) => {
+const FilesManager: React.FC<FilesManager> = ({actionFindTrack, status}) => {
     const [previewStatus, setPreviewStatus] = useState<PreviewStatus>('empty')
     const {droppedFiles, filesPreview, removeFile, onDrop} = useFilesPreview()
     const {getRootProps,getInputProps} = useDropzone({accept: 'audio/*', onDrop, multiple: true})
@@ -33,39 +34,43 @@ const FilesManager: React.FC<FilesManager> = ({actionFindTrack}) => {
     ,[actionFindTrack, droppedFiles])
     
     return(
-        <Flex>
-            <Content>
-                <DropArea {...getRootProps()} showBorder={previewStatus === 'show' ? true : false}>
-                    <input {...getInputProps()}/>
-                    <Upload/>
-                    <Text>Solte aqui ou clique <br/> para selecionar <br/> suas músicas</Text>  
-                </DropArea>
-                <ListFiles previewStatus={previewStatus}>
-                    <ListFilesWrapper>
-                        <ListFilesContent>
-                            {
-                                filesPreview?.map((filePreview,i) => {
-                                    if(filePreview)
-                                        return(
-                                            <li key={`filepreview${filePreview.name}${filePreview.type}${filePreview.size}${i}`}>
-                                                <img src={filePreview?.imgURL || emptyAlbumPhoto} alt="Album"/>
-                                                <span>
-                                                    <strong>{filePreview?.name}</strong>
-                                                    <small>{(filePreview?.size / 1024 / 1024).toFixed(2)} mb</small>
-                                                </span>
-                                                <Trash onClick={() => removeFile(filePreview)}/>
-                                            </li>
-                                        )
-                                })
-                            }
-                        </ListFilesContent>
-                        <WrapperSearchSpotify>
-                            <Button onClick={handleFindTrack}>Buscar no spotify</Button>
-                        </WrapperSearchSpotify>
-                    </ListFilesWrapper>
-                </ListFiles>
-            </Content>
-        </Flex>
+        <ComponentContent status={status}>
+            <Title>Importar músicas</Title>
+            <Text>Importe suas músicas locais para o Spotify facilmente. Selecione ou arraste suas músicas para a área abaixo e iremos buscar automaticamente por elas na biblioteca do Spotify.</Text>
+            <Flex>
+                <MainContent>
+                    <DropArea {...getRootProps()} showBorder={previewStatus === 'show' ? true : false}>
+                        <input {...getInputProps()}/>
+                        <Upload/>
+                        <Text>Solte aqui ou clique <br/> para selecionar <br/> suas músicas</Text>  
+                    </DropArea>
+                    <ListFiles previewStatus={previewStatus}>
+                        <ListFilesWrapper>
+                            <ListFilesContent>
+                                {
+                                    filesPreview?.map((filePreview,i) => {
+                                        if(filePreview)
+                                            return(
+                                                <li key={`filepreview${filePreview.name}${filePreview.type}${filePreview.size}${i}`}>
+                                                    <img src={filePreview?.imgURL || emptyAlbumPhoto} alt="Album"/>
+                                                    <span>
+                                                        <strong>{filePreview?.name}</strong>
+                                                        <small>{(filePreview?.size / 1024 / 1024).toFixed(2)} mb</small>
+                                                    </span>
+                                                    <Trash onClick={() => removeFile(filePreview)}/>
+                                                </li>
+                                            )
+                                    })
+                                }
+                            </ListFilesContent>
+                            <WrapperSearchSpotify>
+                                <Button onClick={handleFindTrack}>Buscar no spotify</Button>
+                            </WrapperSearchSpotify>
+                        </ListFilesWrapper>
+                    </ListFiles>
+                </MainContent>
+            </Flex>
+        </ComponentContent>
     )
 }
 
@@ -235,7 +240,7 @@ const DropArea = styled.div<{showBorder: boolean}>`
     }  
 `
 
-const Content = styled.div`
+const MainContent = styled.div`
     height: 270px;
     width: auto;
     display: inline-flex;
@@ -250,6 +255,34 @@ const Flex = styled.div`
     display: flex;
     justify-content: center;
     margin: ${metrics.spacing5} auto 0 auto;
+`
+
+const ComponentContent = styled.div<{status: Status}>`
+    opacity: 1;
+    transition: opacity .5s;
+
+    ${Title},
+    & > ${Text}{
+        width: 100%;
+        text-align: left;
+    }
+    & > ${Text}{
+        margin: ${metrics.spacing2} 0 0 0;
+    }
+
+    ${ ({status}) => {
+        if(status !== 'none')
+            return `
+                opacity: 0;
+                user-select: none;
+                pointer-events: none;
+            `
+        return `
+            opacity: 1;
+            user-select: initial;
+            pointer-events: initial;
+        `
+    }}
 `
 
 export default FilesManager

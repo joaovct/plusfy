@@ -1,14 +1,14 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { Button, colors, metrics } from '../../styles/style'
+import { Button, colors, metrics } from '../../../styles/style'
 import styled from 'styled-components'
 import {MoreHorizontal} from 'react-feather'
-import { playTrack } from '../../common/api/webapi/player'
+import { playTrack } from '../../../common/api/webapi/player'
 import { useSelector } from 'react-redux'
-import { IStore } from '../../redux/store/types'
-import { IToken } from '../../redux/store/token/types'
-import ContextPlaylist from './ContextPlaylist'
+import { IStore } from '../../../redux/store/types'
+import { IToken } from '../../../redux/store/token/types'
+import ContextPlaylist from '../ContextPlaylist'
 
-const PlaylistButtons = () => {
+const HeaderPlaylistButtons = () => {
     const {playlist} = useContext(ContextPlaylist)
     const [showOptions, setShowOptions] = useState(false)
     const toggleOptions = useCallback(() => setShowOptions(old => !old),[])
@@ -35,7 +35,7 @@ const PlaylistButtons = () => {
     )
 }
 
-export default PlaylistButtons
+export default HeaderPlaylistButtons
 
 const Options = styled.ul<{show: boolean}>`
     position: absolute;
