@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import {TypeAlert} from '../../../common/providers/AlertProvider'
-import useAlert from '../../../common/hooks/useAlert'
+import {AlertContext, TypeAlert} from '../../../common/providers/AlertProvider'
 import { colors, metrics } from '../../../styles/style'
 
 const Alerts = () => {
-    const {alerts, removeAlert} = useAlert()
+    const {alerts, removeAlert} = useContext(AlertContext)
 
     useEffect(() => {
         alerts.forEach((alert, index) => {
@@ -17,8 +16,8 @@ const Alerts = () => {
     return (
         <WrapperAlerts>
             {
-                alerts.map(alert => (
-                    <Alert type={alert.type} timing={alert.configs.timing_sec} backgroundColor={alert.configs.backgroundColor} >
+                alerts.map((alert, index) => (
+                    <Alert key={`alert-${index}-${alert.type}`} type={alert.type} timing={alert.configs.timing_sec} backgroundColor={alert.configs.backgroundColor} >
                         {alert.message}
                     </Alert>
                 ))
@@ -46,9 +45,9 @@ const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: str
     ${getBackgroundColor};
     ${props => props.backgroundColor ? `background-color: ${props.backgroundColor}` : ''};
     opacity: 0;
-    animation: fadeIn .5s linear forwards 0s, fadeOut .5s linear forwards ${({timing}) => timing}s;
+    animation: fadeInAlert .5s linear forwards 0s, fadeOutAlert .5s linear forwards ${({timing}) => timing}s;
 
-    @keyframes fadeIn{
+    @keyframes fadeInAlert{
         from{
             opacity: 0;
         }
@@ -57,7 +56,7 @@ const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: str
         }
     }
 
-    @keyframes fadeOut{
+    @keyframes fadeOutAlert{
         from{
             opacity: 1;
         }

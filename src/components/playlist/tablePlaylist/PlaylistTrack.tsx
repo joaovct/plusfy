@@ -10,7 +10,7 @@ import TrackOptions from './TrackOptions'
 import { PlaylistTableRow as playlisttablerow } from '../../../styles/style';
 import ContextPlaylist from '../ContextPlaylist';
 import styled from 'styled-components';
-import { formatAddedAt, formatDuration } from '../../../common/helpers/helperPlaylistTable';
+import { formatAddedAt, formatDuration, toggleTrack } from '../../../common/helpers/helperPlaylistTable';
 
 
 interface Icomponent{
@@ -26,37 +26,27 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,disabled,index,track,
     const {playlist} = useContext(ContextPlaylist)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     
-    const isPlayingCurrentTrack = () => {
-        if(currentState?.item?.uri === track.track.uri)
-            return true
-        return false
-    }
-
-    const handlePlayTrack = () => {
+    const handleToggleTrack = () => {
         if(playlist){
-            if(isPlayingCurrentTrack() && currentState.is_playing)
-                return pausePlayer({accessToken})
-            else if(isPlayingCurrentTrack())
-                return resumePlayer({accessToken})
-            playTrack({accessToken, contextUri: playlist.uri, offset: {uri: track.track.uri}})
+            const uri = track.track.uri
+            const action = toggleTrack(currentState, uri)
+            if(action === 'PLAY')
+                playTrack({accessToken,uris: [uri]})
+            else if(action === 'PAUSE')
+                pausePlayer({accessToken})
+            else if(action === 'RESUME')
+                resumePlayer({accessToken}) 
         }
-    }
-
-    const getPlayPause = () => {
-        if(isPlayingCurrentTrack()){
-            if(currentState?.is_playing)
-                return <Pause/>
-            return <Play/>
-        }
-        return <Play/>
     }
 
     return (
         <PlaylistTableRow uri={track.track.uri} playingUri={currentState.item?.uri} disabled={disabled}>
-            <div onClick={handlePlayTrack}>
+            <div onClick={handleToggleTrack}>
                 <span>{index + 1}</span>
                 {
-                    getPlayPause()
+                    toggleTrack(currentState, track.track?.uri || '') === 'PAUSE'
+                    ? <Pause/>
+                    : <Play/>
                 }
             </div>
             <div>

@@ -27,7 +27,9 @@ export const AlertContext = createContext<ContextValue>({
 const AlertProvider = ({children}: {children: JSX.Element}) => {
     const [alerts, setAlerts] = useState<Alerts>([])
 
-    const createAlert: CreateAlert = (type, message, configs = {timing_sec: 3}) => setAlerts(old => [...old, {type, message, configs}])
+    const createAlert: CreateAlert = (type, message, configs = {timing_sec: 3}) => {
+        setAlerts(old => [...old, {type, message, configs}])
+    }
     const removeAlert: RemoveAlert = (index) => setAlerts(old => old.filter((_, i) => i !== index))
 
     return(

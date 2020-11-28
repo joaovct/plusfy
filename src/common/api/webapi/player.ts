@@ -1,7 +1,7 @@
 import api from "../api"
 import {IPlayer, IPlayerDevice} from './types'
 import qs from 'query-string'
-import { defineActiveDevice } from "./helperWebAPI"
+import { defineActiveDevice } from "../../helpers/helperWebAPI"
 
 interface IplayerRequest{
     accessToken?: string
@@ -31,7 +31,7 @@ export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = {uris, context_uri: contextUri, offset}
     const device = defineActiveDevice((await getDevices({accessToken}))?.data.devices)
-
+    
     try{
         await api.spotify.put(`/me/player/play?device_id=${deviceId || device?.id}`, body, headers)
     }finally{

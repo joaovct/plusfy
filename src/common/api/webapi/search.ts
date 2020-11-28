@@ -1,5 +1,5 @@
 import api from "../api"
-import { encodeSpaces, getHeaders } from "./helperWebAPI"
+import { encodeSpaces, getHeaders } from "../../helpers/helperWebAPI"
 import { Search } from "./types"
 
 const searchItem: Search = async (accessToken, query, type, configs) => {

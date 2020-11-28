@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react"
+import { useCallback, useContext } from "react"
 import { useSelector } from "react-redux"
 import { removeSavedTrack, saveTrack } from "../api/webapi/library"
 import { addToQueue } from "../api/webapi/player"
@@ -8,7 +8,7 @@ import ContextPlaylist from "../../components/playlist/ContextPlaylist"
 import { IToken } from "../../redux/store/token/types"
 import { IStore } from "../../redux/store/types"
 import useDisabledTracks from "./useDisabledTracks"
-import useAddPlaylist from "./useAddPlaylist"
+import useAddToPlaylist from "./useAddToPlaylist"
 
 interface IPropsHook{
     playlist: IPlaylist | null
@@ -21,7 +21,7 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {updatePlaylist, updateSavedTracks} = useContext(ContextPlaylist)
     const action = useDisabledTracks()
-    const {status: addPlaylistStatus, addPlaylist} = useAddPlaylist()
+    const addToPlaylist = useAddToPlaylist()
 
     const actionSaveTrack = useCallback(async () => {
         if(accessToken){
@@ -66,14 +66,8 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
 
     const actionAddToPlaylist = useCallback(() => {
         handleShowOptions(index)
-        addPlaylist('track', [track.uri])
-    },[track, addPlaylist, handleShowOptions, index])
-
-    useEffect(() => {
-        if(addPlaylistStatus?.state === 'added')
-            updatePlaylist()
-    //eslint-disable-next-line
-    },[addPlaylistStatus])
+        addToPlaylist('track', [track.uri], updatePlaylist)
+    },[track, addToPlaylist, handleShowOptions, index, updatePlaylist])
 
     const actionRemoveTrack = useCallback(async () => {
         if(accessToken && playlist){

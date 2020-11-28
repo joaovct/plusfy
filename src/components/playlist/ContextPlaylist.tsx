@@ -2,7 +2,7 @@ import {createContext} from 'react'
 import { IPlaylist, ISavedTracks } from '../../common/api/webapi/types'
 
 export interface IContextProps{
-    updatePlaylist: Function
+    updatePlaylist: () => void
     updateSavedTracks: Function
     playlist: IPlaylist | null
     savedTracks: ISavedTracks | null

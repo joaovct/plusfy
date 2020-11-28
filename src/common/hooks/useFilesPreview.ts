@@ -1,14 +1,35 @@
 import { useCallback, useEffect, useState } from "react"
+import { StatusImport } from "../../components/importTracks/types"
 import { compareTwoFiles, getTrackFileMetaData, preventRepeatedFile } from "../helpers/helperImportTracks"
 
-type FilePreview = {
+export type FilePreview = {
     name: string
     size: number
     type: string
     imgURL?: string
 } | null
 
-const useFilesPreview = () => {
+export interface RemoveFile{
+    (filePreview: FilePreview): void
+}
+
+interface OnDrop{
+    (newFiles: File[]): void
+}
+
+interface UseFilesProps{
+    statusImport: StatusImport
+    actionFinishResetImportTracks: Function
+}
+
+interface UseFilesReturn{
+    droppedFiles: File[]
+    filesPreview: FilePreview[]
+    removeFile: RemoveFile
+    onDrop: OnDrop
+}
+
+const useFilesPreview = ({statusImport, actionFinishResetImportTracks}: UseFilesProps): UseFilesReturn => {
     const [droppedFiles, setDroppedFiles] = useState<File[]>([])
     const [filesPreview, setFilesPreview] = useState<FilePreview[]>([])
 
@@ -16,7 +37,15 @@ const useFilesPreview = () => {
         Promise.all(droppedFiles.map(getMetaData)).then(setFilesPreview)
     },[droppedFiles])
 
-    const onDrop = useCallback((newFiles: File[]) => {
+    useEffect(() => {
+        if(statusImport === 'reseting'){
+            setDroppedFiles([])
+            setFilesPreview([])
+            actionFinishResetImportTracks()
+        }
+    },[statusImport, actionFinishResetImportTracks])
+
+    const onDrop = useCallback<OnDrop>((newFiles: File[]) => {
         const newDroppedFiles = preventRepeatedFile(droppedFiles, newFiles)
         setDroppedFiles(newDroppedFiles)
         Promise.all(newDroppedFiles.map(getMetaData)).then(setFilesPreview)
@@ -37,11 +66,10 @@ const useFilesPreview = () => {
         })
     )
 
-    const removeFile = (filePreview: FilePreview) => {
+    const removeFile: RemoveFile = (filePreview) => {
         if(filePreview)
             setDroppedFiles(droppedFiles => droppedFiles.filter(droppedFile => !compareTwoFiles(droppedFile, filePreview)))
     }
-
 
     return {droppedFiles, filesPreview, onDrop, removeFile}
 }

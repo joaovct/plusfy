@@ -1,40 +1,44 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useSelector } from "react-redux"
 import { IToken } from "../../redux/store/token/types"
 import { IStore } from "../../redux/store/types"
 import { findTrack } from "../api/server/endpoints"
-import { FoundTrack, searchFoundTrack } from "../helpers/helperImportTracks"
+import { searchFoundTrack } from "../helpers/helperImportTracks"
+import { ContextProps, FoundTrack, StatusImport, ActionFindTrack } from '../../components/importTracks/types'
 
-export type Status = 'none' | 'loading' | 'success' | 'error'
-
-export interface ActionFindTrack{
-    (files: Array<File>): void
-}
-
-const useImportTracks = () => {
+const useImportTracks = (): ContextProps => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const [foundTracks, setFoundTracks] = useState<FoundTrack[]>([])
-    const [status, setStatus] = useState<Status>("none")
+    const [statusImport, setStatusImport] = useState<StatusImport>("none")
 
     const actionFindTrack: ActionFindTrack = files => {
-        setStatus('loading')
+        setStatusImport('loading')
 
         findTrack(files, resultsTracks => {
             const promiseSearches = resultsTracks.map( track => searchFoundTrack(track, accessToken))
 
             Promise.all(promiseSearches)
                 .then(results => {
-                    setStatus('success')
+                    setStatusImport('success')
                     setFoundTracks(results)
                 })
                 .catch(err => {
                     console.error(err)
-                    setStatus('error')
+                    setStatusImport('error')
                 })
         })
     }
 
-    return {foundTracks, status, actionFindTrack}    
+    const actionStartResetImportTracks = () => {
+        setFoundTracks([])
+        setStatusImport('reseting')
+    }
+
+    const actionFinishResetImportTracks = () => {
+        setStatusImport('none')
+    }
+
+    return {foundTracks, statusImport, actionFindTrack, actionStartResetImportTracks, actionFinishResetImportTracks}    
 }
 
 export default useImportTracks

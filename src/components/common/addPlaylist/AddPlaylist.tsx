@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { addItemsToPlaylist, fetchUserPlaylists, Status as RequestStatus } from '../../../common/api/webapi/playlists'
 import { IPlaylist } from '../../../common/api/webapi/types'
-import useAddPlaylist from '../../../common/hooks/useAddPlaylist'
 import { IToken } from '../../../redux/store/token/types'
 import { IStore } from '../../../redux/store/types'
 import { Button, colors, metrics, PlaylistItem, Playlists, Title} from '../../../styles/style'
@@ -12,18 +11,19 @@ import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import {X as Close} from 'react-feather'
 import useModal from '../../../common/hooks/useModal'
 import useAlert from '../../../common/hooks/useAlert'
+import { AddToPlaylistContext } from '../../../common/providers/AddToPlaylistProvider'
 
 const AddPlaylist = () => {
+    const {executeCallback, status} = useContext(AddToPlaylistContext)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const {status, updateStatus} = useAddPlaylist()
-    const {createAlert} = useAlert()
+    const createAlert = useAlert()
     const [requestStatus, setRequestStatus] = useState<RequestStatus | ''>('')
     const [playlists, setPlaylists] = useState<IPlaylist[]>([])
     const [itemsAdded, setItemsAdded] = useState<boolean | null>(null)
     const {state: modalState, CSSpreparer, showModal, closeModal} = useModal()
 
     useEffect(() => {
-        if(status?.state === 'adding'){
+        if(status && status.state === 'adding'){
             const fetchData = async () => {
                 const response = await fetchUserPlaylists(accessToken)
                 setRequestStatus(response.status)
@@ -35,30 +35,40 @@ const AddPlaylist = () => {
     //eslint-disable-next-line
     },[status, accessToken])
 
+    useEffect(() => {
+        if(itemsAdded === true){
+            executeCallback('success')
+        }else if(itemsAdded === false){
+            executeCallback('error')
+        }
+
+        if(itemsAdded === true || itemsAdded === false){
+            closeModal()
+            setItemsAdded(null)
+            if(status?.configs?.alertAfterTrackAdded === true)
+                handleCreateAlert()
+        }
+    //eslint-disable-next-line
+    },[itemsAdded, status])
+
+    const handleCreateAlert = useCallback(() => {
+        const messagePlural = status?.uris.length || 0 > 1
+
+        if(itemsAdded === true){
+            const message = messagePlural ? 'Música adicionada à playlist 🎉' : 'Músicas adicionadas à playlist 🎉'
+            createAlert('success', message)
+        }else if(itemsAdded === false){
+            const message = messagePlural ? 'Ocorreu um erro ao adicionar as músicas à playlist.' : 'Ocorreu um erro ao adicionar a música à playlist.'
+            createAlert('error', message)
+        }
+    },[createAlert, status, itemsAdded])
+
     const handleAddPlaylist = useCallback(async (playlistId: string) => {
         if(status){
             const res = await addItemsToPlaylist(accessToken, {playlistId, uris: status.uris})
             setItemsAdded(res?.snapshot_id ? true : false)
         }
     },[status, accessToken])
-
-    useEffect(() => {
-        if(itemsAdded === true)
-            updateStatus('added')
-        else if(itemsAdded === false)
-            updateStatus('error')
-        if(itemsAdded !== null)
-            closeModal()
-    //eslint-disable-next-line
-    },[itemsAdded])
-
-    useEffect(() => {
-        if(status && status.state === 'added')
-            createAlert('success','Música adicionada à playlist 🎉')
-        else if(status && status.state === 'error')
-            createAlert('error','Ocorreu um erro ao adicionar a música à playlist.')
-    //eslint-disable-next-line
-    },[status])
 
     return <>{
     status?.state === 'adding' && requestStatus === 'success' && modalState === 'show' ?

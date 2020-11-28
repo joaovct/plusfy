@@ -1,45 +1,48 @@
-import {useState, useEffect} from 'react'
+import {useEffect, useCallback} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../redux/actions/actions'
 import { isTrackDisabled } from '../api/disabledTracks/disabledTracks'
-import { preventDoubleNextPlayer } from '../api/webapi/helperWebAPI'
+import { handleNextPlayer } from '../helpers/helperWebAPI'
 import { getPlayer } from '../api/webapi/player'
-import { IPlayer } from '../api/webapi/types'
 import { IToken } from '../../redux/store/token/types'
 import { IStore } from '../../redux/store/types'
 import { IUser } from '../../redux/store/user/types'
+import { isUserConnected } from '../helpers/helperUserAccess'
 
 const useCurrentState = () => {
-    const [currentState, setCurrentState] = useState<IPlayer>({})
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        if(
-            isTrackDisabled({userId, playlistUri: currentState.context?.uri || '', trackUri: currentState.item?.uri || ''}) &&
-            currentState.context?.type === 'playlist' && currentState.item?.uri
-        ){
-            preventDoubleNextPlayer(currentState.item.uri, accessToken)
+    const handleGetPlayer = useCallback(async () => {
+        const response = await getPlayer({accessToken})
+        
+        if(response){
+            const {data} = response
+
+            dispatch(actions.currentStateAction(data || {}))
+
+            const playlistUri = data.context?.uri || ''
+            const trackUri = data.item?.uri || ''
+
+            if(isTrackDisabled({userId, playlistUri, trackUri}) && data.context?.type === 'playlist' && trackUri)
+                handleNextPlayer(trackUri, accessToken)
         }
-    },[currentState, userId, accessToken])
+    },[accessToken, dispatch, userId])
 
     useEffect(() => {
-        if(Object.keys(currentState).length){
-            dispatch(actions.currentStateAction(currentState))
-        }
-    },[currentState, dispatch])
-
-    useEffect(() => {
-        let mounted = true
+        // let mounted = true
         if(accessToken){
-            setInterval(async () => {
-                const state = await getPlayer({accessToken})
-                if(mounted) setCurrentState(state?.data || {})
+            let interval = setInterval(async () => {
+                if(isUserConnected().connected)
+                    handleGetPlayer()
+                else
+                    clearInterval(interval)
             }, 1000)
         }
-        return () => {mounted = false}
-    },[accessToken])
+        // return () => {mounted = false}
+    //eslint-disable-next-line
+    },[accessToken, handleGetPlayer])
 }
 
 export default useCurrentState

@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import useImportTracks from '../../common/hooks/useImportTracks'
 import { Container, Page} from '../../styles/style'
-import FilesManager from './FilesManager'
 import FoundTracks from './FoundTracks/FoundTracks'
+import FilesManager from './filesManager/FilesManager'
+import ContextImportTracks from './ContextImportTracks'
 
 const ImportTracks = () => {
-    const {actionFindTrack, foundTracks, status} = useImportTracks()
-
-    useEffect(() => console.log(status),[status])
-    useEffect(() => console.log(foundTracks),[foundTracks])
+    const importTracksHook = useImportTracks()
 
     return (
-        <Page>
-            <Container>
-                <Main>
-                    <FilesManager status={status} actionFindTrack={actionFindTrack}/>
-                    <FoundTracks status={status} foundTracks={foundTracks}/>
-                </Main>
-            </Container>
-        </Page>
+        <ContextImportTracks.Provider value={{...importTracksHook}}>
+            <Page>
+                <Container>
+                    <Main>
+                        <FilesManager />
+                        <FoundTracks/>
+                    </Main>
+                </Container>
+            </Page>
+        </ContextImportTracks.Provider>
     )
 }
 

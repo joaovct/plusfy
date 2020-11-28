@@ -1,145 +1,47 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Loader, XCircle } from 'react-feather'
 import styled from 'styled-components'
-import { FoundTrack } from '../../../common/helpers/helperImportTracks'
-import {Status} from '../../../common/hooks/useImportTracks'
-import { Button, colors, metrics, PlaylistTable, PlaylistTableRow as playlisttablerow, Title, Text } from '../../../styles/style'
-import { Clock, Play, Loader, XCircle } from 'react-feather'
-import emptyAlbumPhoto from '../../../assets/empty-playlist-photo.svg'
-import currentState from '../../../redux/reducers/currentStateReducer'
-import { useSelector } from 'react-redux'
-import { IStore } from '../../../redux/store/types'
-import { ICurrentState } from '../../../redux/store/currentState/types'
-import { formatArtistName, formatDuration } from '../../../common/helpers/helperPlaylistTable'
+import {StatusImport} from '../types'
+import { Text } from '../../../styles/style'
+import FoundTracksTable from './FoundTracksTable'
+import ContextImportTracks from '../ContextImportTracks'
 
-
-interface FCFoundTracks{
-    status: Status
-    foundTracks: FoundTrack[]
-}
-
-const FoundTracks: React.FC<FCFoundTracks> = ({status, foundTracks}) => {
-    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
+const FoundTracks = () => {
+    const {statusImport} = useContext(ContextImportTracks)
 
     return(
-        <ComponentContent status={status}>
-            <Loading status={status}>
+        <Content statusImport={statusImport}>
+            <Success>
+                <FoundTracksTable/>
+            </Success>
+            <Loading>
                 <Loader/>
-                <Text>Apenas aguarde um pouco, <br/> enquanto buscamos suas músicas</Text>
+                <Text>Só um momento, <br/> enquanto buscamos suas músicas.</Text>
             </Loading>
-            <Error status={status}>
+            <Error>
                 <XCircle/>
                 <Text>Não esperávamos por essa. <br/> Tivemos um problema ao importar suas músicas.</Text>
             </Error>
-            <Success status={status}>
-                <TableBackground>
-                    <PlaylistTable qntColumns={7}>
-                        <PlaylistTableRow>
-                            <div>#</div>
-                            <div>Título</div>
-                            <div>Artista</div>
-                            <div>Álbum</div>
-                            <div>Arquivo</div>
-                            <div><Clock/></div>
-                            <div></div>
-                        </PlaylistTableRow>
-                        {
-                            foundTracks.map( (track, i) => {
-                                if(track.track)
-                                    return(
-                                        <PlaylistTableRow key={`foundtrack-${track.track.uri}-${i}`} uri={track.track.uri} playingUri={currentState?.item?.uri}>
-                                            <div>
-                                                <span>{i + 1}</span>
-                                                <Play/>
-                                            </div>
-                                            <div>
-                                                <img src={track.track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.track}`} />
-                                                <span>{track.track.name}</span>
-                                            </div>
-                                            <div>
-                                                {formatArtistName(track.track)}
-                                            </div>
-                                            <div>
-                                                {track.track.album.name}
-                                            </div>
-                                            <div>
-                                                {track.file.fieldname}
-                                            </div>
-                                            <div>
-                                                {formatDuration(track.track.duration_ms)}
-                                            </div>
-                                            <div>
-                                                <Button>Add</Button>    
-                                            </div>
-                                        </PlaylistTableRow>
-                                    )
-                                return <></>
-                            }) 
-                        }
-                    </PlaylistTable>
-                </TableBackground>
-            </Success>
-
-        </ComponentContent>
+        </Content>
     )
 }
 
 export default FoundTracks
 
-const PlaylistTableRow = styled(playlisttablerow)`
-    div{
-        &:nth-child(2){
-            flex-grow: 5;
-        }
-        &:nth-child(6){
-            max-width: 75px;
-        }
-        &:nth-child(7) ${Button}{
-            display: inline-block;
-            min-width: inherit;
-            font-size: 14px;
-            padding: 6px 32px;
-            margin: auto;
-        }
-    }
-`
+const show = `opacity: 1; user-select: initial; pointer-events: initial; position: relative;`
+const hide = `opacity: 0; user-select: none; pointer-events: none; position: absolute;`
 
-const TableBackground = styled.div`
-    background: ${colors.darkerBackground};
-    border-radius: ${metrics.borderRadius};
-    margin: ${metrics.spacing4} 0 0 0;
-    position: relative;
-`
-
-const Success = styled.div<{status: Status}>`
-    transition: opacity .5s;
-    
-    ${ ({status}) => {
-        if(status === 'success')
-            return `
-                opacity: 1;
-                user-select: initial;
-                pointer-events: initial;
-            `
-        return `
-            opacity: 0;
-            user-select: none;
-            pointer-events: none;
-        `
-    }}
-`
-
-const MockupStatus = styled.div<{status: Status}>`
+const styleStatus = `
     min-height: 50vh;
     width: 100%;
+    max-width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-flow: column nowrap;
-    position: absolute;
-    opacity: 0;
-    user-select: none;
-    pointer-events: none;
     transition: opacity .5s;
+    top: 0;
+    ${hide}
 
     svg{
         height: 55px;
@@ -152,7 +54,18 @@ const MockupStatus = styled.div<{status: Status}>`
     }
 `
 
-const Loading = styled(MockupStatus)`
+const Success = styled.div`
+    transition: opacity .5s;
+    max-width: 100%;
+`
+
+const Error = styled.div`
+    ${styleStatus}
+`
+
+const Loading = styled.div`
+    ${styleStatus}
+
     svg{
         animation: rotation 3s infinite linear;
 
@@ -165,56 +78,42 @@ const Loading = styled(MockupStatus)`
             }
         }
     }
-
-    ${ ({status}) => {
-        if(status === 'loading')
-            return `
-                opacity: 1;
-                user-select: initial;
-                pointer-events: initial;
-            `
-        return `
-            opacity: 0;
-            user-select: none;
-            pointer-events: none;
-        `
-    }}
 `
 
-const Error = styled(MockupStatus)`
-    ${ ({status}) => {
-        if(status === 'error')
-            return `
-                opacity: 1;
-                user-select: initial;
-                pointer-events: initial;
-            `
-        return `
-            opacity: 0;
-            user-select: none;
-            pointer-events: none;
-        `
-    }}
-`
-
-const ComponentContent = styled.div<{status: Status}>`
+const Content = styled.div<{statusImport: StatusImport}>`
     position: absolute;
     top: 0;
     width: 100%;
     max-width: 100%;
     opacity: 0;
 
-    ${ ({status}) => {
+    ${ ({statusImport: status}) => {
         if(status !== 'none')
-            return `
-                opacity: 1;
-                user-select: initial;
-                pointer-events: initial;
-            `
-        return `
-            opacity: 0;
-            user-select: none;
-            pointer-events: none;
-        `
+            return show
+        return hide
     }}
+
+    ${Success}{
+        ${ ({statusImport: status}) => {
+            if(status === 'success')
+                return show
+            return hide
+        }}
+    }
+
+    ${Error}{
+        ${ ({statusImport: status}) => {
+            if(status === 'error')
+                return show
+            return hide
+        }}
+    }
+
+    ${Loading}{
+        ${ ({statusImport: status}) => {
+            if(status === 'loading')
+                return show
+            return hide
+        }}
+    }
 `

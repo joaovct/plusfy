@@ -1,7 +1,19 @@
-// import {Play, Pause} from 'react-feather'
-
+import { ICurrentState } from "../../redux/store/currentState/types";
 import { IPlaylist, Track } from "../api/webapi/types";
 
+export const isPlayingTrack = (currentState: ICurrentState, trackUri: string) => {
+    if(currentState?.item?.uri === trackUri)
+        return true
+    return false
+}
+
+export const toggleTrack = (currentState: ICurrentState, trackUri: string): "PLAY" | "PAUSE" | "RESUME" => {
+    if(isPlayingTrack(currentState, trackUri) && currentState.is_playing)
+        return "PAUSE"
+    else if(isPlayingTrack(currentState, trackUri))
+        return "RESUME"
+    return "PLAY"
+} 
 
 export const formatAddedAt = (trackAddedAt: string) => {
     const date = new Date(trackAddedAt)

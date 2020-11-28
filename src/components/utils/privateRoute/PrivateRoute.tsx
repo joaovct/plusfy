@@ -11,10 +11,10 @@ import styled from 'styled-components'
 import useCurrentState from '../../../common/hooks/useCurrentState'
 import usePlaybackSDK from '../../../common/hooks/useDispatchSpotifyPlayer'
 import NowPlaying from './nowPlaying/NowPlaying'
-import AddPlaylistProvider from '../../../common/providers/AddPlaylistProvider'
+import AddToPlaylistProvider from '../../../common/providers/AddToPlaylistProvider'
 import AddPlaylist from '../../common/addPlaylist/AddPlaylist'
 import AlertProvider from '../../../common/providers/AlertProvider'
-import Alerts from '../../common/alert/Alert'
+import Alerts from '../../common/alerts/Alerts'
 
 const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
     useDispatchToken(accessToken, refreshToken)
@@ -30,7 +30,7 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
 
     return (
         <AlertProvider>
-            <AddPlaylistProvider>
+            <AddToPlaylistProvider>
                 <>
                     <WrapperComponent>
                         <Header/>
@@ -43,7 +43,7 @@ const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken,
                     </WrapperComponent>
                     <AddPlaylist/>
                 </>
-            </AddPlaylistProvider>
+            </AddToPlaylistProvider>
         </AlertProvider>
     )
 }

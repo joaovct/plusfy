@@ -11,3 +11,4 @@ export const lighterGreen = "#18ac4d"
 export const red = '#cd0a0a'
 export const orange = '#e2911e'
 export const border = '#3D4466'
+export const hoverBackground = '#313552'

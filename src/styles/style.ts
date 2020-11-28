@@ -67,7 +67,7 @@ export const Input = styled.input`
     }
 `
 
-export const Button = styled.button`
+export const Button = styled.button<{typeButton?: "primary" | "secondary"}>`
     display: inline-block;
     min-width: 300px;
     padding: 16px 40px;
@@ -90,6 +90,19 @@ export const Button = styled.button`
     @media(max-width: 576px){
         min-width: inherit;
     }
+
+    ${ ({typeButton: type}) => {
+        if(type === 'secondary'){
+            return `
+                background: rgba(0,0,0,0);
+                border: 2px solid #fff;
+                color: #fff;
+                &:hover{
+                    background: rgba(0,0,0,0);
+                }
+            `
+        }
+    }}
 `
 
 export const ButtonLink = styled(Button).attrs({as: "a"})`
@@ -304,8 +317,8 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
         transition: background .15s;
 
         &:hover{
-            ${ ({disabled}) => !disabled ? `background: ${colors.background};` : ''}
-
+            ${ ({disabled}) => !disabled ? `background: ${colors.hoverBackground};` : ''}
+            
             div:first-child{
                 ${ ({disabled}) => !disabled ? `
                 span{

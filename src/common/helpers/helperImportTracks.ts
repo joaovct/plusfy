@@ -1,6 +1,6 @@
 import { FindTrackResult } from "../api/server/types"
 import searchItem from "../api/webapi/search"
-import { Track } from "../api/webapi/types"
+import {FoundTrack} from '../../components/importTracks/types'
 
 interface PreventRepeatedFile{
     (droppedFiles: Array<File>, newFiles: Array<File>): Array<File>
@@ -17,9 +17,12 @@ export const compareTwoFiles = (file1: ComparedFile, file2: ComparedFile) => fil
 export const preventRepeatedFile: PreventRepeatedFile = (droppedFiles, newFiles) => {
     return [...droppedFiles, ...newFiles.filter(newFile => {
         let repeated = false
-        droppedFiles.forEach(droppedFile => {
-            repeated = compareTwoFiles(droppedFile, newFile)
-        })
+        for(let i = 0; i < droppedFiles.length; i++){
+            if(compareTwoFiles(droppedFiles[i], newFile)){
+                repeated = true
+                break
+            }
+        }        
         return !repeated
     })]
 }
@@ -59,16 +62,6 @@ interface NoOf {
 interface Picture {
     format: string;
     data: Buffer;
-}
-
-export interface FoundTrack{
-    file: {
-        fieldname: string
-        size: number
-        type: string
-    }
-    track: Track | null
-    search: string | null
 }
 
 export const searchFoundTrack = (track: FindTrackResult, accessToken: string) => {
