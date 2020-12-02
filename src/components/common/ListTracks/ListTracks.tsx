@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {PlaylistTable as playlisttable, PlaylistTableRow} from '../../../styles/style'
 import {Clock} from 'react-feather'
 import { ListTracksProps } from './types'
 import styled from 'styled-components'
 import TrackRow from './TrackRow/TrackRow'
-import ContextListTracks, { HandleToggleOption } from './ContextListTracks'
-
+import ContextListTracks from './ContextListTracks'
+import useListTracks from '../../../common/hooks/components/useListTracks'
 
 const ListTracks: React.FC<ListTracksProps> = ({tracks}) => {
-    const [toggleOptions, setToggleOptions] = useState(Array(tracks.length).fill(false))
-
-    const handleToggleOption: HandleToggleOption = (index) => {
-        setToggleOptions( value => [...value.map((e,i) => i === index ? !e : false)])
-    }
+    const {toggleOptions, handleToggleOption, savedTracks, updateSavedTracks} = useListTracks(tracks)
 
     return(
-        <ContextListTracks.Provider value={{handleToggleOption, toggleOptions}}>
+        <ContextListTracks.Provider value={{handleToggleOption, toggleOptions, savedTracks, updateSavedTracks}}>
             <PlaylistTable qntColumns={6}>
                 <PlaylistTableRow>
                     <div>#</div>
@@ -27,7 +23,7 @@ const ListTracks: React.FC<ListTracksProps> = ({tracks}) => {
                 </PlaylistTableRow>
                 {
                     tracks.map((track, index) => (
-                        <TrackRow track={track} index={index}/>
+                        <TrackRow key={`listtracks${track.uri}${index}`} track={track} index={index}/>
                     ))
                 }
             </PlaylistTable>

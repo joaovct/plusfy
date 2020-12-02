@@ -81,7 +81,7 @@ export interface Track{
     is_local: boolean
 }
 
-export interface ISavedTracks{
+export interface SavedTracks{
     href: string
     items: Array<ISavedTrack>
     limit: number

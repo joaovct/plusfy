@@ -6,7 +6,7 @@ import { getSavedTracks } from '../../common/api/webapi/library'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../redux/store/types'
 import { IToken } from '../../redux/store/token/types'
-import { IPlaylist, ISavedTracks } from '../../common/api/webapi/types'
+import { IPlaylist, SavedTracks } from '../../common/api/webapi/types'
 import HeaderPlaylist from './headerPlaylist/HeaderPlaylist'
 import PlaylistTracks from './tablePlaylist/PlaylistTracks'
 import ContextPlaylist from './ContextPlaylist'
@@ -14,7 +14,7 @@ import ContextPlaylist from './ContextPlaylist'
 const Playlist = () => {
     const { id } = useParams<{id: string}>()    
     const [playlist, setPlaylist] = useState<IPlaylist | null>(null)
-    const [savedTracks, setSavedTracks] = useState<ISavedTracks | null>(null) 
+    const [savedTracks, setSavedTracks] = useState<SavedTracks | null>(null) 
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const history = useHistory()
 

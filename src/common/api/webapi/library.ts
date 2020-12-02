@@ -1,5 +1,5 @@
 import api from '../api'
-import { ISavedTracks } from './types'
+import { SavedTracks } from './types'
 
 interface ILibraryRequest{
     accessToken: string 
@@ -13,14 +13,14 @@ export const getSavedTracks = async ({accessToken}: ILibraryRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let data = null
     try{
-        const res = await api.spotify.get<ISavedTracks>('/me/tracks', headers)
+        const res = await api.spotify.get<SavedTracks>('/me/tracks', headers)
         data = res.data
 
         let urlNext = data.next
         while(urlNext){
             let dataLoop
             try{
-                const resLoop = await api.spotify.get<ISavedTracks>(urlNext, headers)
+                const resLoop = await api.spotify.get<SavedTracks>(urlNext, headers)
                 dataLoop = resLoop.data
                 urlNext = dataLoop.next
             }finally{

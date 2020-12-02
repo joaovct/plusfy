@@ -3,6 +3,7 @@ import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
 import { Track } from '../../../../common/api/webapi/types'
 import { positionOptionsElement } from '../../../../common/helpers/helperUI'
+import useTrackRowOptions from '../../../../common/hooks/components/useTrackRowOptions'
 import {Dropdown as dropdown} from '../../../../styles/style'
 import ContextListTracks from '../ContextListTracks'
 
@@ -11,9 +12,10 @@ interface TrackRowOptionsProps{
     index: number 
 }
 
-const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({index}) => {
-    const {handleToggleOption, toggleOptions} = useContext(ContextListTracks)
+const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({track, index}) => {
     const optionsRef = useRef<HTMLUListElement>(null)
+    const {handleToggleOption, toggleOptions} = useContext(ContextListTracks)
+    const {actionSaveTrack, actionRemoveSavedTrack,actionAddToPlaylist, actionAddToQueue, trackSaved} = useTrackRowOptions({track, index})
 
     useEffect(() => {
         if(optionsRef.current)
@@ -24,13 +26,26 @@ const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({index}) => {
         <>
             <MoreVertical onClick={() => handleToggleOption(index)}/>
             <OptionsDropdown ref={optionsRef} show={toggleOptions[index]}>
-                <li>
-                    <span>Salvar na biblioteca</span>
-                </li>
-                <li>
+                {
+                    trackSaved !== null ?
+                    <>
+                        {
+                            trackSaved
+                            ?
+                            <li onClick={actionRemoveSavedTrack}>
+                                <span>Remover da biblioteca</span>
+                            </li>
+                            :
+                            <li onClick={actionSaveTrack}>
+                                <span>Salvar na biblioteca</span>
+                            </li>
+                        }
+                    </> : <></>
+                 }
+                <li onClick={actionAddToQueue}>
                     <span>Adicionar à fila</span>
                 </li>
-                <li>
+                <li onClick={actionAddToPlaylist}>
                     <span>Adicionar à playlist</span>
                 </li>
             </OptionsDropdown>
