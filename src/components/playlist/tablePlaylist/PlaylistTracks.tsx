@@ -66,11 +66,18 @@ const PlaylistTable = styled(playlisttable)`
             &:nth-child(2){
                 flex-grow: 5;
             }
+            &:nth-child(5){
+                max-width: 165px;
+            }
             &:nth-child(6){
                 max-width: 75px;
             }
-            &:last-child{
-                max-width: 100px;
+            &:nth-child(7){
+                max-width: 55px;
+                overflow: inherit;
+                svg{
+                    cursor: pointer;
+                }
             }
         }
     }

@@ -3,7 +3,7 @@
 import {useCallback, useEffect} from 'react'
 // import { useDispatch, useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import actions from '../../redux/actions/actions'
+import actions from '../../../redux/actions/actions'
 // import { IToken } from '../../redux/store/token/types'
 // import { IStore } from '../../redux/store/types'
 // import qs from 'query-string'

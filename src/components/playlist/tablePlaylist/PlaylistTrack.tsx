@@ -29,9 +29,10 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,disabled,index,track,
     const handleToggleTrack = () => {
         if(playlist){
             const uri = track.track.uri
+            const contextUri = currentState.context?.uri
             const action = toggleTrack(currentState, uri)
             if(action === 'PLAY')
-                playTrack({accessToken,uris: [uri]})
+                playTrack({accessToken,contextUri, offset: {uri: uri}})
             else if(action === 'PAUSE')
                 pausePlayer({accessToken})
             else if(action === 'RESUME')
@@ -81,13 +82,4 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,disabled,index,track,
 export default PlaylistTrack
 
 const PlaylistTableRow = styled(playlisttablerow)`
-    div{
-        &:last-child{
-            overflow: inherit;
-
-            svg{
-                cursor: pointer;
-            }
-        }
-    }
 `

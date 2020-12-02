@@ -3,7 +3,7 @@ import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
 import { PlaylistTrack } from '../../../common/api/webapi/types'
 import { positionOptionsElement } from '../../../common/helpers/helperUI'
-import useTrackOptionsAction from '../../../common/hooks/useTrackOptionsActions'
+import useTrackOptionsAction from '../../../common/hooks/components/useTrackOptionsActions'
 import { Dropdown } from '../../../styles/style'
 import ContextPlaylist from '../ContextPlaylist'
 

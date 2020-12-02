@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import {AddToPlaylistContext} from '../providers/AddToPlaylistProvider'
+import {AddToPlaylistContext} from '../../providers/AddToPlaylistProvider'
 
 const useAddToPlaylist = () => {
     const {addToPlaylist} = useContext(AddToPlaylistContext)

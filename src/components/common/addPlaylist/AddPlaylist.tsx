@@ -9,8 +9,8 @@ import { Button, colors, metrics, PlaylistItem, Playlists, Title} from '../../..
 import Modal from '../modal/Modal'
 import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import {X as Close} from 'react-feather'
-import useModal from '../../../common/hooks/useModal'
-import useAlert from '../../../common/hooks/useAlert'
+import useModal from '../../../common/hooks/components/useModal'
+import useAlert from '../../../common/hooks/components/useAlert'
 import { AddToPlaylistContext } from '../../../common/providers/AddToPlaylistProvider'
 
 const AddPlaylist = () => {

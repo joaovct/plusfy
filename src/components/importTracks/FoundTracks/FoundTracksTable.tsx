@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Clock } from 'react-feather'
 import styled from 'styled-components'
-import useAddToPlaylist from '../../../common/hooks/useAddToPlaylist'
+import useAddToPlaylist from '../../../common/hooks/components/useAddToPlaylist'
 import { PlaylistTable, PlaylistTableRow, Button, colors, metrics } from '../../../styles/style'
 import ContextImportTracks from '../ContextImportTracks'
 import FoundTrackRow from './FoundTrackRow'

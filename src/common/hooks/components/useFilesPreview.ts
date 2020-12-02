@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
-import { StatusImport } from "../../components/importTracks/types"
-import { compareTwoFiles, getTrackFileMetaData, preventRepeatedFile } from "../helpers/helperImportTracks"
+import { StatusImport } from "../../../components/importTracks/types"
+import { compareTwoFiles, getTrackFileMetaData, preventRepeatedFile } from "../../helpers/helperImportTracks"
 
 export type FilePreview = {
     name: string

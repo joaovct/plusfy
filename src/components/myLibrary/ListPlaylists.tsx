@@ -113,6 +113,9 @@ const Label = styled.label`
         height: 24px;
         width: 24px;
         left: calc(40px - 16px);
+        *{
+            color: #000;
+        }
     }
 `
 
@@ -156,10 +159,8 @@ const IconStatus = styled.figure<{status: 'loading' | string}>`
     }
 `
 
-
-
 const Wrapper = styled.div`
-    margin: ${metrics.spacing5} 0 0 0;
+    margin: ${metrics.spacing3} 0 0 0;
 
     ${WrapperPlaylists} > figure{
         width: 100%;

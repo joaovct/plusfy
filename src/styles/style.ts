@@ -50,20 +50,19 @@ export const Text = styled.p`
 
 export const Input = styled.input`
     width: 100%;
-    padding: 16px 40px;
+    padding: 16px ${metrics.spacing5};
     border-radius: 24px;
     background: ${colors.border};
     font-size: 18px;
-    color: #fff;
-    @media(max-width: 768px){
-        font-size: 16px;
+    background: #fff;
+
+    &, *, &::placeholder{
+        color: #000;
+        font-weight: 500;
     }
 
-    &::placeholder{
-        font-size: 18px;
-        font-weight: 300;
-        color: #fff;
-        opacity: .39;
+    @media(max-width: 768px){
+        font-size: 16px;
     }
 `
 
@@ -340,120 +339,3 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
         }
     }
 `
-
-
-// export const TablePlaylist = styled.table`
-//     width: 100%;
-//     table-layout: fixed;
-    
-//     thead tr th,
-//     tbody tr td{
-//         font-size: 16px;
-//         text-align: left;
-//         vertical-align: middle;
-//         padding: 10px 15px;
-//         color: ${colors.gray};
-
-//         &:first-child{
-//             --width-first-child: 60px;
-//             width: var(--width-first-child);
-//             font-weight: 500;
-//             text-align: center;
-//         }
-//         &:nth-child(5){
-//             width: 157px;
-//         }
-//         &:nth-child(6){
-//             width: 70px;
-//         }
-//         &:nth-child(7){
-//             width: 50px;
-//         }
-
-//         @media(max-width: 991px){
-//             &:nth-child(5){
-//                 display: none;
-//             }
-//         }
-//         @media(max-width: 768px){
-//             &:nth-child(6){
-//                 display: none;
-//             }
-//         }
-//         @media(max-width: 576px){
-//             &:nth-child(4){
-//                 display: none;
-//             }
-//         }
-//     }
-
-//     thead tr th{
-//         font-weight: 600;
-//         text-transform: uppercase;
-
-//         svg{
-//             stroke: ${colors.gray};
-//         }
-//     }
-    
-//     tbody tr td{
-//         overflow: hidden;
-//         white-space: nowrap;
-//         text-overflow: ellipsis;
-
-//         &:nth-of-type(2){
-//             width: 100%;
-//             display: flex;
-//             align-items: center;
-
-//             img{
-//                 height: 38px;
-//                 width: 38px;
-//                 object-fit: contain;
-//                 margin: 0 ${metrics.spacing3} 0 0;
-//             }
-//         }
-//     }
-// `
-
-// export const TablePlaylistRow = styled.tr<{isPlaying: boolean}>`
-//     td{
-//         transition: opacity .25s;
-//     }
-
-//     td:first-child{
-//         position: relative;
-
-//         span{
-//             width: 100%;
-//             display: inline-block;
-//         }
-
-//         svg{
-//             --size-icon-play: 18px;
-//             cursor: pointer;
-//             opacity: 0;
-//             height: var(--size-icon-play);
-//             width: var(--size-icon-play);
-//             position: absolute;
-//             margin: 0 auto;
-//             left: calc( var(--width-first-child) / 2 - var(--size-icon-play) / 2 ) ;
-//             fill: #fff;
-//         }
-//     }
-
-//     td:first-child span,
-//     td:nth-child(2){
-//         color: ${({isPlaying: thisIsPlaying}) => thisIsPlaying ? `${colors.primary}` : '#fff'};
-//         transition: color .25s;
-//     }
-
-//     td:last-child{
-//         overflow: visible;
-//         position: relative;
-
-//         svg{
-//             cursor: pointer;
-//         }
-//     }
-// `

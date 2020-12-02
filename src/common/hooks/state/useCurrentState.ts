@@ -1,13 +1,13 @@
 import {useEffect, useCallback} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import actions from '../../redux/actions/actions'
-import { isTrackDisabled } from '../api/disabledTracks/disabledTracks'
-import { handleNextPlayer } from '../helpers/helperWebAPI'
-import { getPlayer } from '../api/webapi/player'
-import { IToken } from '../../redux/store/token/types'
-import { IStore } from '../../redux/store/types'
-import { IUser } from '../../redux/store/user/types'
-import { isUserConnected } from '../helpers/helperUserAccess'
+import actions from '../../../redux/actions/actions'
+import { isTrackDisabled } from '../../api/disabledTracks/disabledTracks'
+import { handleNextPlayer } from '../../helpers/helperWebAPI'
+import { getPlayer } from '../../api/webapi/player'
+import { IToken } from '../../../redux/store/token/types'
+import { IStore } from '../../../redux/store/types'
+import { IUser } from '../../../redux/store/user/types'
+import { isUserConnected } from '../../helpers/helperUserAccess'
 
 const useCurrentState = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)

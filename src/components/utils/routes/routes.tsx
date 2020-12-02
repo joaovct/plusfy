@@ -7,6 +7,7 @@ import NotFound from '../../notFound/NotFound'
 import Building from '../../building/Building'
 import ImportTracks from '../../importTracks/ImportTracks'
 import { renderLanding, renderLogin, renderLogoff, renderPrivateRoute } from '../../../common/helpers/helperRouter'
+import Search from '../../search/Search'
 
 const Routes = () => (
     <BrowserRouter>
@@ -15,6 +16,8 @@ const Routes = () => (
             <Route exact path="/login" render={renderLogin}/>
             <Route exact path="/logoff" render={renderLogoff} />
             <Route exact path="/home" render={() => renderPrivateRoute(Home)}/>
+            <Route exact path="/search" render={() => renderPrivateRoute(Search)}/>
+            <Route exact path="/search/:q" render={() => renderPrivateRoute(Search)}/>
             <Route exact path="/my-library" render={() => renderPrivateRoute(MyLibrary)}/>
             <Route exact path="/playlist/:id" render={() => renderPrivateRoute(Playlist)}/>
             <Route exact path="/import-tracks" render={() => renderPrivateRoute(ImportTracks)}/>
