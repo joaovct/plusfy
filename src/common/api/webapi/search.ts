@@ -1,12 +1,14 @@
 import api from "../api"
 import { encodeSpaces, getHeaders } from "../../helpers/helperWebAPI"
-import { Search } from "./types"
+import { Search, SearchNextItems, SearchResult } from "./types"
+import qs from 'query-string'
 
 const searchItem: Search = async (accessToken, query, type, configs) => {
     query = encodeSpaces(query)
-    let data = {}
+    let data: SearchResult = {}
     try{
-        const response = await api.spotify.get(`/search?q=${query}&type=${type}`, {params: configs, ...getHeaders(accessToken)})
+        const queryParameters = qs.stringify(configs || {})
+        const response = await api.spotify.get<SearchResult>(`/search?q=${query}&type=${type}${queryParameters}`, {...getHeaders(accessToken)})
         data = response.data
     }finally{
         return data
@@ -14,3 +16,15 @@ const searchItem: Search = async (accessToken, query, type, configs) => {
 }
 
 export default searchItem
+
+export const searchNextItems: SearchNextItems = async (accessToken, nextURL, configs) => {
+    let data: SearchResult = {}
+    try{
+        let [url, defaultParameters] = nextURL.split('?')
+        const queryParameters = qs.stringify({...qs.parse(defaultParameters), ...configs} || {})
+        const response = await api.spotify.get<SearchResult>(`${url}?${queryParameters}`, {...getHeaders(accessToken)})
+        data = response.data
+    }finally{
+        return data
+    }
+}

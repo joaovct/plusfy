@@ -268,10 +268,11 @@ export interface IPlayerDevice{
 }
 
 
-type SearchTypes = 'album' | 'artist' | 'playlist' | 'track' | 'show' | 'episode'
-type SearchConfigs = {market: string, limit: number, offset: number, include_external: 'audio'}
+export type SearchTypes = 'album' | 'artist' | 'playlist' | 'track' | 'show' | 'episode'
+type SearchConfigs = {market?: string, limit?: number, offset?: number, include_external?: 'audio'}
 
-type SearchResult = {
+export type SearchResult = {
+    [key: string]: Albums | Tracks | Playlists | Artists | Shows | Episodes | undefined
     albums?: Albums
     tracks?: Tracks
     playlists?: Playlists
@@ -281,3 +282,5 @@ type SearchResult = {
 }
 
 export type Search = (accessToken: string, query: string, type: SearchTypes, configs?: SearchConfigs) => Promise<SearchResult>
+
+export type SearchNextItems = (accessToken: string, nextURL: string, configs?: SearchConfigs) => Promise<SearchResult>

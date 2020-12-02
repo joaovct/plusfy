@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Page, Container, Input as input, metrics} from '../../styles/style'
+import { Page, Container, Input as input, metrics, Text} from '../../styles/style'
 import {Search as SearchIcon} from 'react-feather'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router-dom'
 import SearchTracks from './searchTracks/SearchTracks'
+
 
 let timeout = 0
 
@@ -36,14 +37,17 @@ const Search = () => {
                         placeholder="Procurar por músicas, albuns, playlists..."
                     />
                 </Label>
-                <Main>
+                <Main emptyQuery={query ? false : true}>
                     {
                         query ? 
                         <>
                             <SearchTracks query={query}/>
                         </> :
                         <>
-                            <h3>Pesquise para ver os resultados</h3>
+                            <EmptySearchMessage>
+                                <SearchIcon/>
+                                <Text>Busque por músicas, albuns, playlists...</Text>
+                            </EmptySearchMessage>
                         </>
                     }
                 </Main>
@@ -52,8 +56,33 @@ const Search = () => {
     )
 }
 
-const Main = styled.main`
+const EmptySearchMessage = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+    margin: ${metrics.spacing3} 0 0 0;
+    opacity: .9;
+
+    svg{
+        height: 55px;
+        width: 55px;
+    }
+    ${Text}{
+        text-align: center;
+        max-width: 600px;
+    }
+`
+
+const Main = styled.main<{emptyQuery: boolean}>`
     padding: ${metrics.spacing4} 0 0 0;
+    ${({emptyQuery}) => emptyQuery ?
+    `
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 50vh;
+    ` : ''}
 `
 
 const Input = styled(input)`

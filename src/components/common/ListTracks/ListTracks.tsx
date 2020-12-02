@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {PlaylistTable as playlisttable, PlaylistTableRow} from '../../../styles/style'
 import {Clock} from 'react-feather'
 import { ListTracksProps } from './types'
@@ -8,10 +8,15 @@ import ContextListTracks from './ContextListTracks'
 import useListTracks from '../../../common/hooks/components/useListTracks'
 
 const ListTracks: React.FC<ListTracksProps> = ({tracks}) => {
-    const {toggleOptions, handleToggleOption, savedTracks, updateSavedTracks} = useListTracks(tracks)
+    const listTracks = useListTracks()
 
+    useEffect(() => {
+        listTracks.updateQuantitySavedTracks(tracks)
+    //eslint-disable-next-line
+    },[tracks])
+    
     return(
-        <ContextListTracks.Provider value={{handleToggleOption, toggleOptions, savedTracks, updateSavedTracks}}>
+        <ContextListTracks.Provider value={{...listTracks}}>
             <PlaylistTable qntColumns={6}>
                 <PlaylistTableRow>
                     <div>#</div>

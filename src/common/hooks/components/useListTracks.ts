@@ -6,8 +6,18 @@ import { IStore } from "../../../redux/store/types"
 import { getSavedTracks } from "../../api/webapi/library"
 import {SavedTracks, Track} from '../../api/webapi/types'
 
-const useListTracks = (tracks: Track[]) => {
-    const [toggleOptions, setToggleOptions] = useState(Array(tracks.length).fill(false))
+type UpdateQuantitySavedTracks = (tracks: Track[]) => void
+
+type Hook = () => {
+    toggleOptions: boolean[]
+    handleToggleOption: HandleToggleOption
+    savedTracks: SavedTracks | null
+    updateSavedTracks: () => void
+    updateQuantitySavedTracks: UpdateQuantitySavedTracks
+}
+
+const useListTracks: Hook = () => {
+    const [toggleOptions, setToggleOptions] = useState<boolean[]>([])
     const [savedTracks, setSavedTracks] = useState<SavedTracks | null>(null)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
 
@@ -20,13 +30,18 @@ const useListTracks = (tracks: Track[]) => {
         setSavedTracks(response)
     },[accessToken])
 
+    const updateQuantitySavedTracks: UpdateQuantitySavedTracks = (tracks) => {
+        setToggleOptions(Array(tracks.length).fill(false))
+    }
+
     useEffect(() => {
         updateSavedTracks()
     },[updateSavedTracks])
 
     return{
         toggleOptions, handleToggleOption,
-        savedTracks, updateSavedTracks
+        savedTracks, updateSavedTracks,
+        updateQuantitySavedTracks
     }
 }
 

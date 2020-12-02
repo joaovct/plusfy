@@ -31,7 +31,6 @@ const useCurrentState = () => {
     },[accessToken, dispatch, userId])
 
     useEffect(() => {
-        // let mounted = true
         if(accessToken){
             let interval = setInterval(async () => {
                 if(isUserConnected().connected)
@@ -40,9 +39,8 @@ const useCurrentState = () => {
                     clearInterval(interval)
             }, 1000)
         }
-        // return () => {mounted = false}
     //eslint-disable-next-line
-    },[accessToken, handleGetPlayer])
+    },[accessToken])
 }
 
 export default useCurrentState

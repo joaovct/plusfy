@@ -17,7 +17,7 @@ const Routes = () => (
             <Route exact path="/logoff" render={renderLogoff} />
             <Route exact path="/home" render={() => renderPrivateRoute(Home)}/>
             <Route exact path="/search" render={() => renderPrivateRoute(Search)}/>
-            <Route exact path="/search/:q" render={() => renderPrivateRoute(Search)}/>
+            <Route path="/search/:q" render={() => renderPrivateRoute(Search)}/>
             <Route exact path="/my-library" render={() => renderPrivateRoute(MyLibrary)}/>
             <Route exact path="/playlist/:id" render={() => renderPrivateRoute(Playlist)}/>
             <Route exact path="/import-tracks" render={() => renderPrivateRoute(ImportTracks)}/>

@@ -1,31 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import searchItem from '../../../common/api/webapi/search'
 import { Track } from '../../../common/api/webapi/types'
-import { IToken } from '../../../redux/store/token/types'
-import { IStore } from '../../../redux/store/types'
-import { Title, metrics } from '../../../styles/style'
+import { Title, Text, metrics, colors } from '../../../styles/style'
 import { ChildProps } from '../types'
 import ListTracks from '../../common/ListTracks/ListTracks'
+import {Switch, Route, Link} from 'react-router-dom'
+import useSearchItems from '../../../common/hooks/components/useSearchItems'
 
 const SearchTracks: React.FC<ChildProps> = ({query}) => {
-    const [tracks, setTracks] = useState<Track[]>([])
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const isMounted = useRef(true)
+    const {items: tracks, nextURL, setQuery, loadMoreItems} = useSearchItems<Track>()
 
     useEffect(() => {
-        return () => {isMounted.current = false}
-    },[])
-
-    useEffect(() => {
-        fetchData()
-        async function fetchData(){
-            const data = await searchItem(accessToken, query,'track')
-            if(data.tracks && isMounted.current)
-                setTracks([...data.tracks.items.slice(0, 5)])
-        }
-    },[tracks, accessToken, query])
+        setQuery(query)
+    },[setQuery, query])
 
     return(
         <>
@@ -33,9 +20,32 @@ const SearchTracks: React.FC<ChildProps> = ({query}) => {
                 tracks.length ?
                 <Content>
                     <Title>Músicas</Title>
-                    <WrapperTracks>
-                        <ListTracks tracks={tracks.slice(0,5)}/>
-                    </WrapperTracks>
+                    <Switch>
+                        <Route exact path={`/search/:q/tracks`}>
+                            <WrapperTracks>
+                                <ListTracks tracks={tracks}/>
+                            </WrapperTracks>
+                            {
+                                nextURL ?
+                                <SeeMore>
+                                    <span onClick={loadMoreItems}>
+                                        Ver mais
+                                    </span>
+                                </SeeMore>
+                                : <></>
+                            }
+                        </Route>
+                        <Route path={`/search/:q`}>
+                            <WrapperTracks>
+                                <ListTracks tracks={tracks.slice(0,5)}/>
+                            </WrapperTracks>
+                            <SeeMore>
+                                <Link to={`/search/${query}/tracks`}>
+                                    Ver tudo
+                                </Link>
+                            </SeeMore>
+                        </Route>
+                    </Switch>
                 </Content>
                 : <></>
             }
@@ -44,6 +54,27 @@ const SearchTracks: React.FC<ChildProps> = ({query}) => {
 }
 
 export default SearchTracks
+
+const SeeMore = styled(Text)`
+    display: flex;
+    justify-content: center;
+    margin: ${metrics.spacing3} 0 0 0;
+
+    a, span{
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: ${colors.gray};
+        cursor: pointer;
+        transition: color .25s;
+        text-decoration: underline;
+
+        &:hover{
+            color: ${colors.secondary};
+        }
+    }
+`
 
 const WrapperTracks = styled.div`
     margin: ${metrics.spacing3} 0 0 0;
