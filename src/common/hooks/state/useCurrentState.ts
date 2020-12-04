@@ -14,33 +14,36 @@ const useCurrentState = () => {
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const dispatch = useDispatch()
 
-    const handleGetPlayer = useCallback(async () => {
-        const response = await getPlayer({accessToken})
-        
-        if(response){
-            const {data} = response
+    const handleUpdatePlayer = useCallback(async () => {
+        let interval = setInterval(() => {
+            if(isUserConnected().connected && userId){
+                updatePlayer()
+            }else{
+                clearInterval(interval)
+            }
+        },1000)
 
-            dispatch(actions.currentStateAction(data || {}))
-
-            const playlistUri = data.context?.uri || ''
-            const trackUri = data.item?.uri || ''
-
-            if(isTrackDisabled({userId, playlistUri, trackUri}) && data.context?.type === 'playlist' && trackUri)
-                handleNextPlayer(trackUri, accessToken)
+        async function updatePlayer(){
+            const response = await getPlayer({accessToken})
+            if(response){
+                const {data} = response
+    
+                dispatch(actions.currentStateAction(data || {}))
+    
+                const playlistUri = data.context?.uri || ''
+                const trackUri = data.item?.uri || ''
+                
+                if(isTrackDisabled({userId, playlistUri, trackUri}) && data.context?.type === 'playlist' && trackUri)
+                    handleNextPlayer(trackUri, accessToken)
+            }
         }
     },[accessToken, dispatch, userId])
 
     useEffect(() => {
         if(accessToken){
-            let interval = setInterval(async () => {
-                if(isUserConnected().connected)
-                    handleGetPlayer()
-                else
-                    clearInterval(interval)
-            }, 1000)
+            handleUpdatePlayer()
         }
-    //eslint-disable-next-line
-    },[accessToken])
+    },[accessToken, handleUpdatePlayer])
 }
 
 export default useCurrentState

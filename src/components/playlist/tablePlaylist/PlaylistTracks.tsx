@@ -38,6 +38,7 @@ const PlaylistTracks = () => {
                     {
                         playlist.tracks.items.map( (track, index) => {
                             const disabled = isTrackDisabled({userId, trackUri: track.track.uri, playlistUri: playlist.uri})
+                            // const disabled = index > 0 ? true : false
                             return(
                                 <PlaylistTrack
                                     key={`playlisttrack-${playlist.uri}-${track.track.uri}-${track.added_at}-${index}`}

@@ -29,10 +29,10 @@ const PlaylistTrack: React.FC<Icomponent> = ({currentState,disabled,index,track,
     const handleToggleTrack = () => {
         if(playlist){
             const uri = track.track.uri
-            const contextUri = currentState.context?.uri
+            const contextUri = playlist.uri
             const action = toggleTrack(currentState, uri)
             if(action === 'PLAY')
-                playTrack({accessToken,contextUri, offset: {uri: uri}})
+                playTrack({accessToken, contextUri, offset: {uri: uri}})
             else if(action === 'PAUSE')
                 pausePlayer({accessToken})
             else if(action === 'RESUME')
