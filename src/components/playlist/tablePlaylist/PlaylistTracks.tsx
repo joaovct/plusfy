@@ -1,59 +1,38 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useMemo } from 'react';
 import styled from 'styled-components';
-import { metrics, colors, Container, Page, PlaylistTable as playlisttable, PlaylistTableRow} from '../../../styles/style';
-import {Calendar, Clock} from 'react-feather'
-import PlaylistTrack from './PlaylistTrack';
-import { useSelector } from 'react-redux';
-import { IStore } from '../../../redux/store/types';
-import { ICurrentState } from '../../../redux/store/currentState/types';
-import { isTrackDisabled } from '../../../common/api/disabledTracks/disabledTracks';
-import { IUser } from '../../../redux/store/user/types';
+import { metrics, colors, Container, Page, PlaylistTableRow} from '../../../styles/style';
 import ContextPlaylist from '../ContextPlaylist';
+import ListTracks from '../../common/ListTracks/ListTracks';
+import { AdditionalColumn } from '../../common/ListTracks/types';
+import { Calendar } from 'react-feather';
+import { formatAddedAt } from '../../../common/helpers/helperPlaylistTable';
 
 const PlaylistTracks = () => {
     const {playlist} = useContext(ContextPlaylist)
-    const [showOptions, setShowOptions] = useState<Array<Boolean>>(Array(playlist ? playlist.tracks.items.length : 0).fill(false))
-    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
-    const {id: userId} = useSelector<IStore, IUser>(store => store.user)
 
-    const handleShowOptions = useCallback((index: number) =>
-        setShowOptions(old => [...old.map( (_, n) => n === index ? !old[n] : false)])
-    ,[setShowOptions])
+    const tracks = useMemo(() => {
+        return playlist?.tracks.items.map(item => item.track) || []
+    },[playlist])
+
+    const additionalColumns = useMemo<AdditionalColumn[]>(() => [
+        {
+            headerContent: <Calendar/>,
+            bodyContent: playlist?.tracks.items.map(item => formatAddedAt(item.added_at)) || []
+        }
+    ],[playlist])
 
     return (
         <ComponentContent>
             <Container>
-                {playlist
-                ?
-                <PlaylistTable qntColumns={7}>
-                    <PlaylistTableRow>
-                        <div>#</div>
-                        <div>Título</div>
-                        <div>Artista</div>
-                        <div>Álbum</div>
-                        <div><Calendar/></div>
-                        <div><Clock/></div>
-                        <div></div>
-                    </PlaylistTableRow>
-                    {
-                        playlist.tracks.items.map( (track, index) => {
-                            const disabled = isTrackDisabled({userId, trackUri: track.track.uri, playlistUri: playlist.uri})
-                            // const disabled = index > 0 ? true : false
-                            return(
-                                <PlaylistTrack
-                                    key={`playlisttrack-${playlist.uri}-${track.track.uri}-${track.added_at}-${index}`}
-                                    index={index}
-                                    track={track}
-                                    disabled={disabled}
-                                    currentState={currentState}
-                                    showOptions={showOptions}
-                                    handleShowOptions={handleShowOptions}
-                                />
-                            )
-                        })
-                    }
-                </PlaylistTable> 
-                : <></>}
+                {
+                    playlist ?
+                        <ListTracks
+                            tracks={tracks}
+                            additionalColumns={additionalColumns}
+                            additionalCSS={ListTrackCSS}
+                        />
+                    : <></>
+                }
             </Container>
         </ComponentContent>
     )
@@ -61,19 +40,22 @@ const PlaylistTracks = () => {
 
 export default PlaylistTracks
 
-const PlaylistTable = styled(playlisttable)`
+const ListTrackCSS = `
     ${PlaylistTableRow}{
         div{
             &:nth-child(2){
                 flex-grow: 5;
             }
-            &:nth-child(5){
+            &:nth-child(6){
+                order: 5;
                 max-width: 165px;
             }
-            &:nth-child(6){
+            &:nth-child(5){
+                order: 6;
                 max-width: 75px;
             }
             &:nth-child(7){
+                order: 7;
                 max-width: 55px;
                 overflow: inherit;
                 svg{

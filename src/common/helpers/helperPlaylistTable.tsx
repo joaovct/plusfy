@@ -7,7 +7,9 @@ export const isPlayingTrack = (currentState: ICurrentState, trackUri: string) =>
     return false
 }
 
-export const toggleTrack = (currentState: ICurrentState, trackUri: string): "PLAY" | "PAUSE" | "RESUME" => {
+export type ToggleTrackAction = "PLAY" | "PAUSE" | "RESUME"
+
+export const toggleTrack = (currentState: ICurrentState, trackUri: string): ToggleTrackAction => {
     if(isPlayingTrack(currentState, trackUri) && currentState.is_playing)
         return "PAUSE"
     else if(isPlayingTrack(currentState, trackUri))

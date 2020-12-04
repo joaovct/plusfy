@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { IPrivateRoute } from '../routes/types'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../redux/store/types'
@@ -16,8 +16,8 @@ import AddPlaylist from '../../common/addPlaylist/AddPlaylist'
 import AlertProvider from '../../../common/providers/AlertProvider'
 import Alerts from '../../common/alerts/Alerts'
 
-const PrivateRoute: FunctionComponent<IPrivateRoute> = ({Component, accessToken, refreshToken}) => {
-    useDispatchToken(accessToken, refreshToken)
+const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshToken, expiresIn}) => {
+    useDispatchToken(accessToken, refreshToken, expiresIn)
     usePlaybackSDK()
     useCurrentState()
     useDispatchUser()

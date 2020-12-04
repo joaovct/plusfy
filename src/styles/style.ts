@@ -231,7 +231,7 @@ export const PlaylistItem = styled.li`
     }
 `
 
-export const PlaylistTable = styled.ol<{qntColumns: number}>`
+export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string}>`
     display: flex;
     flex-flow: column nowrap;
     --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 5};

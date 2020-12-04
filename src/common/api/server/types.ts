@@ -1,3 +1,11 @@
+export interface GetNewAccessToken{
+        (refreshToken: string): Promise<GetNewAccessTokenResponse>
+}
+
+export interface GetNewAccessTokenResponse{
+    access_token: string
+}
+
 export interface FindTrack{
     (files: Array<File>, callback: (results: Array<FindTrackResult>) => void): void
 }

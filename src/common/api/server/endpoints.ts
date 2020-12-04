@@ -1,5 +1,12 @@
 import api from "../api";
-import { FindTrack, FindTrackResponse } from "./types";
+import { GetNewAccessToken, GetNewAccessTokenResponse, FindTrack, FindTrackResponse } from "./types";
+import qs from 'query-string'
+
+export const getNewAccessToken: GetNewAccessToken = async (refreshToken) => {
+    const queryParams = qs.stringify({refresh_token: refreshToken})
+    const response = await api.server.get<GetNewAccessTokenResponse>(`/refresh_token?${queryParams}`)
+    return response.data || {access_token: ''}
+}
 
 export const findTrack: FindTrack = (files, callback) => {
     const formData = new FormData() 

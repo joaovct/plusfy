@@ -7,8 +7,9 @@ import TrackRow from './TrackRow/TrackRow'
 import ContextListTracks from './ContextListTracks'
 import useListTracks from '../../../common/hooks/components/useListTracks'
 
-const ListTracks: React.FC<ListTracksProps> = ({tracks}) => {
+const ListTracks: React.FC<ListTracksProps> = ({tracks, additionalColumns, additionalCSS}) => {
     const listTracks = useListTracks()
+    const qntColumns = 6 + (additionalColumns?.length || 0)
 
     useEffect(() => {
         listTracks.updateQuantitySavedTracks(tracks)
@@ -16,14 +17,19 @@ const ListTracks: React.FC<ListTracksProps> = ({tracks}) => {
     },[tracks])
     
     return(
-        <ContextListTracks.Provider value={{...listTracks}}>
-            <PlaylistTable qntColumns={6}>
+        <ContextListTracks.Provider value={{...listTracks, additionalColumns}}>
+            <PlaylistTable qntColumns={qntColumns} additionalCSS={additionalCSS}>
                 <PlaylistTableRow>
                     <div>#</div>
                     <div>Título</div>
                     <div>Artista</div>
                     <div>Álbum</div>
                     <div><Clock/></div>
+                    {
+                        additionalColumns?.map(column => (
+                            <div>{column.headerContent}</div>
+                        ))
+                    }
                     <div></div>
                 </PlaylistTableRow>
                 {
@@ -51,6 +57,8 @@ const PlaylistTable = styled(playlisttable)`
             }
         }
     }
+
+    ${({additionalCSS}) => additionalCSS}
 `
 
 export default ListTracks

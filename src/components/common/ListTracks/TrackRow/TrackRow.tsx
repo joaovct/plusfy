@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Track } from '../../../../common/api/webapi/types'
 import { formatArtistName, formatDuration, toggleTrack } from '../../../../common/helpers/helperPlaylistTable'
@@ -10,15 +10,18 @@ import { IToken } from '../../../../redux/store/token/types'
 import {Pause, Play} from 'react-feather'
 import emptyAlbumPhoto from '../../../../assets/empty-playlist-photo.svg'
 import TrackRowOptions from './TrackRowOptions'
+import ContextListTracks from '../ContextListTracks'
 
 interface TrackProps{
     track: Track
     index: number
+    additionalColumns?: string | JSX.Element 
 }
 
 const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
+    const {additionalColumns} = useContext(ContextListTracks)
 
     const handleToggleTrack = () => {
         const uri = track.uri || ''
@@ -54,6 +57,15 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
             <div>
                 {formatDuration(track.duration_ms)}
             </div>
+            {
+                additionalColumns ?
+                    additionalColumns.map(column => (
+                        <div>
+                            {column.bodyContent[index] || ''}
+                        </div>
+                    ))
+                : <></>
+            }
             <div>
                 <TrackRowOptions
                     track={track}

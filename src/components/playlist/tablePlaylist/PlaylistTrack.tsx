@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { IPlayer, PlaylistTrack as IPlaylistTrack} from '../../../common/api/webapi/types';
+import React, { useContext, memo } from 'react';
+import { PlaylistTrack as IPlaylistTrack} from '../../../common/api/webapi/types';
 import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import {Play, Pause} from 'react-feather'
 import { useSelector } from 'react-redux';
@@ -7,79 +7,69 @@ import { IStore } from '../../../redux/store/types';
 import { pausePlayer, resumePlayer, playTrack } from '../../../common/api/webapi/player';
 import { IToken } from '../../../redux/store/token/types'
 import TrackOptions from './TrackOptions'
-import { PlaylistTableRow as playlisttablerow } from '../../../styles/style';
+import { PlaylistTableRow } from '../../../styles/style';
 import ContextPlaylist from '../ContextPlaylist';
-import styled from 'styled-components';
-import { formatAddedAt, formatDuration, toggleTrack } from '../../../common/helpers/helperPlaylistTable';
+import { formatAddedAt, formatDuration, ToggleTrackAction } from '../../../common/helpers/helperPlaylistTable';
 
-
-interface Icomponent{
+interface PlaylistTrackProps{
     index: number
     track: IPlaylistTrack
     disabled: boolean
-    currentState: IPlayer
-    showOptions: Array<Boolean>
+    showOptions: Array<boolean>
     handleShowOptions: Function
+    toggleTrackAction: ToggleTrackAction
+    playingURI: string
 }
 
-const PlaylistTrack: React.FC<Icomponent> = ({currentState,disabled,index,track,showOptions,handleShowOptions}) => {
+const PlaylistTrack: React.FC<PlaylistTrackProps> = memo((props) => {
     const {playlist} = useContext(ContextPlaylist)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     
     const handleToggleTrack = () => {
         if(playlist){
-            const uri = track.track.uri
+            const uri = props.track.track.uri
             const contextUri = playlist.uri
-            const action = toggleTrack(currentState, uri)
-            if(action === 'PLAY')
+
+            if(props.toggleTrackAction === 'PLAY')
                 playTrack({accessToken, contextUri, offset: {uri: uri}})
-            else if(action === 'PAUSE')
+            else if(props.toggleTrackAction === 'PAUSE')
                 pausePlayer({accessToken})
-            else if(action === 'RESUME')
+            else if(props.toggleTrackAction === 'RESUME')
                 resumePlayer({accessToken}) 
         }
     }
 
     return (
-        <PlaylistTableRow uri={track.track.uri} playingUri={currentState.item?.uri} disabled={disabled}>
+        <PlaylistTableRow uri={props.track.track.uri} playingUri={props.playingURI} disabled={props.disabled}>
             <div onClick={handleToggleTrack}>
-                <span>{index + 1}</span>
+                <span>{props.index + 1}</span>
                 {
-                    toggleTrack(currentState, track.track?.uri || '') === 'PAUSE'
+                    props.toggleTrackAction === 'PAUSE'
                     ? <Pause/>
                     : <Play/>
                 }
             </div>
             <div>
-                <img src={track.track.album.images[0]?.url || emptyPlaylistPhoto} alt={`Album ${track.track.album.name}`}/>
-                <span>{track.track.name}</span>
+                <img src={props.track.track.album.images[0]?.url || emptyPlaylistPhoto} alt={`Album ${props.track.track.album.name}`}/>
+                <span>{props.track.track.name}</span>
             </div>
             <div>
-                {track.track.artists.map((artist, index: number) => `${index ? ', ' : ''}${artist.name}`)} 
+                {props.track.track.artists.map((artist, index: number) => `${index ? ', ' : ''}${artist.name}`)} 
             </div>
             <div>
-                {track.track.album.name} 
+                {props.track.track.album.name} 
             </div>
             <div>
-                {formatAddedAt(track.added_at)}
+                {formatAddedAt(props.track.added_at)}
             </div>
             <div>
-                {formatDuration(track.track.duration_ms)}
+                {formatDuration(props.track.track.duration_ms)}
             </div>
             <div>
-                <TrackOptions
-                    index={index}
-                    track={track}
-                    disabled={disabled}
-                    showOptions={showOptions}
-                    handleShowOptions={handleShowOptions}
-                />
+                <TrackOptions {...props} />
             </div>
         </PlaylistTableRow>
   )
-}
+})
 
 export default PlaylistTrack
-
-const PlaylistTableRow = styled(playlisttablerow)`
-`

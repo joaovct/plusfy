@@ -29,7 +29,7 @@ export const renderPrivateRoute = (Component: React.FC) => {
     const response = isUserConnected()
     return response.connected
     ? <Provider store={store}>
-        <PrivateRoute Component={Component} accessToken={response.accessToken} refreshToken={response.refreshToken}/>
+        <PrivateRoute Component={Component} {...response}/>
     </Provider>
     : <Redirect to="/" />
 }

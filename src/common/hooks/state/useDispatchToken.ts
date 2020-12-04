@@ -1,38 +1,27 @@
-// import Axios from 'axios'
-// import {useCallback, useEffect, useState} from 'react'
 import {useCallback, useEffect} from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../../redux/actions/actions'
-// import { IToken } from '../../redux/store/token/types'
-// import { IStore } from '../../redux/store/types'
-// import qs from 'query-string'
+import { IToken } from '../../../redux/store/token/types'
+import { IStore } from '../../../redux/store/types'
+import { getNewAccessToken } from '../../api/server/endpoints'
 
-const useDispatchToken = (accessToken: string, refreshToken: string) => {
-    const dispatch = useDispatch()
-    // const [timer, setTimer] = useState(0)
-    // const {accessToken: storedToken} = useSelector<IStore, IToken>(store => store.token)
+const useDispatchToken = (accessToken: string, refreshToken: string, expiresIn: number) => {
+    const dispatch = useDispatch() 
+    const {accessToken: token} = useSelector<IStore, IToken>(store => store.token)
 
-    const dispatchToken = useCallback( (accessToken: string, refreshToken: string) => {
-        if(accessToken && refreshToken) dispatch( actions.tokenAction(accessToken, refreshToken) )
-    },[dispatch])
+    const updateToken = useCallback(async () => {
+        const data = (await getNewAccessToken(refreshToken))
+        dispatch(actions.tokenAction(data.access_token, refreshToken))
+    },[refreshToken, dispatch])
 
     useEffect(() => {
-        dispatchToken(accessToken, refreshToken)
-    },[accessToken, refreshToken, dispatch, dispatchToken])
+        dispatch(actions.tokenAction(accessToken, refreshToken))
+        setInterval(() => {
+            updateToken()
+        }, expiresIn * 1000 - 100000)
+    },[accessToken, refreshToken, expiresIn, dispatch, updateToken])
 
-    // useEffect(() => {
-    //     if(storedToken){
-    //         if(timer) clearInterval(timer)
-    //         const interval = setInterval( () => {const body = qs.stringify({refresh_token: refreshToken})
-    //             Axios.get<{access_token: string}>(`${process.env.REACT_APP_SERVER_URL}/refresh_token?${body}`)
-    //                 .then( res => dispatchToken(res.data.access_token, refreshToken) )
-                
-    //         }, 3500000)
-    //         setTimer(interval)
-    //     }
-    // //eslint-disable-next-line
-    // },[storedToken, dispatchToken, refreshToken])
+    useEffect(() => console.log(token), [token])
 }
 
 export default useDispatchToken
