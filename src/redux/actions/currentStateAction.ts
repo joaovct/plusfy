@@ -1,12 +1,10 @@
-import { ICurrentState_action, ICurrentState, CURRENT_STATE } from '../store/currentState/types'
+import { IPlayer } from '../../common/api/webapi/types'
+import { ICurrentState_action, CURRENT_STATE } from '../store/currentState/types'
 
-const currentStateAction = (currentState: ICurrentState) => {
-    const actionReturn: ICurrentState_action = {
-        type: CURRENT_STATE,
-        payload: currentState
-    }
-    return actionReturn
-}
+const currentStateAction = (currentState: IPlayer): ICurrentState_action => ({
+    type: CURRENT_STATE,
+    payload: {...currentState}
+})
 
 export default currentStateAction
 

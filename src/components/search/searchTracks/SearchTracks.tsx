@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
 import { Title, Text, metrics, colors } from '../../../styles/style'
@@ -9,10 +9,15 @@ import useSearchItems from '../../../common/hooks/components/useSearchItems'
 
 const SearchTracks: React.FC<ChildProps> = ({query}) => {
     const {items: tracks, nextURL, setQuery, loadMoreItems} = useSearchItems<Track>()
+    const [firstFiveTracks, setFirstFiveTracks] = useState(tracks.slice(0, 5))
 
     useEffect(() => {
         setQuery(query)
     },[setQuery, query])
+
+    useEffect(() => {
+        setFirstFiveTracks([...tracks.slice(0,5)])
+    },[tracks])
 
     return(
         <>
@@ -37,7 +42,7 @@ const SearchTracks: React.FC<ChildProps> = ({query}) => {
                         </Route>
                         <Route path={`/search/:q`}>
                             <WrapperTracks>
-                                <ListTracks tracks={tracks.slice(0,5)}/>
+                                <ListTracks tracks={firstFiveTracks}/>
                             </WrapperTracks>
                             <SeeMore>
                                 <Link to={`/search/${query}/tracks`}>

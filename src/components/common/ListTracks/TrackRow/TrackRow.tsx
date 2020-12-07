@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { memo, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Track } from '../../../../common/api/webapi/types'
 import { formatArtistName, formatDuration, toggleTrack } from '../../../../common/helpers/helperPlaylistTable'
@@ -11,6 +11,8 @@ import {Pause, Play} from 'react-feather'
 import emptyAlbumPhoto from '../../../../assets/empty-playlist-photo.svg'
 import TrackRowOptions from './TrackRowOptions'
 import ContextListTracks from '../ContextListTracks'
+import { isTrackDisabled } from '../../../../common/api/disabledTracks/disabledTracks'
+import { IUser } from '../../../../redux/store/user/types'
 
 interface TrackProps{
     track: Track
@@ -21,13 +23,18 @@ interface TrackProps{
 const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const {additionalColumns} = useContext(ContextListTracks)
+    const {id: userId} = useSelector<IStore, IUser>(store => store.user)
+    const {additionalColumns, contextUri} = useContext(ContextListTracks)
+    const isDisabled = isTrackDisabled({userId, trackURI: track.uri, playlistURI: contextUri || ''})
 
     const handleToggleTrack = () => {
         const uri = track.uri || ''
         const action = toggleTrack(currentState, uri)
         if(action === 'PLAY')
-            playTrack({accessToken,uris: [uri]})
+            if(contextUri)
+                playTrack({accessToken,contextUri, offset: {uri: uri}})
+            else
+                playTrack({accessToken,contextUri, uris: [uri]})
         else if(action === 'PAUSE')
             pausePlayer({accessToken})
         else if(action === 'RESUME')
@@ -35,7 +42,7 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     }
 
     return(
-        <PlaylistTableRow uri={track.uri} playingUri={currentState?.item?.uri}>
+        <PlaylistTableRow uri={track.uri} playingUri={currentState?.item?.uri} disabled={isDisabled}>
             <div onClick={handleToggleTrack}>
                 <span>{index + 1}</span>
                 {
@@ -59,8 +66,8 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
             </div>
             {
                 additionalColumns ?
-                    additionalColumns.map(column => (
-                        <div>
+                    additionalColumns.map((column, index) => (
+                        <div key={`trackrowcolumnbody-${index}`}>
                             {column.bodyContent[index] || ''}
                         </div>
                     ))
@@ -76,4 +83,4 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     )
 }
 
-export default TrackRow
+export default memo(TrackRow)

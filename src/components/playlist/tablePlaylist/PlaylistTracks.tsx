@@ -1,38 +1,24 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { metrics, colors, Container, Page, PlaylistTableRow} from '../../../styles/style';
-import ContextPlaylist from '../ContextPlaylist';
+import usePlaylistTracks from '../../../common/hooks/components/playlist/usePlaylistTracks';
+import { metrics, colors, Container, Page, PlaylistTableRow, Dropdown} from '../../../styles/style';
 import ListTracks from '../../common/ListTracks/ListTracks';
-import { AdditionalColumn } from '../../common/ListTracks/types';
-import { Calendar } from 'react-feather';
-import { formatAddedAt } from '../../../common/helpers/helperPlaylistTable';
+import ContextPlaylist from '../ContextPlaylist';
 
 const PlaylistTracks = () => {
     const {playlist} = useContext(ContextPlaylist)
-
-    const tracks = useMemo(() => {
-        return playlist?.tracks.items.map(item => item.track) || []
-    },[playlist])
-
-    const additionalColumns = useMemo<AdditionalColumn[]>(() => [
-        {
-            headerContent: <Calendar/>,
-            bodyContent: playlist?.tracks.items.map(item => formatAddedAt(item.added_at)) || []
-        }
-    ],[playlist])
+    const {tracks, additionalColumns, additionalOptions} = usePlaylistTracks()
 
     return (
         <ComponentContent>
             <Container>
-                {
-                    playlist ?
-                        <ListTracks
-                            tracks={tracks}
-                            additionalColumns={additionalColumns}
-                            additionalCSS={ListTrackCSS}
-                        />
-                    : <></>
-                }
+                <ListTracks
+                    tracks={tracks}
+                    additionalColumns={additionalColumns}
+                    additionalTrackRowOptions={additionalOptions}
+                    additionalCSS={ListTrackCSS}
+                    contextUri={playlist?.uri}
+                />
             </Container>
         </ComponentContent>
     )
@@ -60,6 +46,12 @@ const ListTrackCSS = `
                 overflow: inherit;
                 svg{
                     cursor: pointer;
+                }
+
+                ${Dropdown}{
+                    li:nth-child(2){
+                        display: none;
+                    }
                 }
             }
         }

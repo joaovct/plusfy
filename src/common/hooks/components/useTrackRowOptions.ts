@@ -52,7 +52,7 @@ const useTrackRowOptions: Hook = ({track, index}) => {
         handleToggleOption(index)
         const res = await addToQueue({accessToken, uri: track.uri})
         if(res?.status === 204)
-            createAlert('success','Música adicionada à fila 🎶')
+            createAlert('normal','Música adicionada à fila 🎶')
     }
 
     useEffect(() => {

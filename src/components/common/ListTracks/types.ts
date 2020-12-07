@@ -1,12 +1,18 @@
-import { FlattenInterpolation, FlattenSimpleInterpolation } from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
 import { SavedTracks } from '../../../common/api/webapi/types'
 
 export interface ListTracksProps{
     tracks: Track[]
+    contextUri?: string
     additionalColumns?: AdditionalColumn[]
     additionalCSS?: string
-    contextUri?: string
+    additionalTrackRowOptions?: AdditionalTrackRowOption[]
+}
+
+export interface AdditionalTrackRowOption{
+    content: string | JSX.Element
+    onClick: (track: Track, index: number) => void
+    condition?: (track: Track, index: number) => void
 }
 
 export interface AdditionalColumn{
@@ -19,7 +25,9 @@ export interface ContextListTracksProps{
     toggleOptions: boolean[]
     savedTracks: SavedTracks | null
     updateSavedTracks: () => void
+    contextUri?: string
     additionalColumns?: AdditionalColumn[]
+    additionalTrackRowOptions?: AdditionalTrackRowOption[]
 }
 
 export type HandleToggleOption = (index: number) => void

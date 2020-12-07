@@ -225,7 +225,7 @@ export interface Iimage{
 
 export interface IPlayer{
     timestamp?: number
-    progress_ms?: boolean
+    progress_ms?: number | null
     is_playing?: boolean
     currently_playing_type?: string
     actions?: {

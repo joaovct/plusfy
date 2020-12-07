@@ -17,7 +17,7 @@ const useSearchItems: Hook = <T>() => {
     const [query, setQuery] = useState('')
     const [nextURL, setNextURL] = useState<string>('')
     const isMounted = useRef(true)
-    
+
     useEffect(() => {
         return () => {isMounted.current = false}
     },[])

@@ -4,7 +4,7 @@ export const CURRENT_STATE = 'CURRENT_STATE'
 
 export interface ICurrentState_action{
     type: string
-    payload: IPlayer
+    payload: ICurrentState
 }
 
-export interface ICurrentState extends IPlayer{}
+export interface ICurrentState extends Omit<IPlayer, 'progress_ms'>{}

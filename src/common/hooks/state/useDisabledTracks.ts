@@ -6,8 +6,8 @@ import { IStore } from '../../../redux/store/types'
 import { IUser } from '../../../redux/store/user/types'
 
 interface Iaction{
-    action: string
-    playlistUri: string
+    action: 'enable' | 'disable'
+    playlistURI: string
     uri: string
 }
 
@@ -20,13 +20,13 @@ const useDisabledTracks = () => {
             dispatch(actions.disabledTracksAction( initDisabledTracks({userId}) ))
     },[userId, dispatch])
 
-    const action = useCallback(({action, playlistUri, uri}: Iaction) => {
+    const action = useCallback(({action, playlistURI: playlistUri, uri}: Iaction) => {
         if(userId){
             switch(action){
-                case 'set':
+                case 'disable':
                     setDisabledTrack({playlistUri, uri, userId})
                     break
-                case 'delete':
+                case 'enable':
                     deleteDisabledTrack({playlistUri, uri, userId})
                     break
             }

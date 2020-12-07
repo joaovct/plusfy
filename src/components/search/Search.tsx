@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router-dom'
 import SearchTracks from './searchTracks/SearchTracks'
 
-
 let timeout = 0
 
 const Search = () => {

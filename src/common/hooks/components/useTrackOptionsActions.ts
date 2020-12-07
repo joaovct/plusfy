@@ -53,14 +53,14 @@ const useTrackOptionsAction = ({playlist, track, index, handleShowOptions}: IPro
     const actionEnableTrack = useCallback(() => {
         if(playlist){
             handleShowOptions(index)
-            setTimeout(() => action({action: 'delete', playlistUri: playlist.uri, uri: track.uri}) ,250)
+            setTimeout(() => action({action: 'enable', playlistURI: playlist.uri, uri: track.uri}) ,250)
         }
     },[action, playlist, track, handleShowOptions, index])
 
     const actionDisableTrack = useCallback(() => {
         if(playlist){
             handleShowOptions(index)
-            setTimeout(() => action({action: 'set', playlistUri: playlist.uri, uri: track.uri}) ,250)
+            setTimeout(() => action({action: 'disable', playlistURI: playlist.uri, uri: track.uri}) ,250)
         }
     },[action, playlist, track, handleShowOptions, index])
 

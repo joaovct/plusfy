@@ -53,15 +53,15 @@ export const deleteDisabledTrack = ({userId, playlistUri, uri}: IdeleteDisableTr
 }
 
 interface IisTrackDisabled extends Idisable{
-    trackUri: string
-    playlistUri: string
+    trackURI: string
+    playlistURI: string
 }
 
-export const isTrackDisabled = ({userId, trackUri, playlistUri}: IisTrackDisabled) => {
+export const isTrackDisabled = ({userId, trackURI, playlistURI}: IisTrackDisabled) => {
     const disabledTracks = getDisabledTracks({userId})
-    const disabledPlaylist = disabledTracks.playlists?.find(disabledPlaylist => disabledPlaylist.uri === playlistUri)
+    const disabledPlaylist = disabledTracks.playlists?.find(disabledPlaylist => disabledPlaylist.uri === playlistURI)
     if(disabledPlaylist){
-        if(disabledPlaylist.tracks.find(disabledTrack => disabledTrack === trackUri)){
+        if(disabledPlaylist.tracks.find(disabledTrack => disabledTrack === trackURI)){
             return true
         }
     }

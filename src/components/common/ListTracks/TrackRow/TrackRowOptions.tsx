@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { memo, useContext, useEffect, useRef } from 'react'
 import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
 import { Track } from '../../../../common/api/webapi/types'
@@ -14,13 +14,18 @@ interface TrackRowOptionsProps{
 
 const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({track, index}) => {
     const optionsRef = useRef<HTMLUListElement>(null)
-    const {handleToggleOption, toggleOptions} = useContext(ContextListTracks)
+    const {handleToggleOption, toggleOptions, additionalTrackRowOptions} = useContext(ContextListTracks)
     const {actionSaveTrack, actionRemoveSavedTrack,actionAddToPlaylist, actionAddToQueue, trackSaved} = useTrackRowOptions({track, index})
 
     useEffect(() => {
         if(optionsRef.current)
             positionOptionsElement(optionsRef.current)
     },[optionsRef])
+
+    async function additionalOptionOnClick(onClick: Function){
+        await onClick(track, index)
+        handleToggleOption(index)
+    }
 
     return(
         <>
@@ -48,6 +53,20 @@ const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({track, index}) => {
                 <li onClick={actionAddToPlaylist}>
                     <span>Adicionar à playlist</span>
                 </li>
+                {
+                    additionalTrackRowOptions?.map((option, index) => {
+                        if(!option.condition || option.condition(track, index))
+                            return(
+                                <li
+                                    key={`trackrowadditionaloption-${index}`}
+                                    onClick={() => additionalOptionOnClick(option.onClick)}
+                                >
+                                    <span>{option.content}</span>
+                                </li>
+                            )
+                        return ''
+                    })
+                }
             </OptionsDropdown>
         </>
     )
@@ -66,4 +85,4 @@ const OptionsDropdown = styled(dropdown)`
     }
 `
 
-export default TrackRowOptions
+export default memo(TrackRowOptions)

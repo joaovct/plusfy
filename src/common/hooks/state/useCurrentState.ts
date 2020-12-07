@@ -27,13 +27,16 @@ const useCurrentState = () => {
             const response = await getPlayer({accessToken})
             if(response){
                 const {data} = response
-    
+                // const {progress_ms} = data
+                delete data.progress_ms
+
                 dispatch(actions.currentStateAction(data || {}))
-    
+                // dispatch(actions.progressMsAction(progress_ms || null)) // causing duplicate set on currentState
+
                 const playlistUri = data.context?.uri || ''
                 const trackUri = data.item?.uri || ''
                 
-                if(isTrackDisabled({userId, playlistUri, trackUri}) && data.context?.type === 'playlist' && trackUri)
+                if(isTrackDisabled({userId, playlistURI: playlistUri, trackURI: trackUri}) && data.context?.type === 'playlist' && trackUri)
                     handleNextPlayer(trackUri, accessToken)
             }
         }

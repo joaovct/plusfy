@@ -7,7 +7,8 @@ import TrackRow from './TrackRow/TrackRow'
 import ContextListTracks from './ContextListTracks'
 import useListTracks from '../../../common/hooks/components/useListTracks'
 
-const ListTracks: React.FC<ListTracksProps> = ({tracks, additionalColumns, additionalCSS}) => {
+const ListTracks: React.FC<ListTracksProps> = (props) => {
+    const {tracks, additionalColumns, additionalCSS} = props 
     const listTracks = useListTracks()
     const qntColumns = 6 + (additionalColumns?.length || 0)
 
@@ -17,7 +18,7 @@ const ListTracks: React.FC<ListTracksProps> = ({tracks, additionalColumns, addit
     },[tracks])
     
     return(
-        <ContextListTracks.Provider value={{...listTracks, additionalColumns}}>
+        <ContextListTracks.Provider value={{...listTracks, ...props}}>
             <PlaylistTable qntColumns={qntColumns} additionalCSS={additionalCSS}>
                 <PlaylistTableRow>
                     <div>#</div>
@@ -26,8 +27,10 @@ const ListTracks: React.FC<ListTracksProps> = ({tracks, additionalColumns, addit
                     <div>Álbum</div>
                     <div><Clock/></div>
                     {
-                        additionalColumns?.map(column => (
-                            <div>{column.headerContent}</div>
+                        additionalColumns?.map((column, index) => (
+                            <div key={`listtrackcolumnheader-${column.headerContent}-${index}`}>
+                                {column.headerContent}
+                            </div>
                         ))
                     }
                     <div></div>

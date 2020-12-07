@@ -1,13 +1,10 @@
 import {useCallback, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import actions from '../../../redux/actions/actions'
-import { IToken } from '../../../redux/store/token/types'
-import { IStore } from '../../../redux/store/types'
 import { getNewAccessToken } from '../../api/server/endpoints'
 
 const useDispatchToken = (accessToken: string, refreshToken: string, expiresIn: number) => {
     const dispatch = useDispatch() 
-    const {accessToken: token} = useSelector<IStore, IToken>(store => store.token)
 
     const updateToken = useCallback(async () => {
         const data = (await getNewAccessToken(refreshToken))
@@ -21,7 +18,6 @@ const useDispatchToken = (accessToken: string, refreshToken: string, expiresIn: 
         }, expiresIn * 1000 - 100000)
     },[accessToken, refreshToken, expiresIn, dispatch, updateToken])
 
-    useEffect(() => console.log(token), [token])
 }
 
 export default useDispatchToken
