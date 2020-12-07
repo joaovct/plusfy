@@ -13,6 +13,7 @@ import { addToQueue } from '../../../api/webapi/player';
 import { IToken } from '../../../../redux/store/token/types';
 import useAlert from '../useAlert';
 import { removeTracksPlaylist } from '../../../api/webapi/playlists';
+import useAddToPlaylist from '../useAddToPlaylist';
 
 interface HookProps{
     (): {
@@ -27,6 +28,7 @@ const usePlaylistTracks: HookProps = () => {
     const actionDisableTracks = useDisabledTracks()
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
+    const addToPlaylist = useAddToPlaylist()
     const createAlert = useAlert()
 
     const tracks = useMemo(() => {
@@ -43,6 +45,12 @@ const usePlaylistTracks: HookProps = () => {
     const additionalOptions = useMemo<AdditionalTrackRowOption[]>(() => {
         if(playlist){
             return [
+                {
+                    content: 'Adicionar à playlist',
+                    onClick: async (track) => {
+                        addToPlaylist('track', [track.uri], updatePlaylist)
+                    }
+                },
                 {
                     content: 'Remover dessa playlist',
                     onClick: async (track, index) => {
@@ -79,7 +87,7 @@ const usePlaylistTracks: HookProps = () => {
             ]
         }
         return []
-    },[playlist, actionDisableTracks, userId, accessToken, createAlert, updatePlaylist])
+    },[addToPlaylist, playlist, actionDisableTracks, userId, accessToken, createAlert, updatePlaylist])
 
     return {tracks, additionalColumns, additionalOptions}
 }

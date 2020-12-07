@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Page, Container, Input as input, metrics, Text} from '../../styles/style'
+import { Page, Container as container, Input as input, metrics, Text} from '../../styles/style'
 import {Search as SearchIcon} from 'react-feather'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router-dom'
@@ -38,7 +38,7 @@ const Search = () => {
                 </Label>
                 <Main emptyQuery={query ? false : true}>
                     {
-                        query ? 
+                        search && query ? 
                         <>
                             <SearchTracks query={query}/>
                         </> :
@@ -56,6 +56,7 @@ const Search = () => {
 }
 
 const EmptySearchMessage = styled.div`
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,14 +75,10 @@ const EmptySearchMessage = styled.div`
 `
 
 const Main = styled.main<{emptyQuery: boolean}>`
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
     padding: ${metrics.spacing4} 0 0 0;
-    ${({emptyQuery}) => emptyQuery ?
-    `
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 50vh;
-    ` : ''}
 `
 
 const Input = styled(input)`
@@ -104,6 +101,12 @@ const Label = styled.label`
             color: #000;
         }
     }
+`
+
+const Container = styled(container)`
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
 `
 
 export default Search

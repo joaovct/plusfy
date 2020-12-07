@@ -49,7 +49,8 @@ const ListTrackCSS = `
                 }
 
                 ${Dropdown}{
-                    li:nth-child(2){
+                    li:nth-child(2),
+                    li:nth-child(3){
                         display: none;
                     }
                 }

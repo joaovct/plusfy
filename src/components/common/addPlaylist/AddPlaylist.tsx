@@ -56,7 +56,7 @@ const AddPlaylist = () => {
 
         if(itemsAdded === true){
             const message = messagePlural ? 'Música adicionada à playlist 🎉' : 'Músicas adicionadas à playlist 🎉'
-            createAlert('success', message)
+            createAlert('normal', message)
         }else if(itemsAdded === false){
             const message = messagePlural ? 'Ocorreu um erro ao adicionar as músicas à playlist.' : 'Ocorreu um erro ao adicionar a música à playlist.'
             createAlert('error', message)

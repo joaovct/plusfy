@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { HandleToggleOption } from "../../../components/common/ListTracks/types"
 import { IToken } from "../../../redux/store/token/types"
@@ -20,14 +20,19 @@ const useListTracks: Hook = () => {
     const [toggleOptions, setToggleOptions] = useState<boolean[]>([])
     const [savedTracks, setSavedTracks] = useState<SavedTracks | null>(null)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
+    const isMounted = useRef(true)
+
+    useEffect(() => {
+        return () => {isMounted.current = false}
+    },[])
 
     const handleToggleOption: HandleToggleOption = (index) => {
         setToggleOptions( value => [...value.map((e,i) => i === index ? !e : false)])
     }
-
     const updateSavedTracks = useCallback(async () => {
         const response = await getSavedTracks({accessToken})
-        setSavedTracks(response)
+        if(isMounted.current)
+            setSavedTracks(response)
     },[accessToken])
 
     const updateQuantitySavedTracks: UpdateQuantitySavedTracks = (tracks) => {

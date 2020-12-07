@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, { useState, useEffect, useCallback, ChangeEvent, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { fetchUserPlaylists } from '../../common/api/webapi/playlists'
 import {IStore} from '../../redux/store/types'
@@ -17,6 +17,11 @@ const ListPlaylists = () => {
     const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<IPlaylist[]>([])
     const [requestStatus, setRequestStatus] = useState('loading')
     const [search, setSearch] = useState('')
+    const isMounted = useRef(true)
+
+    useEffect(() => {
+        return () => {isMounted.current = false}
+    },[])
 
     useEffect(() => {
         if(accessToken){
@@ -24,9 +29,11 @@ const ListPlaylists = () => {
         }
         async function fetchData(){
             const response = await fetchUserPlaylists(accessToken)
-            setRequestStatus(response.status)
-            setPlaylists(response.items)
-            setNounFilteredPlaylists(response.items)
+            if(isMounted.current){
+                setRequestStatus(response.status)
+                setPlaylists(response.items)
+                setNounFilteredPlaylists(response.items)
+            }
         }
     },[accessToken])
 
