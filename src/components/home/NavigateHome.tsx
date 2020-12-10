@@ -10,7 +10,6 @@ const NavigateHome = () => {
         <TitleNavegate>Navegar</TitleNavegate>
         <WrapperItens>
             <Item>
-
                 <Link to="/my-library">
                     <figure><Music/></figure>
                 </Link>
@@ -20,18 +19,18 @@ const NavigateHome = () => {
             </Item>
             <Item>
                 <Link to="/building">
-                <figure><Smile/></figure>
+                    <figure><Smile/></figure>
                 </Link>
                 <span>
                     <Link to="/building">Medidor de humor</Link>
                 </span>
             </Item>
             <Item>
-                <Link to="/building">
+                <Link to="/favorites">
                     <figure><Star/></figure>
                 </Link>
                 <span>
-                    <Link to="/building">Estilos preferidos</Link>
+                    <Link to="/favorites">Favoritos</Link>
                 </span>
             </Item>
             <Item>
@@ -88,9 +87,9 @@ const Item = styled.li`
         display: inline-block;
         margin: calc(${metrics.spacing2}*2) 0 0 0;
         font-style: normal;
-        font-weight: 300;
-        font-size: 15px;
-        line-height: 18px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1;
         text-align: center;
     }
 
@@ -148,7 +147,7 @@ const WrapperItens = styled.ul`
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     margin: ${metrics.spacing4} 0 0 0;
 
     @media(max-width: 991px){

@@ -6,6 +6,7 @@ import Playlist from '../../playlist/Playlist'
 import NotFound from '../../notFound/NotFound'
 import Building from '../../building/Building'
 import ImportTracks from '../../importTracks/ImportTracks'
+import Favorites from '../../favorites/Favorites'
 import { renderLanding, renderLogin, renderLogoff, renderPrivateRoute } from '../../../common/helpers/helperRouter'
 import Search from '../../search/Search'
 
@@ -20,6 +21,7 @@ const Routes = () => (
             <Route path="/search/:q" render={() => renderPrivateRoute(Search)}/>
             <Route exact path="/my-library" render={() => renderPrivateRoute(MyLibrary)}/>
             <Route exact path="/playlist/:id" render={() => renderPrivateRoute(Playlist)}/>
+            <Route exact path="/favorites" render={() => renderPrivateRoute(Favorites)}/>
             <Route exact path="/import-tracks" render={() => renderPrivateRoute(ImportTracks)}/>
             <Route exact path="/building" render={Building}/>
             <Route exact path="*" component={NotFound} />

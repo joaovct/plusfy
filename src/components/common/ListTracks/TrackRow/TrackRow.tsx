@@ -24,7 +24,7 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
-    const {additionalColumns, contextUri} = useContext(ContextListTracks)
+    const {additionalColumns, contextUri, viewMode} = useContext(ContextListTracks)
     const isDisabled = isTrackDisabled({userId, trackURI: track.uri, playlistURI: contextUri || ''})
 
     const handleToggleTrack = () => {
@@ -42,36 +42,62 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     }
 
     return(
-        <PlaylistTableRow uri={track.uri} playingUri={currentState?.item?.uri} disabled={isDisabled}>
-            <div onClick={handleToggleTrack}>
-                <span>{index + 1}</span>
-                {
-                    toggleTrack(currentState, track?.uri || '') === 'PAUSE'
-                    ? <Pause/>
-                    : <Play/>
-                }
-            </div>
-            <div>
-                <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
-                <span>{track.name}</span>
-            </div>
-            <div>
-                {formatArtistName(track)}
-            </div>
-            <div>
-                {track.album.name}
-            </div>
-            <div>
-                {formatDuration(track.duration_ms)}
-            </div>
+        <PlaylistTableRow
+            uri={track.uri}
+            playingUri={currentState?.item?.uri}
+            disabled={isDisabled}
+            viewMode={viewMode}
+        >
             {
-                additionalColumns ?
-                    additionalColumns.map((column, index) => (
-                        <div key={`trackrowcolumnbody-${index}`}>
-                            {column.bodyContent[index] || ''}
-                        </div>
-                    ))
-                : <></>
+                viewMode === 'full' ?
+                <>
+                    <div onClick={handleToggleTrack}>
+                        <span>{index + 1}</span>
+                        {
+                            toggleTrack(currentState, track?.uri || '') === 'PAUSE'
+                            ? <Pause/>
+                            : <Play/>
+                        }
+                    </div>
+                    <div>
+                        <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
+                        <span>{track.name}</span>
+                    </div>
+                    <div>
+                        {formatArtistName(track)}
+                    </div>
+                    <div>
+                        {track.album.name}
+                    </div>
+                    <div>
+                        {formatDuration(track.duration_ms)}
+                    </div>
+                    {
+                        additionalColumns?.map((column, index) => (
+                            <div key={`trackrowcolumnbody-${index}`}>
+                                {column.bodyContent[index] || ''}
+                            </div>
+                        ))
+                    }
+                </>
+                :
+                <>
+                    <div onClick={handleToggleTrack}>
+                        <span>{index + 1}</span>
+                        {
+                            toggleTrack(currentState, track?.uri || '') === 'PAUSE'
+                            ? <Pause/>
+                            : <Play/>
+                        }
+                    </div>
+                    <div>
+                        <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
+                        <span>
+                            <strong>{track.name}</strong>
+                            <small>{formatArtistName(track)}</small>
+                        </span>
+                    </div>
+                </>
             }
             <div>
                 <TrackRowOptions

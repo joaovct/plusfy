@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import usePlaylistTracks from '../../../common/hooks/components/playlist/usePlaylistTracks';
 import { metrics, colors, Container, Page, PlaylistTableRow, Dropdown} from '../../../styles/style';
-import ListTracks from '../../common/ListTracks/ListTracks';
+import ListTracks from '../../common/listTracks/ListTracks';
 import ContextPlaylist from '../ContextPlaylist';
 
 const PlaylistTracks = () => {

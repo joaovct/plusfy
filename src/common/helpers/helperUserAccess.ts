@@ -42,3 +42,7 @@ export function isUserConnected(){
         expiresIn: +(sessionStorage.getItem('expires_in') || 3600)
     }
 }
+
+export function setAccessToken(accessToken: string){
+    sessionStorage.setItem('access_token', accessToken)
+}

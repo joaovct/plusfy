@@ -56,3 +56,25 @@ export const formatNumberTracks = (playlist: IPlaylist | null) => playlist
 export const formatArtistName = (track: Track) => 
     track.artists.map((artist, index: number) => `${index ? ', ' : ''}${artist.name}`)
 
+const capitalizeString = (string: string): string => {
+    const words = string.split(' ')
+    if(words.length > 1)
+        return words.reduce((prev, current) => {
+            if(prev)
+                return capitalizeString(prev) + ' ' + capitalizeString(current)
+            return capitalizeString(prev)
+        })
+    return words[0].toLowerCase().charAt(0).toUpperCase() + words[0].toLowerCase().slice(1)
+}
+
+export const formatArtistGenres = (genres: string[]): string => {
+    if(genres.length > 1)
+        return genres.reduce((prev, current) => {
+            prev = capitalizeString(prev)
+            current = capitalizeString(current)
+            if(prev)
+                return prev + ', ' + current
+            return prev
+        })
+    return capitalizeString(genres[0])
+}

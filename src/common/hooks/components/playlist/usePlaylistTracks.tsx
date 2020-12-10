@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { AdditionalColumn, AdditionalTrackRowOption } from "../../../../components/common/ListTracks/types"
+import { AdditionalColumn, AdditionalTrackRowOption } from '../../../../components/common/listTracks/types';
 import ContextPlaylist from '../../../../components/playlist/ContextPlaylist';
 import { IStore } from '../../../../redux/store/types';
 import { IUser } from '../../../../redux/store/user/types';
@@ -11,9 +11,9 @@ import useDisabledTracks from '../../state/useDisabledTracks';
 import { isTrackDisabled } from '../../../api/disabledTracks/disabledTracks';
 import { addToQueue } from '../../../api/webapi/player';
 import { IToken } from '../../../../redux/store/token/types';
-import useAlert from '../useAlert';
+import useAlert from '../alert/useAlert';
 import { removeTracksPlaylist } from '../../../api/webapi/playlists';
-import useAddToPlaylist from '../useAddToPlaylist';
+import useAddToPlaylist from '../addPlaylist/useAddToPlaylist';
 
 interface HookProps{
     (): {

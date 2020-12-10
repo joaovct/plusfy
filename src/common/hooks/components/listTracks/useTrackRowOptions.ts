@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import ContextListTracks from "../../../components/common/ListTracks/ContextListTracks"
-import { IToken } from "../../../redux/store/token/types"
-import { IStore } from "../../../redux/store/types"
-import { removeSavedTrack, saveTrack } from "../../api/webapi/library"
-import { addToQueue } from "../../api/webapi/player"
-import { Track } from "../../api/webapi/types"
-import useAddToPlaylist from "./useAddToPlaylist"
-import useAlert from "./useAlert"
+import ContextListTracks from "../../../../components/common/listTracks/ContextListTracks"
+import { IToken } from "../../../../redux/store/token/types"
+import { IStore } from "../../../../redux/store/types"
+import { removeSavedTrack, saveTrack } from "../../../api/webapi/library"
+import { addToQueue } from "../../../api/webapi/player"
+import { Track } from "../../../api/webapi/types"
+import useAddToPlaylist from "../addPlaylist/useAddToPlaylist"
+import useAlert from "../alert/useAlert"
 
 interface HookProps{
     track: Track,

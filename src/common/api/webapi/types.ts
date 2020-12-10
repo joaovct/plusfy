@@ -23,7 +23,7 @@ export interface IPlaylist{
     }
     href: string
     id: string
-    images: Array<Iimage>
+    images: Array<Image>
     name: string
     owner: IUser
     public: boolean
@@ -61,7 +61,7 @@ export interface Tracks{
 
 export interface Track{
     album: IAlbum
-    artists: Array<IArtist>
+    artists: Array<Artist>
     available_markets: Array<string>
     disc_number: number
     duration_ms: number
@@ -98,7 +98,7 @@ export interface ISavedTrack{
 
 export interface Artists{
     href: string
-    items: Array<IArtist>
+    items: Array<Artist>
     limit: number
     next: string | null
     offset: number
@@ -106,7 +106,7 @@ export interface Artists{
     total: number
 }
 
-export interface IArtist{
+export interface Artist{
     external_urls: {
         spotify: string
     }
@@ -115,6 +115,9 @@ export interface IArtist{
     name: string
     type: string
     uri: string
+    popularity: number
+    genres: string[]
+    images: Image[]
 }
 
 export interface Albums{
@@ -130,14 +133,14 @@ export interface Albums{
 export interface IAlbum{
     album_group?: string
     album_type: string
-    artists: Array<IArtist>
+    artists: Array<Artist>
     available_markets: Array<string>
     external_urls:{
         spotify: string
     } 
     href: string
     id: string
-    images: Array<Iimage>
+    images: Array<Image>
     name: string
     release_date: string
     release_date_precision: string
@@ -165,7 +168,7 @@ export interface Show{
     }
     href: string
     id: string
-    images: Array<Iimage>
+    images: Array<Image>
     is_externally_hosted: boolean
     languages: Array<string>
     media_type: string
@@ -195,7 +198,7 @@ export interface Episode{
     }
     href: string
     id: string
-    images: Array<Iimage>
+    images: Array<Image>
     is_externally_hosted: boolean
     is_playable: boolean
     languages: Array<string>
@@ -212,12 +215,12 @@ export interface IUser{
     followers: {}
     href: string
     id: string
-    images: Array<Iimage>
+    images: Array<Image>
     type: string
     uri: string
 }
 
-export interface Iimage{
+export interface Image{
     height: number
     width: number
     url: string
@@ -284,3 +287,27 @@ export type SearchResult = {
 export type Search = (accessToken: string, query: string, type: SearchTypes, configs?: SearchConfigs) => Promise<SearchResult>
 
 export type SearchNextItems = (accessToken: string, nextURL: string, configs?: SearchConfigs) => Promise<SearchResult>
+
+export type UserTopArtistsAndTracksTimeRange = 'long_term' | 'medium_term' | 'short_term'
+export type UserTopArtistsAndTracksType = 'artists' | 'tracks'
+
+export type UserTopArtistsAndTracksConfigs = {limit?: number, offset?: number, time_range?: UserTopArtistsAndTracksTimeRange}
+
+export type GetUserTopArtistsAndTracksResult<T> = {
+    (arg: Track | Artist): T
+    total: number
+    limit: number
+    offset: number
+    previous: string | null
+    href: string
+    next: string | null
+    items: T[]
+}
+
+export interface GetUserTopArtistsAndTracks{
+    <T>(accessToken: string, type: UserTopArtistsAndTracksType, configs?: UserTopArtistsAndTracksConfigs): Promise<GetUserTopArtistsAndTracksResult<T>>
+}
+
+export interface GetNextUserTopArtistsAndTracks{
+    <T>(accessToken: string, nextURL: string, configs?: UserTopArtistsAndTracksConfigs): Promise<GetUserTopArtistsAndTracksResult<T>>
+}

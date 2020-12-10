@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
-import { IToken } from "../../../redux/store/token/types"
-import { IStore } from "../../../redux/store/types"
-import searchItem, { searchNextItems } from "../../api/webapi/search"
+import { IToken } from "../../../../redux/store/token/types"
+import { IStore } from "../../../../redux/store/types"
+import searchItem, { searchNextItems } from "../../../api/webapi/search"
 
 type Hook = <T>() => {
     items: T[] | any[]

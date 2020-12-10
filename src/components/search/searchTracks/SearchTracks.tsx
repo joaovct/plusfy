@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
 import { Title, Text, metrics, colors } from '../../../styles/style'
 import { ChildProps } from '../types'
-import ListTracks from '../../common/ListTracks/ListTracks'
+import ListTracks from '../../common/listTracks/ListTracks'
 import {Switch, Route, Link} from 'react-router-dom'
-import useSearchItems from '../../../common/hooks/components/useSearchItems'
+import useSearchItems from '../../../common/hooks/components/search/useSearchItems'
 
 const SearchTracks: React.FC<ChildProps> = ({query}) => {
     const {items: tracks, nextURL, setQuery, loadMoreItems} = useSearchItems<Track>()

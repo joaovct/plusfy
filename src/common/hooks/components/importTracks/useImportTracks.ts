@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
-import { IToken } from "../../../redux/store/token/types"
-import { IStore } from "../../../redux/store/types"
-import { findTrack } from "../../api/server/endpoints"
-import { searchFoundTrack } from "../../helpers/helperImportTracks"
-import { ContextProps, FoundTrack, StatusImport, ActionFindTrack } from '../../../components/importTracks/types'
+import { IToken } from "../../../../redux/store/token/types"
+import { IStore } from "../../../../redux/store/types"
+import { findTrack } from "../../../api/server/endpoints"
+import { searchFoundTrack } from "../../../helpers/helperImportTracks"
+import { ContextProps, FoundTrack, StatusImport, ActionFindTrack } from '../../../../components/importTracks/types'
 
 const useImportTracks = (): ContextProps => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Trash } from 'react-feather'
 import styled from 'styled-components'
-import { RemoveFile } from '../../../common/hooks/components/useFilesPreview'
+import { RemoveFile } from '../../../common/hooks/components/importTracks/useFilesPreview'
 import { Button, colors, metrics, Text } from '../../../styles/style'
 import { StatusPreview } from '../types'
-import { FilePreview } from '../../../common/hooks/components/useFilesPreview'
+import { FilePreview } from '../../../common/hooks/components/importTracks/useFilesPreview'
 import emptyAlbumPhoto from '../../../assets/empty-playlist-photo.svg'
 
 interface ListFilesProps{

@@ -1,9 +1,11 @@
-import styled from 'styled-components'
+import styled, { FlattenSimpleInterpolation, css } from 'styled-components'
+import {ListTracksViewMode} from '../components/common/listTracks/types'
 import * as colors from './colors'
 import * as metrics from './metrics'
+import * as breakpoints from './breakpoints'
 import GlobalStyles from './GlobalStyles'
 
-export {colors,metrics,GlobalStyles}
+export {colors,metrics,breakpoints,GlobalStyles}
 
 export const Page = styled.section`
     flex: 1;
@@ -14,8 +16,11 @@ export const Page = styled.section`
     flex-flow: column nowrap;
     align-items: center;
 
-    @media(max-width: 768px){
+    @media(max-width: ${breakpoints.tbl}){
         padding: 0 ${metrics.spacing4};
+    }
+    @media(max-width: ${breakpoints.sml}){
+        padding: 0 ${metrics.spacing3};
     }
 `
 
@@ -231,13 +236,34 @@ export const PlaylistItem = styled.li`
     }
 `
 
-export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string}>`
+export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string | FlattenSimpleInterpolation}>`
     display: flex;
     flex-flow: column nowrap;
     --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 5};
+    ${({additionalCSS}) => additionalCSS}
 `
 
-export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, disabled?: boolean}>`
+const rowImageAndName = css`
+    span{
+        display: flex;
+        flex-flow: column nowrap;
+
+        strong{
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        small{
+            color: ${colors.gray};
+            font-size: 12px;
+            font-weight: 500;
+            margin: ${metrics.spacing1} 0 0 0;
+        }
+    }
+` 
+
+export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, disabled?: boolean, viewMode?: ListTracksViewMode}>`
     display: flex;
     width: 100%;
     border-radius: ${metrics.borderRadius};
@@ -245,7 +271,7 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
     div{
         flex-grow: 1;
         width: calc(100% / var(--qntColumns)); 
-        &:first-child{
+        &:nth-child(1){
             max-width: 60px;
         }
         display: inline-flex;
@@ -269,7 +295,7 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
             margin: 0 ${metrics.spacing3} 0 0;
         }
         // first cell
-        &:first-child{
+        &:nth-child(1){
             position: relative;
             justify-content: center;
             span{
@@ -287,22 +313,34 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
                 opacity: 0;
             }
         }
-        &:first-child span,
+        &:nth-child(1) span{
+            color: ${ (props) => props.uri === props.playingUri ? colors.primary : colors.gray};
+        }
         &:nth-child(2) span{
             color: ${ (props) => props.uri === props.playingUri ? colors.primary : '#fff'};
         }
-        &:first-child span,
+        &:nth-child(1) span,
         &:nth-child(2) img{
             user-select: none;
         }
+
+        /* @media(max-width: ${breakpoints.tbp}){
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            &:nth-child(1){
+                display: none;
+            }
+        } */
     }
     // thead row
-    &:first-child{
+    &:nth-child(1){
         div{
             text-transform: uppercase;
             font-weight: 600;
 
-            &:first-child{
+            &:nth-child(1){
                 justify-content: center;
             }
 
@@ -318,7 +356,7 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
         &:hover{
             ${ ({disabled}) => !disabled ? `background: ${colors.hoverBackground};` : ''}
             
-            div:first-child{
+            div:nth-child(1){
                 ${ ({disabled}) => !disabled ? `
                 span{
                     opacity: 0;
@@ -329,13 +367,96 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
             }
         }
 
+
+        ${props => {
+            if(props.viewMode === 'simplified')
+                return css`
+                    div:nth-child(2){
+                        ${rowImageAndName}
+                        span strong{
+                            ${() => {
+                                if(props.uri === props.playingUri)
+                                    return `color: ${colors.primary};`
+                                return ''
+                            }}
+                        }
+                    }
+                `
+            return ''
+        }}
+
         //disable track
         div:not(:last-child){
             ${ ({disabled}) => disabled ? `
-            opacity: .4;
             user-select: none;
             pointer-events: none;
+            filter: blur(1px) opacity(40%);
             `:''} 
+        }
+    }
+`
+
+export const ArtistsTable = styled.ol<{qntColumns: number, additionalCSS?: string | FlattenSimpleInterpolation}>`
+    display: flex;
+    flex-flow: column nowrap;
+    --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 2};
+
+    ${({additionalCSS}) => additionalCSS}
+`
+
+export const ArtistsTableRow = styled.li`
+    display: flex;
+    width: 100%;
+    border-radius: ${metrics.borderRadius};
+
+    div{
+        flex-grow: 1;
+        width: calc(100% / var(--qntColumns)); 
+        &:nth-child(1){
+            max-width: 60px;
+        }
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 15px;
+        text-align: left;
+        vertical-align: middle;
+        position: relative;
+        transition: background .15s;
+
+        &, & > span{
+            font-size: 16px;
+            color: ${colors.gray};
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        img{
+            height: 55px;
+            width: 55px;
+            margin: 0 ${metrics.spacing3} 0 0;
+        }
+        // first cell
+        &:nth-child(1){
+            position: relative;
+            justify-content: center;
+            span{
+                width: 100%;
+                text-align: center;
+                vertical-align: middle;
+            }
+            svg{
+                height: 15px;
+                width: 15px;
+                fill: #fff;
+                cursor: pointer;
+                position: absolute;
+                margin: 0 auto;
+                opacity: 0;
+            }
+        }
+        &:nth-child(2){
+            ${rowImageAndName}
         }
     }
 `

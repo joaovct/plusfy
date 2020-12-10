@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import useImportTracks from '../../common/hooks/components/useImportTracks'
+import useImportTracks from '../../common/hooks/components/importTracks/useImportTracks'
 import { Container, Page} from '../../styles/style'
 import FoundTracks from './FoundTracks/FoundTracks'
 import FilesManager from './filesManager/FilesManager'

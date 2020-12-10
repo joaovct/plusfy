@@ -9,7 +9,7 @@ import emptyAlbumPhoto from '../../../assets/empty-playlist-photo.svg'
 import { pausePlayer, playTrack, resumePlayer } from '../../../common/api/webapi/player'
 import { IToken } from '../../../redux/store/token/types'
 import {FoundTrack} from '../types'
-import useAddToPlaylist from '../../../common/hooks/components/useAddToPlaylist'
+import useAddToPlaylist from '../../../common/hooks/components/addPlaylist/useAddToPlaylist'
 
 
 interface FoundTrackProps{

@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
-import { HandleToggleOption } from "../../../components/common/ListTracks/types"
-import { IToken } from "../../../redux/store/token/types"
-import { IStore } from "../../../redux/store/types"
-import { getSavedTracks } from "../../api/webapi/library"
-import {SavedTracks, Track} from '../../api/webapi/types'
+import { HandleToggleOption } from "../../../../components/common/listTracks/types"
+import { IToken } from "../../../../redux/store/token/types"
+import { IStore } from "../../../../redux/store/types"
+import { getSavedTracks } from "../../../api/webapi/library"
+import {SavedTracks, Track} from '../../../api/webapi/types'
 
 type UpdateQuantitySavedTracks = (tracks: Track[]) => void
 

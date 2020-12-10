@@ -3,7 +3,7 @@ import {MoreVertical} from 'react-feather'
 import styled from 'styled-components'
 import { Track } from '../../../../common/api/webapi/types'
 import { positionOptionsElement } from '../../../../common/helpers/helperUI'
-import useTrackRowOptions from '../../../../common/hooks/components/useTrackRowOptions'
+import useTrackRowOptions from '../../../../common/hooks/components/listTracks/useTrackRowOptions'
 import {Dropdown as dropdown} from '../../../../styles/style'
 import ContextListTracks from '../ContextListTracks'
 
