@@ -77,8 +77,8 @@ export const searchFoundTrack = (track: FindTrackResult, accessToken: string) =>
         }
 
         if(track.track){
-            finalTrack.search = `${track.track.title} ${track.track.artists[0].name}` 
-            const query = `${track.track.title} artist:${track.track?.artists[0].name}`
+            finalTrack.search = `${track.track.name} ${track.track.artists?.length ? track.track.artists[0].name : ' '}` 
+            const query = `${track.track.name} ${track.track.artists?.length ? `artist:${track.track?.artists[0].name}` : ''}`
             const searchResult = await searchItem(accessToken, query, 'track')
             
             if(searchResult.tracks?.items.length){

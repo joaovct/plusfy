@@ -30,9 +30,9 @@ export type FindTrackResult = {
     file: MulterFile
     track: {
         id: string;
-        title: string;
-        artists: Array<TrackArtist>;
-        duration: number;
+        name: string;
+        artists?: Array<TrackArtist>;
+        duration?: number;
     } | null
 }
 

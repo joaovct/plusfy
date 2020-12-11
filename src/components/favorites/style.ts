@@ -56,9 +56,10 @@ export const additionalCSS = css`
             &:nth-child(2) img{
                 width: 55px;
                 height: 55px;
-                @media(max-width: ${breakpoints.tbp}){
-                    width: 40px;
-                    width: 40px;
+
+                @media(max-width: ${breakpoints.sml}){
+                    height: 45px;
+                    width: 45px;
                 }
             }
         }

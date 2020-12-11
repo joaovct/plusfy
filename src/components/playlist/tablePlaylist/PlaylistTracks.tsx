@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import usePlaylistTracks from '../../../common/hooks/components/playlist/usePlaylistTracks';
-import { metrics, colors, Container, Page, PlaylistTableRow, Dropdown} from '../../../styles/style';
+import { metrics, colors, Container, Page, PlaylistTableRow, Dropdown, breakpoints} from '../../../styles/style';
 import ListTracks from '../../common/listTracks/ListTracks';
 import ContextPlaylist from '../ContextPlaylist';
 
@@ -26,28 +26,16 @@ const PlaylistTracks = () => {
 
 export default PlaylistTracks
 
-const ListTrackCSS = `
+const ListTrackCSS = css`
     ${PlaylistTableRow}{
         div{
-            &:nth-child(2){
-                flex-grow: 5;
-            }
-            &:nth-child(6){
-                order: 5;
+            &:nth-child(4){
                 max-width: 165px;
-            }
-            &:nth-child(5){
-                order: 6;
-                max-width: 75px;
-            }
-            &:nth-child(7){
-                order: 7;
-                max-width: 55px;
-                overflow: inherit;
-                svg{
-                    cursor: pointer;
+                @media(max-width: ${breakpoints.lg}){
+                    display: none;
                 }
-
+            }
+            &:last-child{
                 ${Dropdown}{
                     li:nth-child(2),
                     li:nth-child(3){

@@ -6,11 +6,12 @@ export type ListTracksViewMode = 'simplified' | 'full'
 
 export interface ListTracksProps{
     tracks: Track[]
-    viewMode?: ListTracksViewMode
     contextUri?: string
     additionalColumns?: AdditionalColumn[]
     additionalCSS?: string | FlattenSimpleInterpolation
     additionalTrackRowOptions?: AdditionalTrackRowOption[]
+    viewMode?: ListTracksViewMode
+    showHeader?: boolean
 }
 
 export interface AdditionalTrackRowOption{
@@ -33,6 +34,7 @@ export interface ContextListTracksProps{
     additionalColumns?: AdditionalColumn[]
     additionalTrackRowOptions?: AdditionalTrackRowOption[]
     viewMode: ListTracksViewMode
+    showHeader?: boolean
 }
 
 export type HandleToggleOption = (index: number) => void

@@ -19,7 +19,8 @@ const FavoriteTracks: React.FC<ChildProps> = ({timeRange}) => {
             <ListTracks
                 tracks={tracks}
                 viewMode="simplified"
-                additionalCSS={`li:nth-child(1){display: none;} ${additionalCSS}`}
+                showHeader={false}
+                additionalCSS={additionalCSS}
             />
         </ListContent>
     )

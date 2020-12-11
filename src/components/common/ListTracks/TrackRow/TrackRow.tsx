@@ -4,7 +4,7 @@ import { Track } from '../../../../common/api/webapi/types'
 import { formatArtistName, formatDuration, toggleTrack } from '../../../../common/helpers/helperPlaylistTable'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import { IStore } from '../../../../redux/store/types'
-import { PlaylistTableRow } from '../../../../styles/style'
+import { breakpoints, PlaylistTableRow } from '../../../../styles/style'
 import { pausePlayer, playTrack, resumePlayer } from '../../../../common/api/webapi/player'
 import { IToken } from '../../../../redux/store/token/types'
 import {Pause, Play} from 'react-feather'
@@ -41,6 +41,11 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
             resumePlayer({accessToken}) 
     }
 
+    const handleClickOnSecondColumn = () => {
+        if(viewMode === 'simplified' || window.innerWidth <= breakpoints.absoluteDimensions.tbp)
+            handleToggleTrack()
+    }
+
     return(
         <PlaylistTableRow
             uri={track.uri}
@@ -48,57 +53,34 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
             disabled={isDisabled}
             viewMode={viewMode}
         >
+            <div onClick={handleToggleTrack}>
+                <span>{index + 1}</span>
+                {
+                    toggleTrack(currentState, track?.uri || '') === 'PAUSE'
+                    ? <Pause/>
+                    : <Play/>
+                }
+            </div>
+            <div onClick={handleClickOnSecondColumn}>
+                <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
+                <span>
+                    <strong>{track.name}</strong>
+                    <small>{formatArtistName(track)}</small>
+                </span>
+            </div>
+            <div>
+                {track.album.name}
+            </div>
             {
-                viewMode === 'full' ?
-                <>
-                    <div onClick={handleToggleTrack}>
-                        <span>{index + 1}</span>
-                        {
-                            toggleTrack(currentState, track?.uri || '') === 'PAUSE'
-                            ? <Pause/>
-                            : <Play/>
-                        }
+                additionalColumns?.map((column, index) => (
+                    <div key={`trackrowcolumnbody-${index}`}>
+                        {column.bodyContent[index] || ''}
                     </div>
-                    <div>
-                        <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
-                        <span>{track.name}</span>
-                    </div>
-                    <div>
-                        {formatArtistName(track)}
-                    </div>
-                    <div>
-                        {track.album.name}
-                    </div>
-                    <div>
-                        {formatDuration(track.duration_ms)}
-                    </div>
-                    {
-                        additionalColumns?.map((column, index) => (
-                            <div key={`trackrowcolumnbody-${index}`}>
-                                {column.bodyContent[index] || ''}
-                            </div>
-                        ))
-                    }
-                </>
-                :
-                <>
-                    <div onClick={handleToggleTrack}>
-                        <span>{index + 1}</span>
-                        {
-                            toggleTrack(currentState, track?.uri || '') === 'PAUSE'
-                            ? <Pause/>
-                            : <Play/>
-                        }
-                    </div>
-                    <div>
-                        <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
-                        <span>
-                            <strong>{track.name}</strong>
-                            <small>{formatArtistName(track)}</small>
-                        </span>
-                    </div>
-                </>
+                ))
             }
+            <div>
+                {formatDuration(track.duration_ms)}
+            </div>
             <div>
                 <TrackRowOptions
                     track={track}

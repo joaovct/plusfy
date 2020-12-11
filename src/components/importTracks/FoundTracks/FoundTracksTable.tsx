@@ -1,8 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { Clock } from 'react-feather'
 import styled from 'styled-components'
+import { Track } from '../../../common/api/webapi/types'
 import useAddToPlaylist from '../../../common/hooks/components/addPlaylist/useAddToPlaylist'
 import { PlaylistTable, PlaylistTableRow, Button, colors, metrics } from '../../../styles/style'
+import ListTracks from '../../common/listTracks/ListTracks'
 import ContextImportTracks from '../ContextImportTracks'
 import FoundTrackRow from './FoundTrackRow'
 
@@ -17,9 +19,21 @@ const FoundTracksTable: React.FC = () => {
         })
     }
 
+    const tracks = useMemo(() => {
+        let tracks: Track[] = []
+        foundTracks.forEach(foundTrack => {
+            if(foundTrack.track)
+                tracks = [...tracks, foundTrack.track]
+        })
+        return tracks
+    },[foundTracks])
+
     return(
         <TableBackground>
-            <PlaylistTable qntColumns={7}>
+            <ListTracks
+                tracks={tracks}
+            />
+            {/* <PlaylistTable qntColumns={7}>
                 <PlaylistTableRow>
                     <div>#</div>
                     <div>Título</div>
@@ -39,6 +53,7 @@ const FoundTracksTable: React.FC = () => {
                     })
                 }
             </PlaylistTable>
+            */}
             <ResultsButtons>
                 <Button
                     typeButton="secondary"

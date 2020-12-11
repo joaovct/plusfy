@@ -236,32 +236,22 @@ export const PlaylistItem = styled.li`
     }
 `
 
-export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string | FlattenSimpleInterpolation}>`
+export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string | FlattenSimpleInterpolation, showHeader?: boolean}>`
     display: flex;
     flex-flow: column nowrap;
-    --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 5};
+    --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 4};
     ${({additionalCSS}) => additionalCSS}
+
+    ${({showHeader}) => {
+        if(showHeader === false)
+            return `
+                ${PlaylistTableRow}:nth-child(1){
+                    display: none;
+                }
+            `
+        return ''
+    }}
 `
-
-const rowImageAndName = css`
-    span{
-        display: flex;
-        flex-flow: column nowrap;
-
-        strong{
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 500;
-        }
-
-        small{
-            color: ${colors.gray};
-            font-size: 12px;
-            font-weight: 500;
-            margin: ${metrics.spacing1} 0 0 0;
-        }
-    }
-` 
 
 export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, disabled?: boolean, viewMode?: ListTracksViewMode}>`
     display: flex;
@@ -271,15 +261,14 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
     div{
         flex-grow: 1;
         width: calc(100% / var(--qntColumns)); 
-        &:nth-child(1){
-            max-width: 60px;
-        }
         display: inline-flex;
         align-items: center;
         padding: 10px 15px;
         text-align: left;
         vertical-align: middle;
         position: relative;
+        --sizeMoreOptionsIcon: 24px;
+        
 
         &, & > span{
             font-size: 16px;
@@ -293,15 +282,19 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
             height: 40px;
             width: 40px;
             margin: 0 ${metrics.spacing3} 0 0;
+            user-select: none;
         }
         // first cell
         &:nth-child(1){
+            max-width: 60px;
             position: relative;
             justify-content: center;
             span{
                 width: 100%;
                 text-align: center;
                 vertical-align: middle;
+                color: ${ (props) => props.uri === props.playingUri ? colors.primary : colors.gray};
+                user-select: none;
             }
             svg{
                 height: 15px;
@@ -313,26 +306,91 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
                 opacity: 0;
             }
         }
-        &:nth-child(1) span{
-            color: ${ (props) => props.uri === props.playingUri ? colors.primary : colors.gray};
-        }
-        &:nth-child(2) span{
-            color: ${ (props) => props.uri === props.playingUri ? colors.primary : '#fff'};
-        }
-        &:nth-child(1) span,
-        &:nth-child(2) img{
-            user-select: none;
+        &:nth-child(2){
+            flex-grow: 5;
+            span strong{
+                color: ${ (props) => props.uri === props.playingUri ? colors.primary : '#fff'};
+            }
         }
 
-        /* @media(max-width: ${breakpoints.tbp}){
-            padding-top: 0;
-            padding-bottom: 0;
-            margin-top: 15px;
-            margin-bottom: 15px;
+        &:nth-last-child(2){
+            max-width: 75px;
+        }
+        &:last-child{
+            display: inline-flex;
+            max-width: 55px;
+            overflow: inherit;
+            svg{
+                height: var(--sizeMoreOptionsIcon);
+                width: var(--sizeMoreOptionsIcon);
+                cursor: pointer;
+            }
+        }
+
+        ${({viewMode}) => {
+            if(viewMode === 'simplified')
+                return css`
+                    display: none;
+                    &:nth-child(1),
+                    &:nth-child(2),
+                    &:last-child{
+                        display: inline-flex;
+                    }
+
+                    &:nth-child(1){
+                        padding-left: 0;
+                        max-width: 40px;
+                    }
+                    &:nth-child(2){
+                        cursor: pointer;
+                    }
+                    &:last-child{
+                        padding-left: 0;
+                        padding-right: 0;
+                        max-width: var(--sizeMoreOptionsIcon); 
+                    }
+                `
+            return ''
+        }}
+
+        @media(max-width: ${breakpoints.lg}){
+            &:nth-child(2){
+                flex-grow: 3;
+            }
+        }
+        @media(max-width: ${breakpoints.tbl}){
+            &:nth-child(3){
+                display: none;
+            }
+        }
+        @media(max-width: ${breakpoints.tbp}){
+            &:nth-child(2){
+                cursor: pointer;
+            }
+            &:nth-last-child(2){
+                display: none;
+            }
+        }
+        @media(max-width: ${breakpoints.sml}){
+            padding-top: 10px;
+            padding-bottom: 10px;
             &:nth-child(1){
                 display: none;
             }
-        } */
+            &:nth-child(2){
+                padding-left: 0;
+                
+                img{
+                    height: 40px;
+                    width: 40px;
+                }
+            }
+            &:last-child{
+                padding-left: 0;
+                padding-right: 0;
+                max-width: var(--sizeMoreOptionsIcon);
+            }
+        }
     }
     // thead row
     &:nth-child(1){
@@ -353,45 +411,85 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
     &:nth-child(n+2){
         transition: background .15s;
 
-        &:hover{
-            ${ ({disabled}) => !disabled ? `background: ${colors.hoverBackground};` : ''}
-            
-            div:nth-child(1){
-                ${ ({disabled}) => !disabled ? `
-                span{
-                    opacity: 0;
+        @media(min-width: calc(${breakpoints.tbp} + 1px)){
+            &:hover{
+                ${ ({disabled}) => !disabled ? `background: ${colors.hoverBackground};` : ''}
+                div:nth-child(1){
+                    ${({disabled}) => {
+                        if(!disabled)
+                            return css`
+                                span{
+                                    opacity: 0;
+                                }
+                                svg{ 
+                                    opacity: 1;
+                                }
+                            `
+                        return ''
+                    }}
                 }
-                svg{ 
-                    opacity: 1;
-                }` : '' }
             }
         }
 
+        div{
+            &:nth-child(2){
+                span{
+                    display: flex;
+                    flex-flow: column nowrap;
 
-        ${props => {
-            if(props.viewMode === 'simplified')
-                return css`
-                    div:nth-child(2){
-                        ${rowImageAndName}
-                        span strong{
-                            ${() => {
-                                if(props.uri === props.playingUri)
-                                    return `color: ${colors.primary};`
-                                return ''
-                            }}
-                        }
+                    strong{
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 500;
                     }
-                `
-            return ''
-        }}
+
+                    small{
+                        color: ${colors.gray};
+                        font-size: 12px;
+                        font-weight: 500;
+                        margin: ${metrics.spacing1} 0 0 0;
+                    }
+
+                    ${(props) => {
+                        if(props.uri === props.playingUri)
+                            return `color: ${colors.primary};`
+                        return ''
+                    }}
+                }
+            }
+            &:not(:last-child){
+                transition: filter .25s;
+                ${ ({disabled}) => disabled ? `
+                user-select: none;
+                pointer-events: none;
+                filter: blur(1px) opacity(40%);
+                `:''} 
+            }
+        }
 
         //disable track
         div:not(:last-child){
-            ${ ({disabled}) => disabled ? `
-            user-select: none;
-            pointer-events: none;
-            filter: blur(1px) opacity(40%);
-            `:''} 
+            ${({disabled}) => {
+                if(disabled)
+                    return css`
+                        user-select: none;
+                        pointer-events: none;
+                        filter: blur(1px) opacity(40%);
+                    `
+                return ''
+            }}
+        }
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        &:nth-child(1){
+            display: none;
+        }
+        &:nth-child(2){
+            padding-top: 10px;
+        }
+        &:last-child{
+            padding-bottom: 10px;
         }
     }
 `
@@ -435,6 +533,11 @@ export const ArtistsTableRow = styled.li`
             height: 55px;
             width: 55px;
             margin: 0 ${metrics.spacing3} 0 0;
+
+            @media(max-width: ${breakpoints.sml}){
+                height: 45px;
+                width: 45px;
+            }
         }
         // first cell
         &:nth-child(1){
@@ -456,7 +559,32 @@ export const ArtistsTableRow = styled.li`
             }
         }
         &:nth-child(2){
-            ${rowImageAndName}
+            span{
+                display: flex;
+                flex-flow: column nowrap;
+
+                strong{
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 500;
+                }
+
+                small{
+                    color: ${colors.gray};
+                    font-size: 12px;
+                    font-weight: 500;
+                    margin: ${metrics.spacing1} 0 0 0;
+                }
+            }
+        }
+        @media(max-width: ${breakpoints.tbp}){
+            &:nth-child(1){
+                display: none;
+            }
+            &:nth-child(2){
+                padding-left: 0;
+                padding-right: 0;
+            }
         }
     }
 `
