@@ -319,6 +319,7 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
             width: 40px;
             margin: 0 ${metrics.spacing3} 0 0;
             user-select: none;
+            object-fit: cover;
         }
         // first cell
         &:nth-child(1){
@@ -569,6 +570,7 @@ export const ArtistsTableRow = styled.li`
             height: 55px;
             width: 55px;
             margin: 0 ${metrics.spacing3} 0 0;
+            object-fit: cover;
 
             @media(max-width: ${breakpoints.sml}){
                 height: 45px;

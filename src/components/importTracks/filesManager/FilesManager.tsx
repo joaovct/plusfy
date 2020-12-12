@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { breakpoints, colors, metrics, Page as page, Text, Title } from '../../../styles/style'
+import { breakpoints, colors, Container, metrics, Page as page, Text, Title } from '../../../styles/style'
 import {Plus, Upload} from 'react-feather'
 import { useDropzone } from 'react-dropzone'
 import useFilesPreview from '../../../common/hooks/components/importTracks/useFilesPreview'
@@ -42,8 +42,10 @@ const FilesManager = () => {
     return(
         <SectionFilesManager displayNone={displayNone} statusImport={statusImport}>
             <Page>
-                <Title>Importar músicas</Title>
-                <Text>Importe suas músicas locais para o Spotify facilmente. Selecione ou arraste suas músicas para a área abaixo e iremos buscar automaticamente por elas na biblioteca do Spotify.</Text>
+                <Container>
+                    <Title>Importar músicas</Title>
+                    <Text>Importe suas músicas locais para o Spotify facilmente. Selecione ou arraste suas músicas para a área abaixo e iremos buscar automaticamente por elas na biblioteca do Spotify.</Text>
+                </Container>
             </Page>
             <WrapperDropArea thereAreFiles={statusPreview === 'show'}>
                 <Center thereAreFiles={statusPreview === 'show'}>
@@ -69,7 +71,6 @@ const FilesManager = () => {
 
 const DropArea = styled.div<{thereAreFiles: boolean}>`
     min-height: calc(var(--width-droparea));
-    /* min-height: calc(var(--width-droparea) + 50px); */
     height: 100%;
     width: var(--width-droparea);
     max-width: 100%;
@@ -223,6 +224,7 @@ const Page = styled(page)`
 const SectionFilesManager = styled.section<{statusImport: StatusImport, displayNone: boolean}>`
     display: flex;
     flex-flow: column nowrap;
+    align-items: center;
     flex: 1 1 auto;
     opacity: 1;
     transition: opacity .5s;
@@ -248,7 +250,6 @@ const SectionFilesManager = styled.section<{statusImport: StatusImport, displayN
                 pointer-events: none;
                 position: absolute;
                 top: 0;
-                left: 0;
             `
         return css`
             opacity: 1;

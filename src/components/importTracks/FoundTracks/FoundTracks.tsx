@@ -116,6 +116,7 @@ const StatusError = styled(Status)`
 const Content = styled.div<{statusImport: StatusImport}>`
     position: relative;
     display: flex;
+    justify-content: center;
     flex-flow: column nowrap;
     width: 100%;
     flex: 1 1 auto;
