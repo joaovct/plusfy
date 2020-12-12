@@ -1,11 +1,12 @@
 import React from 'react'
 import { Trash } from 'react-feather'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { RemoveFile } from '../../../common/hooks/components/importTracks/useFilesPreview'
-import { Button, colors, metrics, Text } from '../../../styles/style'
+import { breakpoints, Button, colors, metrics, Text } from '../../../styles/style'
 import { StatusPreview } from '../types'
 import { FilePreview } from '../../../common/hooks/components/importTracks/useFilesPreview'
 import emptyAlbumPhoto from '../../../assets/empty-playlist-photo.svg'
+import { breakpoint } from '../style'
 
 interface ListFilesProps{
     filesPreview: FilePreview[]
@@ -16,7 +17,7 @@ interface ListFilesProps{
 
 const ListFiles: React.FC<ListFilesProps> = ({filesPreview, removeFile, statusPreview, findTrack}) => {
     return(
-        <ListFilesStyled statusPreview={statusPreview}>
+        <ListFilesAside statusPreview={statusPreview}>
             <ListFilesWrapper>
                 <ListFilesContent>
                     {
@@ -39,13 +40,11 @@ const ListFiles: React.FC<ListFilesProps> = ({filesPreview, removeFile, statusPr
                     <Button onClick={findTrack}>Buscar no spotify</Button>
                 </WrapperSearchSpotify>
             </ListFilesWrapper>
-        </ListFilesStyled>
+        </ListFilesAside>
     )
 }
 
 export default ListFiles
-
-
 
 const WrapperSearchSpotify = styled.div`
     height: var(--height-wrapperbutton);
@@ -136,46 +135,99 @@ const ListFilesWrapper = styled.div`
     width: var(--width-content); 
     position: absolute;
     right: 0;
+    flex: 1 1 auto;
 
     ${Text}{
         color: #000;
     }
+
+    @media(max-width: ${breakpoint}){
+        position: relative;
+    }
 `
 
-const ListFilesStyled = styled.div<{statusPreview: StatusPreview}>`
+const ListFilesAside = styled.div<{statusPreview: StatusPreview}>`
+    max-width: 100%;
+    --width-content: calc(var(--width-droparea) + 50px);
     width: 0;
     height: 100%;
-    transition: width .5s;
+    position: relative;
+    transition: height .5s, width .5s, opacity .25s;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-flow: column nowrap;
     position: relative;
     overflow: hidden;
     --width-content: 350px;
     --height-wrapperbutton: 60px;
+    background: #fff;
+    border-top-right-radius: ${metrics.borderRadius};
+    border-bottom-right-radius: ${metrics.borderRadius};
+    opacity: 0;
 
-    @keyframes growUp{
-        from{
-            width: 0;
+    @media(min-width: calc(${breakpoint} + 1px)){
+        min-height: var(--width-droparea);
+
+        @keyframes growUp{
+            from{
+                width: 0;
+            }
+            to{
+                width: var(--width-content);
+            }
         }
-        to{
-           width: var(--width-content);
+        @keyframes shrink{
+            from{
+                width: var(--width-content);
+            }
+            to{
+                width: 0;
+            }
         }
     }
 
-    @keyframes shrink{
-        from{
-            width: var(--width-content);
+    @media(max-width: ${breakpoint}){
+        width: var(--width-content);
+        height: 0;
+        --width-content: var(--width-droparea);
+        border-radius: ${metrics.borderRadius};
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        flex: 1 1 auto;
+
+        @keyframes growUp{
+            from{
+                height: 0;
+            }
+            to{
+                height: 100%;
+            }
         }
-        to{
-            width: 0;
+        @keyframes shrink{
+            from{
+                height: 100%;
+            }
+            to{
+                height: 0;
+            }
         }
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        border-radius: 0;
     }
 
     ${({statusPreview}) => {
         if(statusPreview === 'show')
-            return 'animation: growUp 1s forwards;'
+            return css`
+                animation: growUp 1s forwards;
+                opacity: 1;
+            `
         else if(statusPreview === 'hide')
-            return 'animation: shrink 1s forwards;'
+            return css`
+                animation: shrink 1s forwards;
+                opacity: 0;
+            `
     }}
 `

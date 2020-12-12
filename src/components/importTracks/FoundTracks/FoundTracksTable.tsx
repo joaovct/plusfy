@@ -1,12 +1,10 @@
 import React, { useContext, useMemo } from 'react'
-import { Clock } from 'react-feather'
 import styled from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
 import useAddToPlaylist from '../../../common/hooks/components/addPlaylist/useAddToPlaylist'
-import { PlaylistTable, PlaylistTableRow, Button, colors, metrics } from '../../../styles/style'
+import { PlaylistTable, Button, colors, metrics, breakpoints } from '../../../styles/style'
 import ListTracks from '../../common/listTracks/ListTracks'
 import ContextImportTracks from '../ContextImportTracks'
-import FoundTrackRow from './FoundTrackRow'
 
 const FoundTracksTable: React.FC = () => {
     const {foundTracks, actionStartResetImportTracks} = useContext(ContextImportTracks)
@@ -30,30 +28,7 @@ const FoundTracksTable: React.FC = () => {
 
     return(
         <TableBackground>
-            <ListTracks
-                tracks={tracks}
-            />
-            {/* <PlaylistTable qntColumns={7}>
-                <PlaylistTableRow>
-                    <div>#</div>
-                    <div>Título</div>
-                    <div>Artista</div>
-                    <div>Álbum</div>
-                    <div>Arquivo</div>
-                    <div><Clock/></div>
-                    <div></div>
-                </PlaylistTableRow>
-                {
-                    foundTracks.map((track, index) => {
-                        if(track.track)
-                            return(
-                                <FoundTrackRow key={`foundtrack-${track.track.uri}-${index}`} foundTrack={track} index={index}/>
-                            )
-                        return <></>
-                    })
-                }
-            </PlaylistTable>
-            */}
+            <ListTracks tracks={tracks} />
             <ResultsButtons>
                 <Button
                     typeButton="secondary"
@@ -81,7 +56,6 @@ const ResultsButtons = styled.div`
     align-items: center;
     padding: ${metrics.spacing3} 0;
 
-
     ${Button}{
         min-width: inherit;
         padding: 8px 32px;
@@ -91,32 +65,46 @@ const ResultsButtons = styled.div`
             margin: 0 ${metrics.spacing4} 0 0;
         }
     }
+
+    @media(max-width: ${breakpoints.sml}){
+        flex-flow: column nowrap;
+
+        ${Button}{
+            padding-top: 12px;
+            padding-bottom: 12px;
+            width: 100%;
+            margin: 0;
+            &:nth-child(2){
+                order: 1;
+            }
+            &:nth-child(1){
+                order: 2;
+                margin: ${metrics.spacing3} 0 0 0;
+            }
+        }
+    }
 `
 
 const TableBackground = styled.div`
+    position: relative;
     background: ${colors.darkerBackground};
     border-radius: ${metrics.borderRadius};
     margin: ${metrics.spacing4} 0 0 0;
-    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 auto;
 
-    ${PlaylistTableRow}{
-        div{
-            &:nth-child(2){
-                flex-grow: 10;
-            }
-            &:nth-child(6){
-                max-width: 75px;
-            }
-            &:nth-child(7){
-                max-width: 145px;
-                ${Button}{
-                    display: inline-block;
-                    min-width: inherit;
-                    font-size: 14px;
-                    padding: 6px 32px;
-                    margin: auto;
-                }
-            }
-        }
+    @media(max-width: ${breakpoints.tbl}){
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        padding-bottom: ${metrics.spacing2};
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        padding: 0 ${metrics.spacing3};
+        border-radius: 0;
+    }   
+    ${PlaylistTable}{
+        flex: 1 1 auto;
     }
 `

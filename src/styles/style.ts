@@ -36,11 +36,17 @@ export const Title = styled.h1`
     font-weight: 500;
     color: #fff;
 
-    @media(max-width: 768px){
-        font-size: 38px;
-    }
-    @media(max-width: 576px){
+    @media(max-width: ${breakpoints.tbl}){
         font-size: 35px;
+    }
+    @media(max-width: ${breakpoints.tbp}){
+        font-size: 30px;
+    }
+    @media(max-width: ${breakpoints.sml}){
+        font-size: 28px;
+    }
+    @media(max-width: ${breakpoints.smp}){
+        font-size: 24px;
     }
 `
 
@@ -51,6 +57,13 @@ export const Text = styled.p`
     line-height: 1.2;
     color: #fff;
     margin: ${metrics.spacing3} 0 0 0;
+
+    @media(max-width: ${breakpoints.tbp}){
+        font-size: 20px;
+    }
+    @media(max-width: ${breakpoints.sml}){
+        font-size: 18px;
+    }
 `
 
 export const Input = styled.input`
@@ -91,8 +104,10 @@ export const Button = styled.button<{typeButton?: "primary" | "secondary"}>`
         background: ${colors.lighterGreen};
     }
 
-    @media(max-width: 576px){
+    @media(max-width: ${breakpoints.sml}){
         min-width: inherit;
+        font-size: 13px;
+        padding: 12px 30px;
     }
 
     ${ ({typeButton: type}) => {
