@@ -291,7 +291,12 @@ export type SearchNextItems = (accessToken: string, nextURL: string, configs?: S
 export type UserTopArtistsAndTracksTimeRange = 'long_term' | 'medium_term' | 'short_term'
 export type UserTopArtistsAndTracksType = 'artists' | 'tracks'
 
-export type UserTopArtistsAndTracksConfigs = {limit?: number, offset?: number, time_range?: UserTopArtistsAndTracksTimeRange}
+export type UserTopArtistsAndTracksConfigs = {
+    [key: string]: number | UserTopArtistsAndTracksTimeRange | undefined
+    limit?: number,
+    offset?: number,
+    time_range?: UserTopArtistsAndTracksTimeRange
+}
 
 export type GetUserTopArtistsAndTracksResult<T> = {
     (arg: Track | Artist): T

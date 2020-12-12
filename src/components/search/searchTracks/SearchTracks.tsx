@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
-import { Title, Text, metrics, colors } from '../../../styles/style'
+import { Title, metrics, SeeMore } from '../../../styles/style'
 import { ChildProps } from '../types'
 import ListTracks from '../../common/listTracks/ListTracks'
 import {Switch, Route, Link} from 'react-router-dom'
@@ -59,27 +59,6 @@ const SearchTracks: React.FC<ChildProps> = ({query}) => {
 }
 
 export default SearchTracks
-
-const SeeMore = styled(Text)`
-    display: flex;
-    justify-content: center;
-    margin: ${metrics.spacing3} 0 0 0;
-
-    a, span{
-        text-align: center;
-        font-size: 1rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        color: ${colors.gray};
-        cursor: pointer;
-        transition: color .25s;
-        text-decoration: underline;
-
-        &:hover{
-            color: ${colors.secondary};
-        }
-    }
-`
 
 const WrapperTracks = styled.div`
     margin: ${metrics.spacing3} 0 0 0;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { UserTopArtistsAndTracksTimeRange } from '../../common/api/webapi/types'
-import { breakpoints, colors, Container, Page } from '../../styles/style'
+import { breakpoints, colors, Container as container, Page } from '../../styles/style'
 import FavoriteArtists from './favoriteArtists/FavoriteArtists'
 import FavoriteTracks from './favoriteTracks/FavoriteTracks'
 import { ListsWrapper } from './style'
@@ -40,8 +40,17 @@ const Favorites = () => {
     )
 }
 
+const Container = styled(container)`
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 auto;
+`
+
 const Main = styled.main`
     width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 auto;
 `
 
 const Tab = styled.li<{active?: boolean}>`

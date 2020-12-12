@@ -66,6 +66,27 @@ export const Text = styled.p`
     }
 `
 
+export const SeeMore = styled(Text)`
+    display: flex;
+    justify-content: center;
+    margin: ${metrics.spacing3} 0 0 0;
+
+    a, span{
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: ${colors.gray};
+        cursor: pointer;
+        transition: color .25s;
+        text-decoration: underline;
+
+        &:hover{
+            color: ${colors.secondary};
+        }
+    }
+`
+
 export const Input = styled.input`
     width: 100%;
     padding: 16px ${metrics.spacing5};

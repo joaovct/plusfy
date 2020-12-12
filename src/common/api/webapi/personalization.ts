@@ -17,6 +17,11 @@ export const getUserTopArtistsAndTracks: GetUserTopArtistsAndTracks = async (acc
 export const getNextUserTopArtistsAndTracks: GetNextUserTopArtistsAndTracks = async (accessToken, nextURL, configs) => {
     let data
     try{
+        for(let key in configs){
+            if(configs[key] === undefined)
+                delete configs[key]
+        }
+
         let [url, defaultParameters] = nextURL.split('?')
         const queryParameters = qs.stringify({...qs.parse(defaultParameters), ...configs} || {})
         const response = await api.spotify.get(`${url}?${queryParameters}`, {...getHeaders(accessToken)})

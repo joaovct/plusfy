@@ -1,5 +1,5 @@
 import styled, {css} from "styled-components";
-import { breakpoints, metrics, Title } from "../../styles/style";
+import { breakpoints, metrics, Title, Text } from "../../styles/style";
 
 export const ListContent = styled.div`
     flex: 1;
@@ -26,7 +26,35 @@ export const ListContent = styled.div`
     }
 `
 
+export const MessageStatus = styled(ListContent)<{status: 'loading' | string}>`
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+
+    svg{
+        height: 75px;
+        width: 75px;
+        ${({status}) => status === 'loading' ? 'animation: rotation 3s infinite linear;' : '' }
+
+        @keyframes rotation{
+            from{
+                transform: rotate(0deg);
+            }
+            to{
+                transform: rotate(359deg);
+            }
+        }
+    }
+
+    ${Text}{
+        margin: ${metrics.spacing3} 0 0 0;
+        text-align: center;
+    }
+`
+
 export const ListsWrapper = styled.div`
+    flex: 1 1 auto;
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
@@ -42,6 +70,10 @@ export const ListsWrapper = styled.div`
             &:nth-child(2){
                 order: 1;
             }
+        }
+        
+        ${MessageStatus}{
+            padding: ${metrics.spacing5} 0;
         }
     }
 `
