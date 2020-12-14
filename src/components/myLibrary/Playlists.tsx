@@ -3,18 +3,17 @@ import { useSelector } from 'react-redux'
 import { fetchUserPlaylists } from '../../common/api/webapi/playlists'
 import {IStore} from '../../redux/store/types'
 import {IToken} from '../../redux/store/token/types'
-import {IPlaylist} from '../../common/api/webapi/types'
-import { Link } from 'react-router-dom'
+import {Playlist} from '../../common/api/webapi/types'
 import styled from 'styled-components'
-import { metrics, Input as input, Playlists as WrapperPlaylists, PlaylistItem, breakpoints } from '../../styles/style'
-import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
+import { metrics, Input as input, breakpoints } from '../../styles/style'
 import {XCircle, Loader, Slash, HelpCircle} from 'react-feather'
 import {Search} from 'react-feather'
+import ListPlaylists from '../common/listPlaylists/ListPlaylists'
 
-const ListPlaylists = () => {
+const Playlists = () => {
     const accessToken = useSelector<IStore, IToken['accessToken']>(store => store.token.accessToken)
-    const [playlists, setPlaylists] = useState<IPlaylist[]>([])
-    const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<IPlaylist[]>([])
+    const [playlists, setPlaylists] = useState<Playlist[]>([])
+    const [nounFilteredPlaylists, setNounFilteredPlaylists] = useState<Playlist[]>([])
     const [requestStatus, setRequestStatus] = useState('loading')
     const [search, setSearch] = useState('')
     const isMounted = useRef(true)
@@ -74,37 +73,22 @@ const ListPlaylists = () => {
                         <Search/>
                         <Input onInput={updateSearch} type="text" placeholder="Pesquisar por suas playlists..."/>
                     </Label>
-                    <WrapperPlaylists>
                         {
-                        playlists.map(item => (
-                            <PlaylistItem key={item.uri}>
-                                <Link to={`/playlist/${item.id}`}>
-                                    <figure>
-                                        <img src={item.images.length ? item.images[0].url : emptyPlaylistPhoto} alt={item.name} />
-                                    </figure>
-                                </Link>
-                                <span>
-                                    <Link to={`/playlist/${item.id}`}>{item.name}</Link>
-                                </span>
-                            </PlaylistItem>
-                        ))
-                        }
-                        {
-                            !playlists.length ?
+                            playlists.length ?
+                            <ListPlaylists playlists={playlists}/>
+                            :
                             <figure>
                                 <HelpCircle/>
                                 <p>Não encontramos nenhuma playlist com esse nome.</p>
                             </figure>
-                            : <></>
                         }
-                    </WrapperPlaylists>
                 </>
             }
         </Wrapper>
     )
 }
 
-export default ListPlaylists
+export default Playlists
 
 const Input = styled(input)`
     padding-left: calc(${metrics.spacing5} + 16px);
@@ -182,36 +166,6 @@ const IconStatus = styled.figure<{status: 'loading' | string}>`
 
 const Wrapper = styled.div`
     margin: ${metrics.spacing3} 0 0 0;
-
-    ${WrapperPlaylists} > figure{
-        width: 100%;
-        display: flex;
-        flex-flow: column nowrap;
-        align-items: center;
-        padding-top: ${metrics.spacing4};
-        opacity: 0;
-        animation: fadeIn 1s forwards;
-
-        @keyframes fadeIn{
-            from{
-                opacity: 0;
-            }
-            to{
-                opacity: 1;
-            }
-        }
-
-        svg{
-            height: 75px;
-            width: 75px;
-        }
-
-        p{
-            font-size: 20px;
-            text-align: center;
-            margin: ${metrics.spacing4} 0 0 0;
-        }
-    }
 
     @media(max-width: ${breakpoints.tbp}){
         margin-top: ${metrics.spacing2};

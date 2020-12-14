@@ -3,7 +3,7 @@ export interface IWebAPIRequest{
 }
 
 export interface Playlists{
-    items: Array<IPlaylist>
+    items: Array<Playlist>
     limit: number
     next?: string
     offset: number
@@ -11,7 +11,7 @@ export interface Playlists{
     total: number
 }
 
-export interface IPlaylist{
+export interface Playlist{
     collaborative: boolean
     description: string
     external_urls: {

@@ -1,5 +1,5 @@
 import { ICurrentState } from "../../redux/store/currentState/types";
-import { IPlaylist, Track } from "../api/webapi/types";
+import { Playlist, Track } from "../api/webapi/types";
 
 export const isPlayingTrack = (currentState: ICurrentState, trackUri: string) => {
     if(currentState?.item?.uri === trackUri)
@@ -36,7 +36,7 @@ export const formatDuration = (totalMs: number) => {
     return `${hours ? `${hours}:` : ''}${minutes}:${seconds}` 
 }
 
-export const calculatePlaylistDuration = (playlist: IPlaylist | null) => {
+export const calculatePlaylistDuration = (playlist: Playlist | null) => {
     if(playlist){
         let totalMs = 0
         playlist.tracks.items.forEach(item => totalMs += item.track.duration_ms)
@@ -49,7 +49,7 @@ export const calculatePlaylistDuration = (playlist: IPlaylist | null) => {
     return ''
  }
 
-export const formatNumberTracks = (playlist: IPlaylist | null) => playlist
+export const formatNumberTracks = (playlist: Playlist | null) => playlist
     ? `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`
     : ''
 

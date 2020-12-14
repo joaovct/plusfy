@@ -1,6 +1,6 @@
 import React from 'react'
 import { Page as page, Container, Title as title } from '../../styles/style'
-import ListPlaylists from './ListPlaylists'
+import Playlists from './Playlists'
 import styled from 'styled-components'
 
 const MyLibrary = () => (
@@ -8,7 +8,7 @@ const MyLibrary = () => (
         <Container>
             <Main>
                 <Title>Minha biblioteca</Title>
-                <ListPlaylists/>
+                <Playlists/>
             </Main>
         </Container>
     </Page>

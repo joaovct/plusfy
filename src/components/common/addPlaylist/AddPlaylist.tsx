@@ -2,10 +2,10 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { addItemsToPlaylist, fetchUserPlaylists, Status as RequestStatus } from '../../../common/api/webapi/playlists'
-import { IPlaylist } from '../../../common/api/webapi/types'
+import { Playlist } from '../../../common/api/webapi/types'
 import { IToken } from '../../../redux/store/token/types'
 import { IStore } from '../../../redux/store/types'
-import { Button, colors, metrics, PlaylistItem, Playlists, Title} from '../../../styles/style'
+import { Button, colors, metrics, ListPlaylistsItemStyled as PlaylistItem, ListPlaylistsStyled as Playlists, Title} from '../../../styles/style'
 import Modal from '../modal/Modal'
 import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import {X as Close} from 'react-feather'
@@ -18,7 +18,7 @@ const AddPlaylist = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const createAlert = useAlert()
     const [requestStatus, setRequestStatus] = useState<RequestStatus | ''>('')
-    const [playlists, setPlaylists] = useState<IPlaylist[]>([])
+    const [playlists, setPlaylists] = useState<Playlist[]>([])
     const [itemsAdded, setItemsAdded] = useState<boolean | null>(null)
     const {state: modalState, CSSpreparer, showModal, closeModal} = useModal()
 

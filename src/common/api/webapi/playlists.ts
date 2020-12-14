@@ -1,13 +1,13 @@
 import qs from 'query-string'
 import api from '../api'
-import {Playlists, IPlaylist, PlaylistTracks} from './types'
+import {Playlists, Playlist, PlaylistTracks} from './types'
 
 export type Status = 'empty' | 'success' | 'fail'
 
 export const fetchUserPlaylists = async (accessToken: string) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = qs.stringify({limit: 50})
-    let items: Array<IPlaylist> = []
+    let items: Array<Playlist> = []
     let status: Status = 'empty'
 
     try{
@@ -37,7 +37,7 @@ export const fetchPlaylist = async (accessToken: string, playlistId: string) => 
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let data = null
     try{
-        const res = await api.spotify.get<IPlaylist>(`/playlists/${playlistId}`, headers)
+        const res = await api.spotify.get<Playlist>(`/playlists/${playlistId}`, headers)
         data = res.data
 
         let urlNext = data.tracks.next

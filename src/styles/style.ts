@@ -190,10 +190,10 @@ export const Dropdown = styled.ul<{show: Boolean}>`
     }
 `
 
-export const Playlists = styled.ul`
+export const ListPlaylistsStyled = styled.ul`
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     grid-template-rows: auto;
     column-gap: ${metrics.spacing5};
     row-gap: ${metrics.spacing4};
@@ -204,42 +204,38 @@ export const Playlists = styled.ul`
     & > figure{
         position: absolute;
     }
-
     @media(max-width: 1200px){
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
-
     @media(max-width: 991px){
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-
     @media(max-width: 768px){
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    @media(max-width: 576px){
-        grid-template-columns: repeat(1, .7fr);
+    @media(max-width: ${breakpoints.tbp}){
+        grid-template-columns: repeat(1, 1fr);
         justify-content: center;
-    }
-
-    @media(min-width: 1400px){
-        grid-template-columns: repeat(6, 1fr);
+        margin: ${metrics.spacing3} 0 0 0;
+        column-gap: 0;
+        row-gap: 20px;
     }
 `
 
-export const PlaylistItem = styled.li`
+export const ListPlaylistsItemStyled = styled.li`
     height: 100%;
     width: 100%;
     position: relative;
     opacity: 0;
     animation: fadeIn 1s forwards;
+    display: flex;
+    flex-flow: column nowrap;
 
     & > a,
     & > button{
         background: inherit;
         position: relative;
         cursor: pointer;
-
         figure{
             height: auto;
             width: 100%;
@@ -249,7 +245,6 @@ export const PlaylistItem = styled.li`
             box-shadow: 0 3px 15px 10px rgba(0,0,0,0.12);
             border-radius: 12px;
             background: #353535;
-
             img{
                 height: 100%;
                 width: 100%;
@@ -258,20 +253,90 @@ export const PlaylistItem = styled.li`
             }
         }
     }
-
     span{
-        display: block;
+        flex: 1 1 auto;
+        display: flex;
+        flex-flow: column nowrap;
         width: 100%;
         margin: ${metrics.spacing3} 0 0 0;
-        font-size: 1.25rem;
-        text-align: center;
 
-        @media(max-width: 768px){
-            font-size: 24;
+        a{
+            flex: 1 1 auto;
+            text-align: center;
+            strong{
+                --lineHeight: 1.2em;
+                --numberLines: 3;
+                line-height: var(--lineHeight);
+                max-height: calc( var(--lineHeight) * var(--numberLines) );
+                display: -webkit-box;
+                -webkit-line-clamp: var(--numberLines);
+                -webkit-box-orient: vertical;  
+                overflow: hidden;
+                font-size: 1.25rem;
+                font-weight: 600;
+                text-align: center;
+                color: #fff;
+                overflow: hidden;
+            }
         }
 
-        @media(max-width: 576px){
-            font-size: 26px;
+        small{
+            font-size: 14px;
+            text-align: center;
+            color: ${colors.gray};
+            margin: ${metrics.spacing2} 0 0 0;
+        }
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        flex-flow: row nowrap;
+        align-items: center;
+
+        & > a,
+        & > button{
+            margin: 0 ${metrics.spacing3} 0 0;
+
+            figure{
+                height: 50px;
+                width: 50px;
+                user-select: none;
+                object-fit: cover;
+
+                img{
+                    border-radius: 0;
+                }
+            }
+        }
+
+        span{
+            flex: 1 1 auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            
+            a{
+                max-width: 100%;
+                width: 100%;
+                display: table;
+                table-layout: fixed;
+
+                strong{
+                    font-size: 16px;
+                    text-align: left;
+                    display: table-cell;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+
+            small{
+                display: block;
+                font-size: 12px;
+                margin: 3px 0 0 0;
+                text-align: left;
+            }
         }
     }
 `
