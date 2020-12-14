@@ -6,7 +6,7 @@ import {IToken} from '../../redux/store/token/types'
 import {IPlaylist} from '../../common/api/webapi/types'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { metrics, Input as input, Playlists as WrapperPlaylists, PlaylistItem } from '../../styles/style'
+import { metrics, Input as input, Playlists as WrapperPlaylists, PlaylistItem, breakpoints } from '../../styles/style'
 import emptyPlaylistPhoto from '../../assets/empty-playlist-photo.svg'
 import {XCircle, Loader, Slash, HelpCircle} from 'react-feather'
 import {Search} from 'react-feather'
@@ -107,10 +107,15 @@ const ListPlaylists = () => {
 export default ListPlaylists
 
 const Input = styled(input)`
-    padding-left: calc(40px + 16px);
+    padding-left: calc(${metrics.spacing5} + 16px);
+
+    @media(max-width: ${breakpoints.tbp}){
+        padding-left: calc(${metrics.spacing4} + 20px);
+    }
 `
 
 const Label = styled.label`
+    padding-top: 0;
     position: relative;
     display: flex;
     align-items: center;
@@ -120,8 +125,17 @@ const Label = styled.label`
         height: 24px;
         width: 24px;
         left: calc(40px - 16px);
+        color: #000;
         *{
             color: #000;
+        }
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        svg{
+            height: 20px;
+            width: 20px;
+            left: calc(40px - 24px);
         }
     }
 `
@@ -197,5 +211,9 @@ const Wrapper = styled.div`
             text-align: center;
             margin: ${metrics.spacing4} 0 0 0;
         }
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        margin-top: ${metrics.spacing2};
     }
 `

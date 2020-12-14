@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {Search} from 'react-feather'
-import {Input as input, metrics} from '../../styles/style'
+import {breakpoints, Input as input, metrics} from '../../styles/style'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
@@ -25,7 +25,7 @@ const SearchHome = () => {
                 onKeyDown={handleKeyDown}
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Procurar por músicas, albuns, playlists..."
+                placeholder="Procurar por músicas, álbuns, playlists..."
             />
         </Label>
     )
@@ -33,6 +33,10 @@ const SearchHome = () => {
 
 const Input = styled(input)`
     padding-left: calc(${metrics.spacing5} + 16px);
+
+    @media(max-width: ${breakpoints.tbp}){
+        padding-left: calc(${metrics.spacing4} + 20px);
+    }
 `
 
 const Label = styled.label`
@@ -49,6 +53,16 @@ const Label = styled.label`
         color: #000;
         *{
             color: #000;
+        }
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        padding-top: ${metrics.spacing2};
+
+        svg{
+            height: 20px;
+            width: 20px;
+            left: calc(40px - 24px);
         }
     }
 `

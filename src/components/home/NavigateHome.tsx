@@ -1,55 +1,65 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Title, metrics, colors} from './../../styles/style'
+import {Title, metrics, colors, breakpoints, Page, Container} from './../../styles/style'
 import {Music, Smile, Star, Upload} from 'react-feather'
 import { Link } from 'react-router-dom'
 
 const NavigateHome = () => {
 
-    return(<>
-        <TitleNavegate>Navegar</TitleNavegate>
-        <WrapperItens>
-            <Item>
-                <Link to="/my-library">
-                    <figure><Music/></figure>
-                </Link>
-                <span>
-                    <Link to="/my-library">Minha biblioteca</Link>
-                </span>
-            </Item>
-            <Item>
-                <Link to="/building">
-                    <figure><Smile/></figure>
-                </Link>
-                <span>
-                    <Link to="/building">Medidor de humor</Link>
-                </span>
-            </Item>
-            <Item>
-                <Link to="/favorites">
-                    <figure><Star/></figure>
-                </Link>
-                <span>
-                    <Link to="/favorites">Favoritos</Link>
-                </span>
-            </Item>
-            <Item>
-                <Link to="/import-tracks">
-                    <figure><Upload/></figure>
-                </Link>
-                <span>
-                    <Link to="/import-tracks">Importar músicas</Link>
-                </span>
-            </Item>
-        </WrapperItens>
-    </>)
+    return(
+        <Content>
+            <PageTitle>
+                <Container>
+                    <Title>Navegar</Title>
+                </Container>
+            </PageTitle>
+            <PageList>
+                <ListItens>
+                    <Item>
+                        <Link to="/my-library">
+                            <figure><Music/></figure>
+                        </Link>
+                        <span>
+                            <Link to="/my-library">Minha biblioteca</Link>
+                        </span>
+                    </Item>
+                    <Item>
+                        <Link to="/building">
+                            <figure><Smile/></figure>
+                        </Link>
+                        <span>
+                            <Link to="/building">Medidor de humor</Link>
+                        </span>
+                    </Item>
+                    <Item>
+                        <Link to="/favorites">
+                            <figure><Star/></figure>
+                        </Link>
+                        <span>
+                            <Link to="/favorites">Favoritos</Link>
+                        </span>
+                    </Item>
+                    <Item>
+                        <Link to="/import-tracks">
+                            <figure><Upload/></figure>
+                        </Link>
+                        <span>
+                            <Link to="/import-tracks">Importar músicas</Link>
+                        </span>
+                    </Item>
+                </ListItens>
+            </PageList>
+        </Content>
+    )
 }
 
 const Item = styled.li`
+    height: 100%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     margin: 0 calc(${metrics.spacing4} * 2) 0 0;
+
     & > a{
         display: block;
         height: 110px;
@@ -106,62 +116,77 @@ const Item = styled.li`
         background: linear-gradient(181.75deg, #FF0844 6.87%, #FF9A3E 95.37%);
     }
 
-    @media(max-width: 991px){
-        margin: 0 ${metrics.spacing4} 0 0;
-    } 
-    @media(max-width: 768px){
+    @media(max-width: ${breakpoints.tbl}){
         max-width: 100px;
+
         & > a{
             height: 100px;
             width: 100px;
+
             figure svg{
                 height: 45px;
                 width: 45px;
             }
         }
-        span{
-            font-size: 15px;
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        margin-right: calc(${metrics.spacing4} * 1.5);
+
+        &:last-child span{
+            width: calc(100px + ${metrics.spacing4});
         }
     }
-    @media(max-width: 576px){
-        margin-bottom: ${metrics.spacing4};
-    }
-    @media(max-width: 480px){
-        max-width: inherit;
-        margin-bottom: calc(${metrics.spacing4} * 2);
-        & > a{
-            height: 125px;
-            width: 125px;
-            figure svg{
-                height: 65px;
-                width: 65px;
-            }
-        }
+
+    @media(max-width: ${breakpoints.sml}){
+        margin-right: ${metrics.spacing4};
+
         span{
-            font-size: 21px;
+            font-size: 14px;
         }
     }
 `
 
-const WrapperItens = styled.ul`
+const ListItens = styled.ul`
+    min-height: 168px;
+    width: 100%;
     display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin: ${metrics.spacing4} 0 0 0;
+    flex-flow: row nowrap;
+    margin: ${metrics.spacing2} 0 0 0;
 
-    @media(max-width: 991px){
-        margin: calc( ${metrics.spacing4} / 1.5 ) 0 0 0;
-    }
-    @media(max-width: 480px){
-        flex-flow: column nowrap;
-        margin: ${metrics.spacing4} 0 0 0;
+    @media(max-width: ${breakpoints.tbp}){
+        width: 100%;
+        overflow-x: scroll;
+
+        &::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
     }
 `
 
-const TitleNavegate = styled(Title)`
+const PageList = styled(Page)`
+    width: 100%;
+    flex: 1 1 auto;
+    overflow-x: hidden;
+
+    @media(max-width: ${breakpoints.tbp}){
+        max-width: inherit;
+        padding-right: 0;
+    }
+`
+
+const PageTitle = styled(Page)`
+    flex: 0 0 auto;
+`
+
+const Content = styled.div`
+    flex: 1 0 0;
+    width: 100%;
     margin: calc(${metrics.spacing5}) 0 0 0;
-    
+    display: flex;
+    flex-flow: column nowrap;
+
     @media(min-height: 769px) and (min-width: 992px){
         margin: calc(${metrics.spacing5} * 2) 0 0 0;
     }

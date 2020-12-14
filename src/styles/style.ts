@@ -100,8 +100,12 @@ export const Input = styled.input`
         font-weight: 500;
     }
 
-    @media(max-width: 768px){
+    @media(max-width: ${breakpoints.tbl}){
         font-size: 16px;
+    }
+    @media(max-width: ${breakpoints.tbp}){
+        font-size: 14px;
+        padding: 12px ${metrics.spacing4};
     }
 `
 

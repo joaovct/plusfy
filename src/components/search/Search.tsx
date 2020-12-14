@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Page, Container as container, Input as input, metrics, Text} from '../../styles/style'
+import { Page, Container as container, Input as input, metrics, Text, breakpoints} from '../../styles/style'
 import {Search as SearchIcon} from 'react-feather'
 import styled from 'styled-components'
 import { useHistory, useParams } from 'react-router-dom'
@@ -33,7 +33,7 @@ const Search = () => {
                     <Input
                         value={search}
                         onChange={handleUpdateSearch}
-                        placeholder="Procurar por músicas, albuns, playlists..."
+                        placeholder="Procurar por músicas, álbuns, playlists..."
                     />
                 </Label>
                 <Main emptyQuery={query ? false : true}>
@@ -83,6 +83,10 @@ const Main = styled.main<{emptyQuery: boolean}>`
 
 const Input = styled(input)`
     padding-left: calc(${metrics.spacing5} + 16px);
+
+    @media(max-width: ${breakpoints.tbp}){
+        padding-left: calc(${metrics.spacing4} + 20px);
+    }
 `
 
 const Label = styled.label`
@@ -99,6 +103,16 @@ const Label = styled.label`
         color: #000;
         *{
             color: #000;
+        }
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        padding-top: ${metrics.spacing2};
+
+        svg{
+            height: 20px;
+            width: 20px;
+            left: calc(40px - 24px);
         }
     }
 `
