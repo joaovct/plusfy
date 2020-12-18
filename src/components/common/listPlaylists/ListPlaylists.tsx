@@ -31,13 +31,13 @@ const ListPlaylists: React.FC<ListPlaylistsProps> = ({playlists, actionOnClick})
                             </>
                             :
                             <>
-                                <button onClick={() => actionOnClick(item)}>
+                                <div aria-label="button" onClick={() => actionOnClick(item)}>
                                     {Figure}
-                                </button>
+                                </div>
                                 <span>
-                                    <button onClick={() => actionOnClick(item)}>
+                                    <div onClick={() => actionOnClick(item)}>
                                         {Strong}
-                                    </button>
+                                    </div>
                                     {Small}
                                 </span>
                             </>

@@ -222,7 +222,7 @@ export const ListPlaylistsStyled = styled.ul`
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     @media(max-width: ${breakpoints.tbp}){
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 100%;
         justify-content: center;
         margin: ${metrics.spacing3} 0 0 0;
         column-gap: 0;
@@ -240,10 +240,11 @@ export const ListPlaylistsItemStyled = styled.li`
     flex-flow: column nowrap;
 
     & > a,
-    & > button{
+    & > div{
         background: inherit;
         position: relative;
         cursor: pointer;
+
         figure{
             height: auto;
             width: 100%;
@@ -268,7 +269,7 @@ export const ListPlaylistsItemStyled = styled.li`
         width: 100%;
         margin: ${metrics.spacing3} 0 0 0;
 
-        a, button{
+        a, div{
             background: inherit;
             flex: 1 1 auto;
             text-align: center;
@@ -302,7 +303,7 @@ export const ListPlaylistsItemStyled = styled.li`
         align-items: center;
 
         & > a,
-        & > button{
+        & > div{
             margin: 0 ${metrics.spacing3} 0 0;
 
             figure{
@@ -324,7 +325,7 @@ export const ListPlaylistsItemStyled = styled.li`
             justify-content: center;
             margin: 0;
             
-            a, button{
+            a, div{
                 max-width: 100%;
                 width: 100%;
                 display: table;
