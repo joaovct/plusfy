@@ -6,3 +6,13 @@ export const positionOptionsElement = (ul: HTMLUListElement) => {
     if(ulBottom > sectionBottom)
         ul.style.bottom = '20px'
 }
+
+export function nowPlayingPositionDropdown(ul: HTMLUListElement){
+    const nowPlayingRight = ul.parentElement?.parentElement?.parentElement?.getBoundingClientRect().right || 0
+    const ulRight = ul.getBoundingClientRect().right
+    const difference = ulRight - nowPlayingRight
+    
+    if(difference >= 0){
+        ul.style.right = `0px`
+    }
+}

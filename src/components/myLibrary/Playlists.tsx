@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, ChangeEvent, useRef } from 'react'
+import React, { useState, useEffect, ChangeEvent, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { fetchUserPlaylists } from '../../common/api/webapi/playlists'
 import {IStore} from '../../redux/store/types'
@@ -18,14 +18,17 @@ const Playlists = () => {
     const [search, setSearch] = useState('')
     const isMounted = useRef(true)
 
+    const updateSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value)
+    }
+
     useEffect(() => {
         return () => {isMounted.current = false}
     },[])
 
     useEffect(() => {
-        if(accessToken){
+        if(accessToken)
             fetchData()
-        }
         async function fetchData(){
             const response = await fetchUserPlaylists(accessToken)
             if(isMounted.current){
@@ -44,10 +47,6 @@ const Playlists = () => {
         }
         setPlaylists( nounFilteredPlaylists )
     },[search, nounFilteredPlaylists])
-
-    const updateSearch = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value)
-    },[])
 
     return(
         <Wrapper>
@@ -77,10 +76,10 @@ const Playlists = () => {
                             playlists.length ?
                             <ListPlaylists playlists={playlists}/>
                             :
-                            <figure>
+                            <NotFound>
                                 <HelpCircle/>
                                 <p>Não encontramos nenhuma playlist com esse nome.</p>
-                            </figure>
+                            </NotFound>
                         }
                 </>
             }
@@ -89,6 +88,33 @@ const Playlists = () => {
 }
 
 export default Playlists
+
+const NotFound = styled.figure`
+    width: 100%;	
+    display: flex;	
+    flex-flow: column nowrap;	
+    align-items: center;	
+    padding-top: ${metrics.spacing4};	
+    opacity: 0;	
+    animation: fadeIn 1s forwards;	
+    @keyframes fadeIn{	
+        from{	
+            opacity: 0;	
+        }	
+        to{	
+            opacity: 1;	
+        }	
+    }	
+    svg{	
+        height: 75px;	
+        width: 75px;	
+    }	
+    p{	
+        font-size: 20px;	
+        text-align: center;	
+        margin: ${metrics.spacing4} 0 0 0;	
+    }
+`
 
 const Input = styled(input)`
     padding-left: calc(${metrics.spacing5} + 16px);

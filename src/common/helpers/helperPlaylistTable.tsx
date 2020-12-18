@@ -1,5 +1,6 @@
 import { ICurrentState } from "../../redux/store/currentState/types";
 import { Playlist, Track } from "../api/webapi/types";
+import emptyAlbumPhoto from '../../assets/empty-playlist-photo.svg'
 
 export const isPlayingTrack = (currentState: ICurrentState, trackUri: string) => {
     if(currentState?.item?.uri === trackUri)
@@ -48,6 +49,12 @@ export const calculatePlaylistDuration = (playlist: Playlist | null) => {
     }
     return ''
  }
+
+export const formatTrackPhoto = (track?: Track) => {
+    if(track?.album.images.length)
+        return track.album.images[0].url
+    return emptyAlbumPhoto
+}
 
 export const formatNumberTracks = (playlist: Playlist | null) => playlist
     ? `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`

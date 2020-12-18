@@ -109,6 +109,14 @@ export const Input = styled.input`
     }
 `
 
+export const InputRange = styled.input.attrs({type: 'range'})`
+    transition: opacity .25s;
+
+    &:disabled{
+        opacity: var(--opacityInputDisabled);
+    }
+`
+
 export const Button = styled.button<{typeButton?: "primary" | "secondary"}>`
     display: inline-block;
     min-width: 300px;
@@ -260,7 +268,8 @@ export const ListPlaylistsItemStyled = styled.li`
         width: 100%;
         margin: ${metrics.spacing3} 0 0 0;
 
-        a{
+        a, button{
+            background: inherit;
             flex: 1 1 auto;
             text-align: center;
             strong{
@@ -315,7 +324,7 @@ export const ListPlaylistsItemStyled = styled.li`
             justify-content: center;
             margin: 0;
             
-            a{
+            a, button{
                 max-width: 100%;
                 width: 100%;
                 display: table;

@@ -45,7 +45,7 @@ const CenterButtons: React.FC<IcenterButtons> = ({currentState}) => {
     },[accessToken, currentState])
 
     return(
-        <WrapperButtons>
+        <Center>
             <ShuffleButton
                 onClick={handleToggleShufflePlayer}
                 isAvailable={currentState.actions?.dissallows?.toggling_shuffle ? false : true}
@@ -69,15 +69,11 @@ const CenterButtons: React.FC<IcenterButtons> = ({currentState}) => {
             >
                 <Repeat/>
             </RepeatButton>
-        </WrapperButtons>
+        </Center>
     );
 }
 
 export default CenterButtons
-
-const opacityDisabled = '.4'
-const opacityNormal = '.7'
-const opacityHover = '1'
 
 interface IavailableAction{
     isAvailable: boolean
@@ -90,10 +86,10 @@ const ActionButton = styled.figure<IavailableAction>`
         height: 20px;
         width: 20px;
         fill: #fff;
-        opacity: ${opacityNormal};
+        opacity: var(--iconOpacity);
     }
 
-    ${ ({isAvailable}) => !isAvailable? `opacity: ${opacityDisabled}; pointer-events: none; user-select: none;` : ''} }
+    ${ ({isAvailable}) => !isAvailable? `opacity: var(--iconOpacity); pointer-events: none; user-select: none;` : ''} }
 `
 
 interface IshuffleButton extends IavailableAction{
@@ -138,8 +134,8 @@ const RepeatButton = styled(ActionButton)<IrepeatButton>`
     }
 
     ${({repeatState}) => repeatState === 'context'
-        ? `svg{stroke: ${colors.primary}; opacity: 1;}`
-        : repeatState === 'track' ? `&:before{content: '1';} svg{stroke: ${colors.primary}; opacity: 1}`: ''
+        ? `svg{stroke: ${colors.primary}; opacity: var(--iconOpacityActivate);}`
+        : repeatState === 'track' ? `&:before{content: '1';} svg{stroke: ${colors.primary}; opacity: var(--iconOpacityActivate)}`: ''
     }
 `
 
@@ -147,7 +143,7 @@ const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
     svg{
         height: 40px;
         width: 40px;
-        opacity: ${opacityNormal};
+        opacity: var(--iconOpacity);
 
         polygon{
             ${({isPlaying}) => !isPlaying ? 'fill: #fff' : ''};
@@ -155,22 +151,24 @@ const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
     }
 `
 
-const WrapperButtons = styled.div`
+const Center = styled.div`
+    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    padding: var(--innerPadding);
+
     figure{
 
         svg{
             cursor: pointer;
-            transition: .15s;
+            transition: opacity var(--iconOpacityTransition);
         }
 
         &:hover{
             svg{
-                opacity: ${opacityHover};
+                opacity: var(--iconOpacityActivate);
             }
         }
     }

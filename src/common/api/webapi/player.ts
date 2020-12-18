@@ -1,13 +1,13 @@
 import api from "../api"
 import {IPlayer, IPlayerDevice} from './types'
 import qs from 'query-string'
-import { defineActiveDevice } from "../../helpers/helperWebAPI"
+import { defineActiveDevice, getHeaders } from "../../helpers/helperWebAPI"
 
-interface IplayerRequest{
-    accessToken?: string
+interface PlayerRequest{
+    accessToken: string
 }
 
-export const getDevices = async({accessToken}: IplayerRequest) => {
+export const getDevices = async({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let response = null
     try{
@@ -17,7 +17,7 @@ export const getDevices = async({accessToken}: IplayerRequest) => {
     }
 }
 
-interface IplayTrack extends IplayerRequest{
+interface IplayTrack extends PlayerRequest{
     contextUri?: string
     uris?: Array<string>
     offset?: {
@@ -39,7 +39,7 @@ export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId
     }
 }
 
-export const getPlayer = async ({accessToken}: IplayerRequest) => {
+export const getPlayer = async ({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         const response = await api.spotify.get<IPlayer>('/me/player', headers)
@@ -49,7 +49,7 @@ export const getPlayer = async ({accessToken}: IplayerRequest) => {
     }
 }
 
-export const getPlayerDevice = async ({accessToken}: IplayerRequest) => {
+export const getPlayerDevice = async ({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         const response = await api.spotify.get<IPlayerDevice>('/me/player/devices', headers)
@@ -72,7 +72,7 @@ export const transferPlayback = async ({accessToken, deviceIds}: ItransferPlayba
     await api.spotify.put('/me/player', body, headers)
 }
 
-interface IshufflePlayer extends IplayerRequest{
+interface IshufflePlayer extends PlayerRequest{
     shuffle: boolean
 }
 
@@ -86,7 +86,7 @@ export const shufflePlayer = async({accessToken, shuffle}: IshufflePlayer) => {
     }
 }
 
-interface IrepeatPlayer extends IplayerRequest{
+interface IrepeatPlayer extends PlayerRequest{
     state: string
 }
 
@@ -100,7 +100,7 @@ export const repeatPlayer = async({accessToken, state}: IrepeatPlayer) => {
     }
 }
 
-export const resumePlayer = async ({accessToken}: IplayerRequest) => {
+export const resumePlayer = async ({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         await api.spotify.put('/me/player/play', {}, headers)
@@ -109,7 +109,7 @@ export const resumePlayer = async ({accessToken}: IplayerRequest) => {
     }
 }
 
-export const pausePlayer = async ({accessToken} : IplayerRequest) => {
+export const pausePlayer = async ({accessToken} : PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         await api.spotify.put('/me/player/pause', {}, headers)
@@ -118,7 +118,7 @@ export const pausePlayer = async ({accessToken} : IplayerRequest) => {
     }
 }
 
-export const previousPlayer = async ({accessToken}: IplayerRequest) => {
+export const previousPlayer = async ({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         await api.spotify.post('/me/player/previous', {}, headers)
@@ -127,7 +127,7 @@ export const previousPlayer = async ({accessToken}: IplayerRequest) => {
     }
 }
 
-export const nextPlayer = async ({accessToken}: IplayerRequest) => {
+export const nextPlayer = async ({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
         await api.spotify.post('/me/player/next', {}, headers)
@@ -136,7 +136,7 @@ export const nextPlayer = async ({accessToken}: IplayerRequest) => {
     }
 }
 
-interface IaddToQueue extends IplayerRequest{
+interface IaddToQueue extends PlayerRequest{
     uri: string
 }
 
@@ -148,5 +148,19 @@ export const addToQueue = async ({accessToken, uri}: IaddToQueue) => {
         response = await api.spotify.post(`/me/player/queue?${queryParam}`, {}, headers)
     }finally{
         return response
+    }
+}
+
+interface SetVolume extends PlayerRequest{
+    volume_percent: number
+}
+
+export const setPlayerVolume = async ({accessToken, volume_percent}: SetVolume) => {
+    let response
+    try{
+        const queryParameters = qs.stringify({volume_percent})
+        response = await api.spotify.put(`/me/player/volume?${queryParameters}`, {}, {...getHeaders(accessToken)})
+    }finally{
+        return response?.status
     }
 }

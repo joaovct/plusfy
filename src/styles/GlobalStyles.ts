@@ -2,6 +2,10 @@ import {createGlobalStyle} from 'styled-components'
 import {colors} from './style'
 
 const GlobalStyles = createGlobalStyle`
+    :root{
+        --opacityInputDisabled: .6;
+    }
+
     html, body, #root{
         height: 100%;
         min-height: 100vh;
@@ -43,6 +47,12 @@ const GlobalStyles = createGlobalStyle`
     button,
     input{
         font-family: Montserrat, 'Open Sans', 'Helvetica Neue', sans-serif;
+        background: none;
+        border: none;
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        appearance: none;
     }
 
     h1{

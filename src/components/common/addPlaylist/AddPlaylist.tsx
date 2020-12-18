@@ -5,13 +5,13 @@ import { addItemsToPlaylist, fetchUserPlaylists, Status as RequestStatus } from 
 import { Playlist } from '../../../common/api/webapi/types'
 import { IToken } from '../../../redux/store/token/types'
 import { IStore } from '../../../redux/store/types'
-import { Button, colors, metrics, ListPlaylistsItemStyled as PlaylistItem, ListPlaylistsStyled as Playlists, Title} from '../../../styles/style'
+import { Button, colors, metrics, Title} from '../../../styles/style'
 import Modal from '../modal/Modal'
-import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import {X as Close} from 'react-feather'
 import useModal from '../../../common/hooks/components/modal/useModal'
 import useAlert from '../../../common/hooks/components/alert/useAlert'
 import { AddToPlaylistContext } from '../../../common/providers/AddToPlaylistProvider'
+import ListPlaylists from '../listPlaylists/ListPlaylists'
 
 const AddPlaylist = () => {
     const {executeCallback, status} = useContext(AddToPlaylistContext)
@@ -77,20 +77,10 @@ const AddPlaylist = () => {
             <Close onClick={closeModal}/>
             <Title>Adicionar à playlist</Title>
             {/* <Button>Nova playlist</Button> */}
-            <Playlists>
-                {
-                    playlists.map((playlist) => (
-                        <PlaylistItem key={`${playlist.id}-AddPlaylist`}>
-                            <button onClick={() => handleAddPlaylist(playlist.id)}>
-                                <figure>
-                                    <img src={playlist.images.length ? playlist.images[0].url : emptyPlaylistPhoto} alt={playlist.name}/>
-                                </figure>
-                            </button>
-                            <span>{playlist.name}</span>
-                        </PlaylistItem>
-                    ))
-                }
-            </Playlists>
+            <ListPlaylists
+                playlists={playlists}
+                actionOnClick={(playlist) => handleAddPlaylist(playlist.id)}
+            />
         </WrapperModalContent>
     }/>
     : <></>
@@ -101,7 +91,7 @@ const modalCSS = `
     min-height: inherit;
     max-height: inherit;
     min-width: inherit;
-    max-width: inherit;
+    max-width: 100vw;
     width: 100%;
     height: 100%;
     background: ${colors.backgroundTranslucent};
