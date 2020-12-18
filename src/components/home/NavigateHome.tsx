@@ -14,40 +14,42 @@ const NavigateHome = () => {
                 </Container>
             </PageTitle>
             <PageList>
-                <ListItens>
-                    <Item>
-                        <Link to="/my-library">
-                            <figure><Music/></figure>
-                        </Link>
-                        <span>
-                            <Link to="/my-library">Minha biblioteca</Link>
-                        </span>
-                    </Item>
-                    <Item>
-                        <Link to="/building">
-                            <figure><Smile/></figure>
-                        </Link>
-                        <span>
-                            <Link to="/building">Medidor de humor</Link>
-                        </span>
-                    </Item>
-                    <Item>
-                        <Link to="/favorites">
-                            <figure><Star/></figure>
-                        </Link>
-                        <span>
-                            <Link to="/favorites">Favoritos</Link>
-                        </span>
-                    </Item>
-                    <Item>
-                        <Link to="/import-tracks">
-                            <figure><Upload/></figure>
-                        </Link>
-                        <span>
-                            <Link to="/import-tracks">Importar músicas</Link>
-                        </span>
-                    </Item>
-                </ListItens>
+                <Container>
+                    <ListItens>
+                        <Item>
+                            <Link to="/my-library">
+                                <figure><Music/></figure>
+                            </Link>
+                            <span>
+                                <Link to="/my-library">Minha biblioteca</Link>
+                            </span>
+                        </Item>
+                        <Item>
+                            <Link to="/building">
+                                <figure><Smile/></figure>
+                            </Link>
+                            <span>
+                                <Link to="/building">Medidor de humor</Link>
+                            </span>
+                        </Item>
+                        <Item>
+                            <Link to="/favorites">
+                                <figure><Star/></figure>
+                            </Link>
+                            <span>
+                                <Link to="/favorites">Favoritos</Link>
+                            </span>
+                        </Item>
+                        <Item>
+                            <Link to="/import-tracks">
+                                <figure><Upload/></figure>
+                            </Link>
+                            <span>
+                                <Link to="/import-tracks">Importar músicas</Link>
+                            </span>
+                        </Item>
+                    </ListItens>
+                </Container>
             </PageList>
         </Content>
     )
@@ -173,6 +175,10 @@ const PageList = styled(Page)`
     @media(max-width: ${breakpoints.tbp}){
         max-width: inherit;
         padding-right: 0;
+
+        ${Container}{
+            max-width: inherit;
+        }
     }
 `
 

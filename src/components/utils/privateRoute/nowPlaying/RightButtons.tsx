@@ -1,66 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import {Volume, Volume1, Volume2, VolumeX} from 'react-feather'
 import { Dropdown as dropdown, metrics, InputRange, colors } from '../../../../styles/style'
-import { nowPlayingPositionDropdown } from '../../../../common/helpers/helperUI'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
-import { IToken } from '../../../../redux/store/token/types'
-import { setPlayerVolume } from '../../../../common/api/webapi/player'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
+import useNowPlayingRightButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingRightButtons'
 
-let timeout = 0
 
 const RightButtons = () => {
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
-    const devicesDropdownRef = useRef<HTMLUListElement>(null)
-    const [toggleDropdownVolume, setToggleDropdownVolume] = useState(false)
-    const [volume, setVolume] = useState(100)
-
-    useEffect(() => {
-        if(accessToken){
-            if(timeout)
-                clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                setPlayerVolume({accessToken, volume_percent: volume})
-            },250)
-        }
-    },[volume, accessToken])
-
-    useEffect(() => {
-        if(devicesDropdownRef.current)
-            nowPlayingPositionDropdown(devicesDropdownRef.current)
-    },[devicesDropdownRef])
-
-    const getVolumeIcon = () => {
-        if(volume === 0)
-            return <VolumeX/>
-        else if(volume <= 25)
-            return <Volume/>
-        else if(volume <= 50)
-            return <Volume1/>
-        return <Volume2/>
-    }
+    const {volume, setVolume, toggleDropdownVolume, setToggleDropdownVolume, volumeRef, getVolumeIcon} = useNowPlayingRightButtons()
 
     return(
         <Right>
             <WrapperDropdown>
                 <button onClick={() => setToggleDropdownVolume(old => !old)}>
-                    {
-                        getVolumeIcon()
-                    }
+                    {getVolumeIcon()}
                 </button>
-                <Dropdown show={toggleDropdownVolume} ref={devicesDropdownRef}>
+                <Dropdown show={toggleDropdownVolume} ref={volumeRef}>
                     <li>
                         <SpanVolumeControl>
                             <InputRange
                                 value={volume}
-                                onChange={e => setVolume(+e.target.value)}
+                                onChange={e => {console.log(e.target.value); setVolume(+e.target.value)}}
                                 type="range"
                                 min="0" max="100"
                                 disabled={Object.keys(currentState).length ? false : true}
                             />
+                            <RangeBar volume={volume}/>
                         </SpanVolumeControl>
                     </li>
                 </Dropdown>
@@ -71,6 +38,37 @@ const RightButtons = () => {
 
 export default RightButtons
 
+const RangeBar = styled.div<{volume: number}>`
+    height: ${({volume}) => `calc( var(--heightInput) * ${volume / 100} + var(--additionThumbSize))`};
+    max-height: var(--heightInput);
+    width: var(--widthInput);
+    position: absolute;
+    bottom: calc(var(--spacingHeight) / 2);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto; 
+    border-radius: ${metrics.borderRadius};
+    background: ${colors.gray};
+    transition: .25s background;
+
+    &:before{
+        content: '';
+        display: block;
+        height: var(--heightInput);
+        width: var(--widthInput);
+        background: ${colors.darkerGray};
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto; 
+        border-radius: ${metrics.borderRadius};
+        z-index: -1;
+    }
+`
+
 const SpanVolumeControl = styled.span`
     display: inline-block;
     --widthInput: 15px;
@@ -78,8 +76,10 @@ const SpanVolumeControl = styled.span`
     --spacingWidth: 30px;
     --spacingHeight: 30px;
     --additionThumbSize: 5px;
+    --sizeThumb: calc( var(--widthInput) + var(--additionThumbSize) );
     height: calc( var(--heightInput) + var(--spacingHeight));
     width: calc( var(--widthInput) + var(--spacingWidth));
+    position: relative;
 
     ${InputRange}{
         height: var(--widthInput);
@@ -88,11 +88,12 @@ const SpanVolumeControl = styled.span`
         --translateY: calc( var(--heightInput) / -2 + var(--widthInput) / 2 + var(--spacingWidth) / 2);
         --translateX: calc(var(--spacingHeight) / -2 + var(--additionThumbSize) / -2);
         transform: rotate(-90deg) translateY(var(--translateY)) translateX(var(--translateX));
-        appearance: vertical-mode;
+        /* appearance: vertical-mode; */
+        position: relative;
+        z-index: 2;
 
         &::-webkit-slider-thumb{
             appearance: none;
-            --sizeThumb: calc( var(--widthInput) + var(--additionThumbSize) );
             height: var(--sizeThumb);
             width: var(--sizeThumb);
             margin-top: calc( var(--additionThumbSize) / -2 );
@@ -104,7 +105,7 @@ const SpanVolumeControl = styled.span`
             width: 100%;
             height: 100%;
             cursor: pointer;
-            background: ${colors.gray};
+            background: transparent;
             border-radius: ${metrics.borderRadius};
             transition: .25s background;
         }
@@ -122,7 +123,7 @@ const SpanVolumeControl = styled.span`
         }
 
         &:not(:disabled):hover{
-            &::-webkit-slider-runnable-track{
+            & + ${RangeBar}{
                 background: ${colors.primary};
             }
         }

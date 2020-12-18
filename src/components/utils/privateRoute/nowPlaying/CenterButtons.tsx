@@ -1,70 +1,43 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {PlayCircle as Play, PauseCircle as Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
 import {IChildComponent as IcenterButtons} from './types'
-import { useSelector } from 'react-redux';
-import { IStore } from '../../../../redux/store/types';
-import { IToken } from '../../../../redux/store/token/types';
-import { nextPlayer, pausePlayer, resumePlayer, previousPlayer, shufflePlayer, repeatPlayer } from '../../../../common/api/webapi/player';
 import { colors, metrics } from '../../../../styles/style';
+import useNowPlayingCenterButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingCenterButtons';
 
 const CenterButtons: React.FC<IcenterButtons> = ({currentState}) => {
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-
-    const handleToggleShufflePlayer = useCallback(() => 
-        accessToken ? shufflePlayer({accessToken, shuffle: !currentState.shuffle_state}) : null
-    ,[accessToken, currentState])
-
-    const handlePrevTrackPlayer = useCallback(() => 
-        accessToken ? previousPlayer({accessToken}) : null
-    ,[accessToken])
-
-    const handlePlayPausePlayer = useCallback(() => {
-        if(accessToken){
-            if(currentState.is_playing)
-                return pausePlayer({accessToken})
-            return resumePlayer({accessToken})
-        }
-    },[currentState, accessToken])
-
-    const handleNextTrackPlayer = useCallback(() => 
-        accessToken ? nextPlayer({accessToken}) : null
-    ,[accessToken])
-
-    const handleRepeatPlayer = useCallback(() => {
-        if(accessToken){
-            const states = ['off', 'context', 'track']
-            for(let i = 0; i < states.length; i++){
-                if(states[i] === currentState.repeat_state){
-                    const state = states[i+1] || states[0]
-                    repeatPlayer({accessToken, state})
-                    break
-                }
-            }
-        }
-    },[accessToken, currentState])
+    const {toggleShufflePlayer, previousTrackPlayer, playPauseTrackPlayer, nextTrackPlayer, toggleRepeatPlayer} = useNowPlayingCenterButtons()
 
     return(
         <Center>
             <ShuffleButton
-                onClick={handleToggleShufflePlayer}
-                isAvailable={currentState.actions?.dissallows?.toggling_shuffle ? false : true}
+                onClick={toggleShufflePlayer}
+                isAvailable={currentState.actions?.disallows?.toggling_shuffle === true ? false : true}
                 isActive={currentState.shuffle_state || false}
             >
                 <Shuffle/>
             </ShuffleButton>
-            <ActionButton onClick={handlePrevTrackPlayer} isAvailable={currentState.actions?.dissallows?.skipping_prev ? false : true}>
+            <ActionButton
+                onClick={previousTrackPlayer}
+                isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
+            >
                 <Prev/>
             </ActionButton>
-            <PlayPauseButton onClick={handlePlayPausePlayer} isPlaying={currentState.is_playing || false}>
+            <PlayPauseButton
+                onClick={playPauseTrackPlayer}
+                isPlaying={currentState.is_playing || false}
+            >
                 {currentState.is_playing ? <Pause/> : <Play/>}
             </PlayPauseButton>
-            <ActionButton onClick={handleNextTrackPlayer} isAvailable={currentState.actions?.dissallows?.skipping_next ? false : true}>
+            <ActionButton
+                onClick={nextTrackPlayer}
+                isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
+            >
                 <Next/>
             </ActionButton>
             <RepeatButton
-                onClick={handleRepeatPlayer}
-                isAvailable={currentState.actions?.dissallows?.toggling_repeat_track ? false : true}
+                onClick={toggleRepeatPlayer}
+                isAvailable={currentState.actions?.disallows?.toggling_repeat_track === true ? false : true}
                 repeatState={currentState.repeat_state || ''}
             >
                 <Repeat/>
@@ -89,7 +62,11 @@ const ActionButton = styled.figure<IavailableAction>`
         opacity: var(--iconOpacity);
     }
 
-    ${ ({isAvailable}) => !isAvailable? `opacity: var(--iconOpacity); pointer-events: none; user-select: none;` : ''} }
+    ${({isAvailable}) => {
+        if(!isAvailable)
+            return `opacity: var(--iconOpacity); pointer-events: none; user-select: none;`
+        return ''
+    }}
 `
 
 interface IshuffleButton extends IavailableAction{

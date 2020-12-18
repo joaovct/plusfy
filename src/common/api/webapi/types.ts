@@ -232,7 +232,7 @@ export interface IPlayer{
     is_playing?: boolean
     currently_playing_type?: string
     actions?: {
-        dissallows: {
+        disallows: {
             interrupting_playback?: boolean
             resuming?: boolean
             pausing?: boolean
