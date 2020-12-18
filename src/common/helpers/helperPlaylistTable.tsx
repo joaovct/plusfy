@@ -69,13 +69,13 @@ const capitalizeString = (string: string): string => {
         return words.reduce((prev, current) => {
             if(prev)
                 return capitalizeString(prev) + ' ' + capitalizeString(current)
-            return capitalizeString(prev)
+            return capitalizeString(current)
         })
     return words[0].toLowerCase().charAt(0).toUpperCase() + words[0].toLowerCase().slice(1)
 }
 
 export const formatArtistGenres = (genres: string[]): string => {
-    if(genres.length > 1)
+    if(genres.length && genres.length > 1)
         return genres.reduce((prev, current) => {
             prev = capitalizeString(prev)
             current = capitalizeString(current)
@@ -83,5 +83,7 @@ export const formatArtistGenres = (genres: string[]): string => {
                 return prev + ', ' + current
             return prev
         })
-    return capitalizeString(genres[0])
+    else if(genres.length)
+        return capitalizeString(genres[0])
+    return ''
 }
