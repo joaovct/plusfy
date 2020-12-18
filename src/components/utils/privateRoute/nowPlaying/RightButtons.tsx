@@ -22,7 +22,7 @@ const RightButtons = () => {
                         <SpanVolumeControl>
                             <InputRange
                                 value={volume}
-                                onChange={e => {console.log(e.target.value); setVolume(+e.target.value)}}
+                                onChange={e => setVolume(+e.target.value)}
                                 type="range"
                                 min="0" max="100"
                                 disabled={Object.keys(currentState).length ? false : true}

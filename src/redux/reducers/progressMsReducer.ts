@@ -1,12 +1,12 @@
 import {Reducer} from 'redux'
 import { ProgressMsAction, PROGRESS_MS } from '../store/progressMs/types'
 
-const progressMs: Reducer<number | null, ProgressMsAction> = (state = null, action) => {
+const progressMs: Reducer<ProgressMsAction['payload'], ProgressMsAction> = (state = {}, action) => {
     switch(action.type){
         case PROGRESS_MS:
-            return action.payload
+            return {...action.payload}
         default:
-            return state
+            return {...state}
     }
 }
 

@@ -26,12 +26,9 @@ const useCurrentState = () => {
         async function updatePlayer(){
             const response = await getPlayer({accessToken})
             if(response){
-                const {data} = response
-                // const {progress_ms} = data
-                delete data.progress_ms
+                const {progress_ms, ...data} = response.data
 
                 dispatch(actions.currentStateAction(data || {}))
-                // dispatch(actions.progressMsAction(progress_ms || null)) // causing duplicate set on currentState
 
                 const playlistUri = data.context?.uri || ''
                 const trackUri = data.item?.uri || ''

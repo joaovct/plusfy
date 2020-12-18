@@ -7,7 +7,7 @@ interface Action{
 const progressMsAction: Action = (progressMs) => (
     {
         type: PROGRESS_MS,
-        payload: progressMs
+        payload: {progressMs: progressMs}
     }
 )
 
