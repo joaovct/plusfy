@@ -1,23 +1,58 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Dropdown as dropdown, metrics, InputRange, colors } from '../../../../styles/style'
+import styled, { css } from 'styled-components'
+import { Dropdown as dropdown, metrics, InputRange, colors, Title } from '../../../../styles/style'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import useNowPlayingRightButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingRightButtons'
-
+import {Headphones} from 'react-feather'
 
 const RightButtons = () => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
-    const {volume, setVolume, toggleDropdownVolume, setToggleDropdownVolume, volumeRef, getVolumeIcon} = useNowPlayingRightButtons()
+    const {volume, setVolume, toggleDropdowns, handleToggleDropdowns, devices, volumeDropdownRef, devicesDropdownRef, chooseDevice, getVolumeIcon, getDeviceIcon} = useNowPlayingRightButtons()
 
     return(
         <Right>
             <WrapperDropdown>
-                <button onClick={() => setToggleDropdownVolume(old => !old)}>
+                <button onClick={() => handleToggleDropdowns(0)}>
+                    <Headphones/>
+                </button>
+                <DropdownDevices show={toggleDropdowns[0]} ref={devicesDropdownRef}>
+                    <li>
+                        <span>
+                            <Title>Conectar a um dispositivo</Title>
+                        </span>
+                    </li>
+                    {devices.length ?
+                    <>
+                        {
+                            devices.map((device, index) => (
+                                <DeviceItem
+                                    aria-label="Escolher dispositivo"
+                                    onClick={() => chooseDevice(device.id)}
+                                    active={device.is_active}
+                                    key={`dropdowndevices-${device.id}-${index}`}
+                                >
+                                    <span>
+                                        {getDeviceIcon(device.type)}
+                                        <strong>{device.name}</strong>
+                                    </span>
+                                </DeviceItem>
+                            ))
+                        }
+                    </>
+                    : <li>
+                        <span>
+                            <p>Abra o Spotify em um dispositivo usando essa mesma conta e ele aparecerá aqui.</p>
+                        </span>
+                    </li>}
+                </DropdownDevices>
+            </WrapperDropdown>
+            <WrapperDropdown>
+                <button onClick={() => handleToggleDropdowns(1)}>
                     {getVolumeIcon()}
                 </button>
-                <Dropdown show={toggleDropdownVolume} ref={volumeRef}>
+                <Dropdown show={toggleDropdowns[1]} ref={volumeDropdownRef}>
                     <li>
                         <SpanVolumeControl>
                             <InputRange
@@ -88,7 +123,6 @@ const SpanVolumeControl = styled.span`
         --translateY: calc( var(--heightInput) / -2 + var(--widthInput) / 2 + var(--spacingWidth) / 2);
         --translateX: calc(var(--spacingHeight) / -2 + var(--additionThumbSize) / -2);
         transform: rotate(-90deg) translateY(var(--translateY)) translateX(var(--translateX));
-        /* appearance: vertical-mode; */
         position: relative;
         z-index: 2;
 
@@ -144,9 +178,76 @@ const Dropdown = styled(dropdown)`
     }
 `
 
+const DeviceItem = styled.li<{active: boolean}>`
+    &:nth-child(n+0){
+        transition: .25s background;
+
+        span{
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-flow: row nowrap;
+
+            svg{
+                opacity: 1;
+                height: 32px;
+                width: 32px;
+                margin: 0 10px 0 0;
+                stroke-width: 1px;
+                *{
+                    stroke-width: 1px;
+                }
+            }
+
+            strong{
+                font-size: 14px;
+                font-weight: 500;
+                text-transform: capitalize;
+            }
+
+            ${({active}) => active === true ? css`
+                svg *, strong{
+                    color: ${colors.primary};
+                }
+            ` : ''}
+        }
+        
+        &:hover{
+            background: ${colors.darkerBackground};
+        }
+    }
+`
+
+const DropdownDevices = styled(Dropdown)`
+    width: 270px;
+    max-height: 270px;
+    overflow-y: auto;
+
+    li span{
+        cursor: default;
+        ${Title}{
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        p{
+            font-size: 1rem;
+            color: ${colors.gray};
+            text-align: center;
+        }
+    }
+    
+    &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+`
+
 const WrapperDropdown = styled.div`
     height: 100%;
-    overflow: visible;
     position: relative;
     padding: var(--innerPadding);
     padding-left: ${metrics.spacing3};
@@ -175,8 +276,8 @@ const Right = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    overflow: visible;
+    overflow-y: visible;
     padding: var(--innerPadding);
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 0;  
 `

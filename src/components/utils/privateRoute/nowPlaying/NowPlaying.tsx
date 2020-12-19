@@ -1,21 +1,16 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {colors, metrics} from '../../../../styles/style'
 import CenterButtons from './CenterButtons'
-import { useSelector } from 'react-redux'
-import { IStore } from '../../../../redux/store/types'
-import {ICurrentState} from '../../../../redux/store/currentState/types'
 import LeftButtons from './LeftButtons'
 import RightButtons from './RightButtons'
 
 const NowPlaying: React.FC = () => {
-    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
-
     return(
         <NowPlayingWrapper>
             <NowPlayingInner>
                 <LeftButtons/>
-                <CenterButtons currentState={currentState}/>
+                <CenterButtons/>
                 <RightButtons/>
             </NowPlayingInner>
         </NowPlayingWrapper>
@@ -27,6 +22,7 @@ export default NowPlaying
 const NowPlayingInner = styled.div`
     height: 100%;
     width: 100%;
+    max-width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     justify-content: space-between;

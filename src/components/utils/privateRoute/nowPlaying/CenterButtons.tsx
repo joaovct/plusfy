@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import {PlayCircle as Play, PauseCircle as Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
-import {IChildComponent as IcenterButtons} from './types'
 import { colors, metrics } from '../../../../styles/style';
 import useNowPlayingCenterButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingCenterButtons';
+import { ICurrentState } from '../../../../redux/store/currentState/types';
+import { IStore } from '../../../../redux/store/types';
+import { useSelector } from 'react-redux';
 
-const CenterButtons: React.FC<IcenterButtons> = ({currentState}) => {
+const CenterButtons = () => {
     const {toggleShufflePlayer, previousTrackPlayer, playPauseTrackPlayer, nextTrackPlayer, toggleRepeatPlayer} = useNowPlayingCenterButtons()
+    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
 
     return(
         <Center>

@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react'
 import { Button, colors, metrics } from '../../../styles/style'
 import styled from 'styled-components'
 import {MoreHorizontal} from 'react-feather'
-import { playTrack } from '../../../common/api/webapi/player'
+import { playPlayer } from '../../../common/api/webapi/player'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../redux/store/types'
 import { IToken } from '../../../redux/store/token/types'
@@ -15,7 +15,7 @@ const HeaderPlaylistButtons = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
 
     const handlePlayPlaylist = useCallback(() => playlist
-        ? playTrack({accessToken, contextUri: playlist.uri})
+        ? playPlayer({accessToken, contextUri: playlist.uri})
         : null
     ,[playlist, accessToken])
 

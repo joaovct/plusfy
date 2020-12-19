@@ -5,7 +5,7 @@ import { formatArtistName, formatDuration, toggleTrack } from '../../../../commo
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import { IStore } from '../../../../redux/store/types'
 import { breakpoints, PlaylistTableRow } from '../../../../styles/style'
-import { pausePlayer, playTrack, resumePlayer } from '../../../../common/api/webapi/player'
+import { pausePlayer, playPlayer, resumePlayer } from '../../../../common/api/webapi/player'
 import { IToken } from '../../../../redux/store/token/types'
 import {Pause, Play} from 'react-feather'
 import emptyAlbumPhoto from '../../../../assets/empty-playlist-photo.svg'
@@ -32,9 +32,9 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
         const action = toggleTrack(currentState, uri)
         if(action === 'PLAY')
             if(contextUri)
-                playTrack({accessToken,contextUri, offset: {uri: uri}})
+                playPlayer({accessToken,contextUri, offset: {uri: uri}})
             else
-                playTrack({accessToken,contextUri, uris: [uri]})
+                playPlayer({accessToken,contextUri, uris: [uri]})
         else if(action === 'PAUSE')
             pausePlayer({accessToken})
         else if(action === 'RESUME')

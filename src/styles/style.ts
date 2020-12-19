@@ -324,6 +324,7 @@ export const ListPlaylistsItemStyled = styled.li`
             display: flex;
             justify-content: center;
             margin: 0;
+            cursor: pointer;
             
             a, div{
                 max-width: 100%;

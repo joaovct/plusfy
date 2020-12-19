@@ -13,6 +13,6 @@ export function nowPlayingPositionDropdown(ul: HTMLUListElement){
     const difference = ulRight - nowPlayingRight
     
     if(difference >= 0){
-        ul.style.right = `0px`
+        ul.style.right = `10px`
     }
 }

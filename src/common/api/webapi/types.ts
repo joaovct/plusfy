@@ -256,17 +256,17 @@ export interface IPlayer{
         type: string
         uri: string
     }
-    device?: IPlayerDevice
-    devices?: Array<IPlayerDevice>
+    device?: Device
+    devices?: Array<Device>
 }
 
-export interface IPlayerDevice{
+export interface Device{
     id: string
     is_active: boolean
     is_private_session: boolean
     is_restricted: boolean
     name: string
-    type: string
+    type: "Computer" | "Tablet" | "Smartphone" | "Speaker" | "TV" | "AVR" | "STB" | "AudioDongle" | "GameConsole" | "CastVideo" | "CastAudio" | "Automobile" | "Unknown"
     volume_percent: number
 }
 

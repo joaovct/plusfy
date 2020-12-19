@@ -1,5 +1,5 @@
 import api from "../api"
-import {IPlayer, IPlayerDevice} from './types'
+import {IPlayer, Device} from './types'
 import qs from 'query-string'
 import { defineActiveDevice, getHeaders } from "../../helpers/helperWebAPI"
 
@@ -11,7 +11,7 @@ export const getDevices = async({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let response = null
     try{
-        response = await api.spotify.get<{devices: Array<IPlayerDevice>}>('/me/player/devices', headers)
+        response = await api.spotify.get<{devices: Array<Device>}>('/me/player/devices', headers)
     }finally{
         return response
     }
@@ -27,11 +27,11 @@ interface IplayTrack extends PlayerRequest{
     deviceId?: string
 }
 
-export const playTrack = async ({accessToken, contextUri, uris, offset, deviceId}: IplayTrack) => {
+export const playPlayer = async ({accessToken, contextUri, uris, offset, deviceId}: IplayTrack) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     const body = {uris, context_uri: contextUri, offset}
     const device = defineActiveDevice((await getDevices({accessToken}))?.data.devices)
-    
+
     try{
         await api.spotify.put(`/me/player/play?device_id=${deviceId || device?.id}`, body, headers)
     }finally{
@@ -52,7 +52,7 @@ export const getPlayer = async ({accessToken}: PlayerRequest) => {
 export const getPlayerDevice = async ({accessToken}: PlayerRequest) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     try{
-        const response = await api.spotify.get<IPlayerDevice>('/me/player/devices', headers)
+        const response = await api.spotify.get<Device>('/me/player/devices', headers)
         return response
     }catch{
         return null
