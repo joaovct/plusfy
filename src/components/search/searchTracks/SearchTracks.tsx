@@ -65,6 +65,8 @@ const WrapperTracks = styled.div`
 `
 
 const Content = styled.div`
+    padding: 0 0 ${metrics.spacing2} 0;
+
     ${Title}{
         font-size: 30px;
     }

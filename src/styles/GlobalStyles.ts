@@ -61,6 +61,25 @@ const GlobalStyles = createGlobalStyle`
         font-weight: 600;
         line-height: 49px;
     }
+
+    /* width */
+    ::-webkit-scrollbar {
+    width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: transparent; 
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: ${colors.border}; 
+
+        &:hover{
+            background: ${colors.gray};
+        }
+    }
 `
 
 export default GlobalStyles
