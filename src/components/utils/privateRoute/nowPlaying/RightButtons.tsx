@@ -241,6 +241,7 @@ const DropdownDevices = styled(Dropdown)`
     }
     
     &::-webkit-scrollbar {
+        display: none;
         width: 0px;
         background: transparent;
     }

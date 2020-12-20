@@ -161,6 +161,7 @@ const ListItens = styled.ul`
         overflow-x: scroll;
 
         &::-webkit-scrollbar {
+            display: none;
             width: 0px;
             background: transparent;
         }

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { Button, colors, metrics } from '../../../styles/style'
+import { Button, colors, metrics, Dropdown as dropdown, breakpoints } from '../../../styles/style'
 import styled from 'styled-components'
 import {MoreHorizontal} from 'react-feather'
 import { playPlayer } from '../../../common/api/webapi/player'
@@ -26,10 +26,11 @@ const HeaderPlaylistButtons = () => {
                 <figure onClick={toggleOptions}>
                     <MoreHorizontal/>
                 </figure>
-                <Options show={showOptions}>
-                    <li>Salvar na Minha Biblioteca</li>
-                    <li>Copiar playlist</li>
-                </Options>
+                <Dropdown show={showOptions}>
+                    <li>
+                        <span>Copiar playlist</span>
+                    </li>
+                </Dropdown>
             </MoreOptions>
         </WrapperButtons>
     )
@@ -37,32 +38,11 @@ const HeaderPlaylistButtons = () => {
 
 export default HeaderPlaylistButtons
 
-const Options = styled.ul<{show: boolean}>`
-    position: absolute;
-    opacity: 0;
-    user-select: none;
-    pointer-events: none;
-    transition: .25s opacity;
-    z-index: 2;
-    top: calc( var(--size-icon) + var(--spacing-icon) * 2 );
-    left: calc( 100% - 25px );
-    background: ${colors.background};
-    border: 1px solid ${colors.border};
-    border-radius: ${metrics.borderRadius};
-    box-shadow: ${metrics.boxShadow};
-    min-width: 250px;
+const Dropdown = styled(dropdown)`
+    top: calc( 100% );
 
-    li{
-        padding: 12px 16px;
-        cursor: pointer;
-    }
-
-    ${ ({show}) => 
-    show ? `
-        opacity: 1;
-        pointer-events: all;
-        user-select: text;
-    ` : ''
+    @media(max-width: ${breakpoints.sml}){
+        left: inherit;
     }
 `
 
@@ -107,5 +87,14 @@ const WrapperButtons = styled.div`
         padding-top: 8px;
         padding-bottom: 8px;
         margin: 0 ${metrics.spacing3} 0 0;
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        justify-content: center;
+
+        ${Button}{
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
     }
 `

@@ -48,10 +48,11 @@ const ListTrackCSS = css`
 `
 
 const ComponentContent = styled(Page)`
+    flex: 1 1 auto;
     margin: ${metrics.spacing5} 0 0 0;
     background: ${colors.darkerBackground};
 
-    @media(max-width: 576px){
+    @media(max-width: ${breakpoints.tbp}){
         margin: ${metrics.spacing4} 0 0 0;
     }
 `

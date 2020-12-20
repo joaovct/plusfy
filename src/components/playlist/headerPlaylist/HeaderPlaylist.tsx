@@ -1,10 +1,9 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Page, Container, Title, metrics } from '../../../styles/style'
+import { Page, Container, Title, metrics, colors, breakpoints } from '../../../styles/style'
 import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
 import HeaderPlaylistButtons from './HeaderPlaylistButtons'
-// import { calculatePlaylistDuration, formatNumberTracks } from '../../../common/api/webapi/helperWebAPI'
 import ContextPlaylist from '../ContextPlaylist'
 import { calculatePlaylistDuration, formatNumberTracks } from '../../../common/helpers/helperPlaylistTable'
 
@@ -15,26 +14,26 @@ const HeaderPlaylist = () => {
     const numberTracks = formatNumberTracks(playlist)
 
     return (
-        <Header>
-            <Container>
-                {
-                    playlist ?
+        <>{playlist ?
+            <Header>
+                <Container>
                     <HeaderInner>  
                         <img src={playlist.images.length ? playlist.images[0].url : emptyPlaylistPhoto} alt={`Playlist: ${playlist.name}`} />
-                        <div>
-                            <h4>Playlist</h4>
+                        <span>
+                            <small>Playlist</small>
                             <Title>{playlist.name}</Title>
-                            <h6>
+                            <p>
                                 <Link to={`/user/${playlist.owner.id}`}>
-                                    {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
-                                </Link> - { numberTracks }, {playlistDuration}
-                            </h6>
+                                    De {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
+                                </Link> 
+                                <span> - {numberTracks}, {playlistDuration}</span>
+                            </p>
                             <HeaderPlaylistButtons/>
-                        </div>
-                    </HeaderInner> : <></>
-                }
-            </Container>
-        </Header>
+                        </span>
+                    </HeaderInner>
+                </Container>
+            </Header>
+        : <></>}</>
     )
 }
 
@@ -42,9 +41,9 @@ export default HeaderPlaylist
 
 const HeaderInner = styled.header`
     --image-size: 200px;
-    height: var(--image-size);
     width: 100%;
     display: flex;
+    flex-flow: row nowrap;
 
     ${Container}{
         display: flex;
@@ -58,54 +57,54 @@ const HeaderInner = styled.header`
         border-radius: ${metrics.borderRadius};
     }
 
-    & > div{
+    & > span{
         padding: 0 0 0 ${metrics.spacing5};
-        height: calc(var(--image-size));
+        flex: 1 1 auto;
+        min-height: var(--image-size);
         display: flex;
         flex-flow: column nowrap;
         justify-content: center;
 
-        h4{
+        small{
+            margin: 0;
             text-transform: uppercase;
             font-weight: 500;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 1.2px;
-            margin-top: auto;
         }
+
         ${Title}{
+            margin: ${metrics.spacing2} 0 0 0;
             line-height: 1.2;
         }
-        h6{
-            margin-top: auto;
-            font-weight: 500;
-            font-size: 16px;
-            color: #bbb;
+        
+        p{
+            margin: ${metrics.spacing2} 0 0 0;
+            *{
+                font-weight: 500;
+                font-size: 16px;
+                color: ${colors.gray};
+            }
             a{
-                color: #fff;
                 text-decoration: underline;
             }
         }
     }
 
-    @media(max-width: 768px){
-        --image-size: 150px;
+    @media(max-width: ${breakpoints.tbl}){
+        --image-size: 175px;
 
-        div{
-            padding: 0 0 0 ${metrics.spacing4};
-            
-            h4{
-                font-size: 16px;
-            }
-            h6{
+        & > span{
+            p *{
                 font-size: 14px;
             }
             ${Title}{
-                font-size: 30px;
+                font-size: 25px;
             }
         }
     }
 
-    @media(max-width: 576px){
+    @media(max-width: ${breakpoints.tbp}){
         --image-size: 200px;
         height: auto;
         flex-flow: column nowrap;
@@ -119,21 +118,34 @@ const HeaderInner = styled.header`
             object-fit: contain;
         }
 
-        div{
-            height: auto;
-            padding: ${metrics.spacing4} 0 0 0;
+        & > span{
+            min-height: 0;
+            padding: ${metrics.spacing3} 0 0 0;
 
             *{
                 text-align: center;
             }
-            h6{
+            small{
+                font-size: 12px;
+            }
+            p{
                 margin-top: ${metrics.spacing3};
             }
+            ${Title}{
+                font-size: 20px;
+            }
+        }
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        & > span p span{
+            display: none;
         }
     }
 `
 
 const Header = styled(Page)`
+    height: auto;
     flex: 0;
     padding-bottom: 0;
 `

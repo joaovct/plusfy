@@ -6,6 +6,25 @@ const GlobalStyles = createGlobalStyle`
         --opacityInputDisabled: .6;
     }
 
+    /* width */
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: ${colors.darkerBackground};
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: ${colors.border}; 
+
+        &:hover{
+            background: ${colors.gray};
+        }
+    }
+    
     html, body, #root{
         height: 100%;
         min-height: 100vh;
@@ -60,25 +79,6 @@ const GlobalStyles = createGlobalStyle`
         font-size: 40px;
         font-weight: 600;
         line-height: 49px;
-    }
-
-    /* width */
-    ::-webkit-scrollbar {
-    width: 10px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        background: transparent; 
-    }
-    
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: ${colors.border}; 
-
-        &:hover{
-            background: ${colors.gray};
-        }
     }
 `
 
