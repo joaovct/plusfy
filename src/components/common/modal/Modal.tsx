@@ -1,18 +1,19 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { FlattenSimpleInterpolation } from 'styled-components'
 import { metrics, colors } from '../../../styles/style'
 
-interface IModal{
-    content: JSX.Element
-    styleModal?: string
-    styleModalPage?: string
+type css = FlattenSimpleInterpolation | string
+
+interface Props{
+    cssModal?: css
+    cssPage?: css
 }
 
-const Modal: React.FC<IModal> = props => {
+const Modal: React.FC<Props> = ({cssModal, cssPage, children}) => {
     return(
-        <Fullpage stylePage={props.styleModalPage || ''}>
-            <WrapperModal styleModal={props.styleModal || ''}>
-                {props.content}
+        <Fullpage cssPage={cssPage}>
+            <WrapperModal cssModal={cssModal}>
+                {children}
             </WrapperModal>
         </Fullpage>
     ) 
@@ -20,7 +21,7 @@ const Modal: React.FC<IModal> = props => {
 
 export default Modal
 
-const WrapperModal = styled.main< {styleModal: string} >`
+const WrapperModal = styled.main< {cssModal?: css} >`
     min-height: 100px;
     min-width: 300px;
     max-width: 600px;
@@ -30,10 +31,13 @@ const WrapperModal = styled.main< {styleModal: string} >`
     border-color: ${colors.border};
     box-shadow: 0 12px 24px 12px rgba(0,0,0, .16);
     padding: ${metrics.spacing4};
-    ${ (props) => props.styleModal}
+    ${({cssModal}) => {
+        if(cssModal)
+            return cssModal
+    }}
 `
 
-const Fullpage = styled.div< {stylePage: string} >`
+const Fullpage = styled.div< {cssPage?: css} >`
     height: 100vh;
     width: 100vw;
     position: fixed;
@@ -45,7 +49,10 @@ const Fullpage = styled.div< {stylePage: string} >`
     backdrop-filter: blur(2px);
     animation: fadeIn .5s;
     animation-fill-mode: forwards;
-    ${ (props) => props.stylePage}
+    ${({cssPage}) => {
+        if(cssPage)
+            return cssPage
+    }}
 
     @keyframes fadeIn{
         from{

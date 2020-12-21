@@ -5,29 +5,22 @@ import {Link} from 'react-router-dom'
 import {Title as title, metrics, Button as button} from '../../../styles/style'
 
 const NotPremium = () => {
-    const styleModal = `display: flex; align-items: center;`
-
-    const modalContent = (
-        <WrapperContent>
-            <Title>Desculpe por isso...</Title>
-            <p>
-                Gostaríamos muito de ter você por aqui, mas para fazer a mágica acontecer usamos um serviço do Spotify
-                que só está disponível para usuários que tenham uma assinatura Premium.
-            </p>
-            <p>
-                Mas não se preocupe, você ainda pode entrar usando uma outra conta.
-            </p>
-            <Link to="/logoff">
-                <Button>Entrar com outra conta</Button>
-            </Link>
-        </WrapperContent>
-    )
-
     return (
-        <Modal
-            content={modalContent}
-            styleModal={styleModal}
-        />
+        <Modal cssModal={`display: flex; align-items: center;`}>
+            <WrapperContent>
+                <Title>Desculpe por isso...</Title>
+                <p>
+                    Gostaríamos muito de ter você por aqui, mas para fazer a mágica acontecer usamos um serviço do Spotify
+                    que só está disponível para usuários que tenham uma assinatura Premium.
+                </p>
+                <p>
+                    Mas não se preocupe, você ainda pode entrar usando uma outra conta.
+                </p>
+                <Link to="/logoff">
+                    <Button>Entrar com outra conta</Button>
+                </Link>
+            </WrapperContent>
+        </Modal>
     )
 }
 

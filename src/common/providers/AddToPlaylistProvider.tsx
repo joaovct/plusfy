@@ -15,7 +15,7 @@ type Callback = (response: 'success' | 'error') => void
 
 type State = 'none' | 'adding'
 
-type Status = {
+export type Status = {
     state: State
     uris: Uris
     action: Action

@@ -1,36 +1,36 @@
-import {useCallback, useState} from 'react'
+import {useState} from 'react'
 
-type State = 'show' | 'hide'
+export type Status = 'show' | 'hide'
 type Configs = {
-    delay: number
-    transition: number
+    delay_ms?: number
+    transition_ms?: number
 }
 
 interface UseModal{
-    (configs?: Configs): {state: State, CSSpreparer: string, showModal: () => void, closeModal: () => void}
+    (configs?: Configs): {status: Status, cssPreparer: string, showModal: () => void, closeModal: () => void}
 }
 
 const useModal: UseModal = (configs) => {
-    const [state, setState] = useState<State>('show')
-    const [CSSpreparer, setCSSpreparer] = useState('')
+    const [status, setStatus] = useState<Status>('show')
+    const [cssPreparer, setCssPreparer] = useState('')
+    const delay = configs?.delay_ms|| 500
+    const transition = (configs?.transition_ms || 500) / 1000
 
-    const getDelay = (delay?: number) => delay !== undefined ? delay * 1000 + 150 : 500
-
-    const showModal = useCallback(() => {
-        if(state === 'hide'){
-            setTimeout(() => setState('show'), getDelay(configs?.delay))
-            setCSSpreparer(`animation: fadeIn ${configs?.transition || .5}s; animation-fill-mode: forwards;`)
+    const showModal = () => {
+        if(status === 'hide'){
+            setTimeout(() => setStatus('show'), delay)
+            setCssPreparer(`animation: fadeIn ${transition}s; animation-fill-mode: forwards;`)
         }
-    },[state, configs])
+    }
 
-    const closeModal = useCallback(() => {
-        if(state === 'show'){
-            setTimeout(() => setState('hide'), getDelay(configs?.delay))
-            setCSSpreparer(`animation: fadeOut ${configs?.transition || .5}s; animation-fill-mode: forwards;`)
+    const closeModal = () => {
+        if(status === 'show'){
+            setTimeout(() => setStatus('hide'), delay)
+            setCssPreparer(`animation: fadeOut ${transition}s; animation-fill-mode: forwards;`)
         }
-    },[state, configs])
+    }
 
-    return {state, CSSpreparer, showModal, closeModal}
+    return {status, cssPreparer, showModal, closeModal}
 }
 
 export default useModal
