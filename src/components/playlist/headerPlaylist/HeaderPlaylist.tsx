@@ -132,7 +132,7 @@ const HeaderInner = styled.header`
                 margin-top: ${metrics.spacing3};
             }
             ${Title}{
-                font-size: 20px;
+                font-size: 23px;
             }
         }
     }

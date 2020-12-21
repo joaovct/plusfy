@@ -79,12 +79,6 @@ export const removeTracksPlaylist = async (accessToken: string, configs: Configs
     }
 }
 
-interface ConfigAddItemsToPlaylist{
-    playlistId: string
-    uris: Array<string>
-    position?: number
-}
-
 interface AddItemsToPlaylist{
     (acessToken: string, configs: {
         playlistId: string
@@ -93,13 +87,34 @@ interface AddItemsToPlaylist{
     }): Promise<{snapshot_id: string} | null>
 }
 
+// function teste(array: string[]){
+//     if(array){
+//         const length = array.length
+//         const nLoop = Math.ceil(length / 100)
+
+//         for(let start = 0, end = 1; end <= nLoop; start++, end++){
+//             const uris = array.slice(length * start, length * end)
+//             console.log(uris)
+//         }
+//     }
+// }
+
 export const addItemsToPlaylist: AddItemsToPlaylist = async (accessToken, configs) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
-    let res
-    try{
-        const data = {uris: configs.uris, position: configs.position}
-        res = await api.spotify.post(`/playlists/${configs.playlistId}/tracks`, data, headers)
-    }finally{
-        return res?.data || null
+    let response
+
+    if(configs.uris){
+        const limit = 100
+        const nLoop = Math.ceil(configs.uris.length / limit)
+      
+        for(let i = 0; i < nLoop; i++){
+            const uris = configs.uris.slice(limit * i, limit * (i + 1))
+            
+            const data = {uris: [...uris], position: configs.position}
+            response = await api.spotify.post(`/playlists/${configs.playlistId}/tracks`, data, headers)
+        }
+
+        return response?.data || null
     }
+    return null
 }
