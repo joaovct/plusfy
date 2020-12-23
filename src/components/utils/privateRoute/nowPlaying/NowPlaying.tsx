@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {colors, metrics} from '../../../../styles/style'
+import {breakpoints, colors, metrics} from '../../../../styles/style'
 import CenterButtons from './CenterButtons'
 import LeftButtons from './LeftButtons'
 import RightButtons from './RightButtons'
@@ -27,11 +27,27 @@ const NowPlayingInner = styled.div`
     grid-template-columns: repeat(3, minmax(0, 1fr));
     justify-content: space-between;
     align-items: center;
-    --innerPadding: ${metrics.spacing3} ${metrics.spacing4};
+    --innerPaddingVertical: ${metrics.spacing3};
+    --innerPaddingHorizontal: ${metrics.spacing4};
+    --innerPadding: var(--innerPaddingVertical) var(--innerPaddingHorizontal);
     --iconOpacityDisabled: .4;
     --iconOpacity: .7;
     --iconOpacityActivate: 1;
     --iconOpacityTransition: .15s;
+
+    @media(max-width: ${breakpoints.lg}){
+        --innerPaddingHorizontal: ${metrics.spacing3};
+    }
+
+    @media(max-width: ${breakpoints.tbl}){
+        --innerPaddingHorizontal: ${metrics.spacing2};
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        --iconOpacity: 1;
+        --innerPaddingVertical: 0;
+        grid-template-columns: 1fr auto;
+    }
 `
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { Dropdown as dropdown, metrics, InputRange, colors, Title } from '../../../../styles/style'
+import { Dropdown as dropdown, metrics, InputRange, colors, Title, breakpoints } from '../../../../styles/style'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
@@ -250,9 +250,7 @@ const DropdownDevices = styled(Dropdown)`
 const WrapperDropdown = styled.div`
     height: 100%;
     position: relative;
-    padding: var(--innerPadding);
-    padding-left: ${metrics.spacing3};
-    padding-right: ${metrics.spacing3};
+    padding: 0 var(--innerPaddingHorizontal);
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -281,4 +279,8 @@ const Right = styled.div`
     padding: var(--innerPadding);
     padding-top: 0;
     padding-bottom: 0;  
+
+    @media(max-width: ${breakpoints.tbp}){
+        display: none;
+    }
 `

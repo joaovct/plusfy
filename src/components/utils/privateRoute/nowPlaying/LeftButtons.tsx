@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { colors, metrics } from '../../../../styles/style'
+import { breakpoints, colors, metrics } from '../../../../styles/style'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
@@ -34,17 +34,20 @@ const LeftTrackInfo = styled.div`
     flex-flow: column nowrap;
 
     span{
+        padding: 2.5px 0;
         width: 100%;
         display: table;
         table-layout: fixed;
 
         strong{
             font-size: 14px;
-            font-weight: 400;
+            font-weight: 500;
         }
 
         small{
             font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 2;
             color: ${colors.gray};
         }
 
@@ -59,20 +62,56 @@ const LeftTrackInfo = styled.div`
                 text-decoration: underline;
             }
         }
+
+        @media(max-width: ${breakpoints.sml}){
+            padding: 1px 0;
+        }
+
+        @media(max-width: ${breakpoints.smp}){
+            strong{
+                font-size: 12px;
+            }
+            small{
+                font-size: 10px;
+            }
+        }
     }
 `
 
 const LeftTrackImg = styled.figure`
-    min-height: 55px;
-    min-width: 55px;
-    max-height: 55px;
-    max-width: 55px;
+    --sizeThumbnail: 55px;
+    min-height: var(--sizeThumbnail);
+    min-width: var(--sizeThumbnail);
+    max-height: var(--sizeThumbnail);
+    max-width: var(--sizeThumbnail);
     margin: 0 ${metrics.spacing3} 0 0;
 
     img{
         height: 100%;
         width: 100%;
         object-fit: cover;
+    }
+
+    @media(max-width: ${breakpoints.lg}){
+        --sizeThumbnail: 50px;
+    }
+
+    @media(max-width: ${breakpoints.tbl}){
+        margin: 0 ${metrics.spacing2} 0 0;
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        --sizeThumbnail: 60px;
+        margin: 0 ${metrics.spacing3} 0 0;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        --sizeThumbnail: 55px;
+        margin: 0 ${metrics.spacing2} 0 0;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        --sizeThumbnail: 50px;
     }
 `
 
@@ -82,4 +121,9 @@ const Left = styled.div`
     display: flex;
     align-items: center;
     padding: var(--innerPadding);
+
+    @media(max-width: ${breakpoints.tbp}){
+        padding-left: 0;
+        padding-right: 0;
+    }
 `

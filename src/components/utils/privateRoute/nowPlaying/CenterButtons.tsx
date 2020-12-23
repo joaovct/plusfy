@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {PlayCircle as Play, PauseCircle as Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
-import { colors, metrics } from '../../../../styles/style';
+import {PlayCircle, PauseCircle, Play, Pause ,SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
+import { breakpoints, colors, metrics } from '../../../../styles/style';
 import useNowPlayingCenterButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingCenterButtons';
 import { ICurrentState } from '../../../../redux/store/currentState/types';
 import { IStore } from '../../../../redux/store/types';
@@ -12,50 +12,80 @@ const CenterButtons = () => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
 
     return(
-        <Center>
-            <ShuffleButton
-                onClick={toggleShufflePlayer}
-                isAvailable={currentState.actions?.disallows?.toggling_shuffle === true ? false : true}
-                isActive={currentState.shuffle_state || false}
-            >
-                <Shuffle/>
-            </ShuffleButton>
-            <ActionButton
-                onClick={previousTrackPlayer}
-                isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
-            >
-                <Prev/>
-            </ActionButton>
-            <PlayPauseButton
-                onClick={playPauseTrackPlayer}
-                isPlaying={currentState.is_playing || false}
-            >
-                {currentState.is_playing ? <Pause/> : <Play/>}
-            </PlayPauseButton>
-            <ActionButton
-                onClick={nextTrackPlayer}
-                isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
-            >
-                <Next/>
-            </ActionButton>
-            <RepeatButton
-                onClick={toggleRepeatPlayer}
-                isAvailable={currentState.actions?.disallows?.toggling_repeat_track === true ? false : true}
-                repeatState={currentState.repeat_state || ''}
-            >
-                <Repeat/>
-            </RepeatButton>
-        </Center>
+        <>
+            <Desktop>
+                <ShuffleButton
+                    onClick={toggleShufflePlayer}
+                    isAvailable={currentState.actions?.disallows?.toggling_shuffle === true ? false : true}
+                    isActive={currentState.shuffle_state || false}
+                >
+                    <Shuffle/>
+                </ShuffleButton>
+                <ActionButton
+                    onClick={previousTrackPlayer}
+                    isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
+                >
+                    <Prev/>
+                </ActionButton>
+                <PlayPauseButton
+                    onClick={playPauseTrackPlayer}
+                    isPlaying={currentState.is_playing || false}
+                >
+                    {currentState.is_playing ? <PauseCircle/> : <PlayCircle/>}
+                </PlayPauseButton>
+                <ActionButton
+                    onClick={nextTrackPlayer}
+                    isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
+                >
+                    <Next/>
+                </ActionButton>
+                <RepeatButton
+                    onClick={toggleRepeatPlayer}
+                    isAvailable={currentState.actions?.disallows?.toggling_repeat_track === true ? false : true}
+                    repeatState={currentState.repeat_state || ''}
+                >
+                    <Repeat/>
+                </RepeatButton>
+            </Desktop>
+            <Mobile>
+                <ActionButton
+                    onClick={previousTrackPlayer}
+                    isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
+                >
+                    <Prev/>
+                </ActionButton>
+                <PlayPauseButton
+                    onClick={playPauseTrackPlayer}
+                    isPlaying={currentState.is_playing || false}
+                >
+                    {currentState.is_playing ? <Pause/> : <Play/>}
+                </PlayPauseButton>
+                <ActionButton
+                    onClick={nextTrackPlayer}
+                    isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
+                >
+                    <Next/>
+                </ActionButton>
+            </Mobile>
+        </>
     );
 }
 
 export default CenterButtons
 
-interface IavailableAction{
+interface AvailableAction{
     isAvailable: boolean
 }
 
-const ActionButton = styled.figure<IavailableAction>`
+interface ShuffleButton extends AvailableAction{
+    isActive: boolean
+} 
+
+interface RepeatButton extends AvailableAction{
+    repeatState: string
+}
+
+const ActionButton = styled.figure<AvailableAction>`
     margin: 0 ${metrics.spacing4};
 
     svg{
@@ -70,24 +100,45 @@ const ActionButton = styled.figure<IavailableAction>`
             return `opacity: var(--iconOpacity); pointer-events: none; user-select: none;`
         return ''
     }}
+
+    @media(max-width: ${breakpoints.tbl}){
+        margin: 0 ${metrics.spacing3};
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        margin: 0 10px;
+        &:first-child{
+            margin-left: 0;
+        }
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @media(max-width: ${breakpoints.smp}){
+        margin: 0 7.5px;
+    }
 `
 
-interface IshuffleButton extends IavailableAction{
-    isActive: boolean
-} 
+const MockupShuffleAndRepeat = styled(ActionButton)`
+    @media(max-width: ${breakpoints.lg}){
+        margin: 0 ${metrics.spacing3};
+    }
+    
+    @media(max-width: ${breakpoints.tbl}){
+        margin: 0 ${metrics.spacing2};
+    }
+`
 
-const ShuffleButton = styled(ActionButton)<IshuffleButton>`
+const ShuffleButton = styled(MockupShuffleAndRepeat)<ShuffleButton>`
     svg{
         fill: none;
         ${({isActive}) => isActive ? `stroke: ${colors.primary}; opacity: 1;` : ''}
     }
 `
 
-interface IrepeatButton extends IavailableAction{
-    repeatState: string
-}
-
-const RepeatButton = styled(ActionButton)<IrepeatButton>`
+const RepeatButton = styled(MockupShuffleAndRepeat)<RepeatButton>`
     position: relative;
 
     &:before{
@@ -125,22 +176,72 @@ const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
         width: 40px;
         opacity: var(--iconOpacity);
 
-        polygon{
-            ${({isPlaying}) => !isPlaying ? 'fill: #fff' : ''};
+        circle{
+            stroke-width: 1px;
         }
+
+        polygon{
+            fill: #fff;
+        }
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        display: flex;
+        justify-content: center;
+        height: 35px;
+        width: 35px;
+
+        svg{
+            height: 100%;
+            width: 100%;
+            stroke-width: 0;
+
+            rect{
+                width: 4px;
+                fill: #fff;
+            }
+        }
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        height: 30px;
+        width: 30px;
     }
 `
 
-const Center = styled.div`
+const Mobile = styled.div`
+    height: 100%;
+    width: 100%;
+    display: none;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    padding: var(--innerPadding);
+    padding-right: 0;
+
+    @media(max-width: ${breakpoints.tbp}){
+        display: flex;
+    }
+`
+
+const Desktop = styled.div`
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: var(--innerPadding);
+    padding: var(--innerVertical) 0;
+    
+
+    @media(max-width: ${breakpoints.tbl}){
+        justify-content: space-between;
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        display: none;
+    }
 
     figure{
-
         svg{
             cursor: pointer;
             transition: opacity var(--iconOpacityTransition);
