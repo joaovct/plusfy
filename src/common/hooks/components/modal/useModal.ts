@@ -2,6 +2,7 @@ import {useState} from 'react'
 
 export type Status = 'show' | 'hide'
 type Configs = {
+    initialStatus?: Status
     delay_ms?: number
     transition_ms?: number
 }
@@ -11,7 +12,7 @@ interface UseModal{
 }
 
 const useModal: UseModal = (configs) => {
-    const [status, setStatus] = useState<Status>('show')
+    const [status, setStatus] = useState<Status>(configs?.initialStatus || 'show')
     const [cssPreparer, setCssPreparer] = useState('')
     const delay = configs?.delay_ms|| 500
     const transition = (configs?.transition_ms || 500) / 1000

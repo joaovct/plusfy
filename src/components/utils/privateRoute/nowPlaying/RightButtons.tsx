@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import useNowPlayingRightButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingRightButtons'
-import {Headphones} from 'react-feather'
+import {DevicesRounded as Devices} from '@material-ui/icons'
 
 const RightButtons = () => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
@@ -15,7 +15,7 @@ const RightButtons = () => {
         <Right>
             <WrapperDropdown>
                 <button onClick={() => handleToggleDropdowns(0)}>
-                    <Headphones/>
+                    <Devices/>
                 </button>
                 <DropdownDevices show={toggleDropdowns[0]} ref={devicesDropdownRef}>
                     <li>

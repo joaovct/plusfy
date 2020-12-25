@@ -1,19 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import {breakpoints, colors, metrics} from '../../../../styles/style'
 import CenterButtons from './CenterButtons'
 import LeftButtons from './LeftButtons'
+import NowPlayingModal from './NowPlayingModal'
 import RightButtons from './RightButtons'
+import { HandleSetToggleModal } from './types'
 
 const NowPlaying: React.FC = () => {
+    const [toggleModal, setToggleModal] = useState(false)
+    
+    const handleSetToggleModal: HandleSetToggleModal = (state) => {
+        setToggleModal(state)
+    }
+
     return(
-        <NowPlayingWrapper>
-            <NowPlayingInner>
-                <LeftButtons/>
-                <CenterButtons/>
-                <RightButtons/>
-            </NowPlayingInner>
-        </NowPlayingWrapper>
+        <>
+            <NowPlayingWrapper>
+                <NowPlayingInner>
+                    <LeftButtons handleSetToggleModal={handleSetToggleModal}/>
+                    <CenterButtons/>
+                    <RightButtons/>
+                </NowPlayingInner>
+            </NowPlayingWrapper>
+            <NowPlayingModal
+                toggleModal={toggleModal}
+                handleSetToggleModal={handleSetToggleModal}
+            />
+        </>
     )
 }
 
@@ -49,8 +63,6 @@ const NowPlayingInner = styled.div`
         grid-template-columns: 1fr auto;
     }
 `
-
-
 
 const NowPlayingWrapper = styled.div`
     /* padding: ${metrics.spacing3} ${metrics.spacing4}; */

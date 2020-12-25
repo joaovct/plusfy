@@ -5,12 +5,17 @@ import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylistTable'
+import { HandleSetToggleModal } from './types'
 
-const LeftButtons = () => {
+interface Props{
+    handleSetToggleModal: HandleSetToggleModal
+}
+
+const LeftButtons: React.FC<Props> = ({handleSetToggleModal}) => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
 
     return(
-        <Left>
+        <Left onClick={() => handleSetToggleModal(true)}>
             <LeftTrackImg>
                 <img src={formatTrackPhoto(currentState.item)} alt="Track playing"/>
             </LeftTrackImg>

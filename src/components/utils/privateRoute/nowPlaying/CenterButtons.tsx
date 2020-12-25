@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {PlayCircle, PauseCircle, Play, Pause ,SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
+import {PlayCircle, PauseCircle, Play, Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
 import { breakpoints, colors, metrics } from '../../../../styles/style';
 import useNowPlayingCenterButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingCenterButtons';
 import { ICurrentState } from '../../../../redux/store/currentState/types';
@@ -92,13 +92,23 @@ const ActionButton = styled.figure<AvailableAction>`
         height: 20px;
         width: 20px;
         fill: #fff;
-        opacity: var(--iconOpacity);
     }
 
     ${({isAvailable}) => {
-        if(!isAvailable)
-            return `opacity: var(--iconOpacity); pointer-events: none; user-select: none;`
-        return ''
+        if(!isAvailable){
+            return `
+                svg{
+                    opacity: var(--iconOpacityDisabled);
+                }
+                pointer-events: none;
+                user-select: none;`
+        }
+        return `
+            svg{
+                opacity: var(--iconOpacity);
+            }
+            cursor: pointer;
+        `
     }}
 
     @media(max-width: ${breakpoints.tbl}){
@@ -171,6 +181,8 @@ const RepeatButton = styled(MockupShuffleAndRepeat)<RepeatButton>`
 `
 
 const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
+    cursor: pointer;
+
     svg{
         height: 40px;
         width: 40px;
@@ -243,7 +255,6 @@ const Desktop = styled.div`
 
     figure{
         svg{
-            cursor: pointer;
             transition: opacity var(--iconOpacityTransition);
         }
 
