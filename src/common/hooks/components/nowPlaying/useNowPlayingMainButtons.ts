@@ -6,29 +6,29 @@ import { nextPlayer, pausePlayer, previousPlayer, repeatPlayer, resumePlayer, sh
 
 interface Hook{
     ():{
-        toggleShufflePlayer: () => void
-        previousTrackPlayer: () => void
-        playPauseTrackPlayer: () => void
-        nextTrackPlayer: () => void
-        toggleRepeatPlayer: () => void
+        clickShuffle: () => void
+        clickPrevious: () => void
+        clickPlayPause: () => void
+        clickNext: () => void
+        clickRepeat: () => void
     }
 }
 
-const useNowPlayingCenterButtons: Hook = () => {
+const useNowPlayingMainButtons: Hook = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
 
-    function toggleShufflePlayer(){
+    function clickShuffle(){
         if(accessToken)
             shufflePlayer({accessToken, shuffle: !currentState.shuffle_state})
     }
 
-    function previousTrackPlayer(){
+    function clickPrevious(){
         if(accessToken)
             previousPlayer({accessToken})
     }
 
-    function playPauseTrackPlayer(){
+    function clickPlayPause(){
         if(accessToken){
             if(currentState.is_playing)
                 return pausePlayer({accessToken})
@@ -36,12 +36,12 @@ const useNowPlayingCenterButtons: Hook = () => {
         }
     }
 
-    function nextTrackPlayer(){ 
+    function clickNext(){ 
         if(accessToken)
             nextPlayer({accessToken})
     }
 
-    function toggleRepeatPlayer(){
+    function clickRepeat(){
         if(accessToken){
             const states = ['off', 'context', 'track']
             for(let i = 0; i < states.length; i++){
@@ -54,7 +54,7 @@ const useNowPlayingCenterButtons: Hook = () => {
         }
     }
 
-    return {toggleShufflePlayer, previousTrackPlayer, playPauseTrackPlayer, nextTrackPlayer, toggleRepeatPlayer}
+    return {clickShuffle, clickPrevious, clickPlayPause, clickNext, clickRepeat}
 }
 
-export default useNowPlayingCenterButtons
+export default useNowPlayingMainButtons

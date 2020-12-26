@@ -2,66 +2,67 @@ import React from 'react';
 import styled from 'styled-components';
 import {PlayCircle, PauseCircle, Play, Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
 import { breakpoints, colors, metrics } from '../../../../styles/style';
-import useNowPlayingCenterButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingCenterButtons';
+import useNowPlayingMainButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons';
 import { ICurrentState } from '../../../../redux/store/currentState/types';
 import { IStore } from '../../../../redux/store/types';
 import { useSelector } from 'react-redux';
+import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying';
 
 const CenterButtons = () => {
-    const {toggleShufflePlayer, previousTrackPlayer, playPauseTrackPlayer, nextTrackPlayer, toggleRepeatPlayer} = useNowPlayingCenterButtons()
+    const {clickShuffle, clickPrevious, clickPlayPause, clickNext, clickRepeat} = useNowPlayingMainButtons()
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
 
     return(
         <>
             <Desktop>
                 <ShuffleButton
-                    onClick={toggleShufflePlayer}
+                    onClick={clickShuffle}
                     isAvailable={currentState.actions?.disallows?.toggling_shuffle === true ? false : true}
                     isActive={currentState.shuffle_state || false}
                 >
                     <Shuffle/>
                 </ShuffleButton>
                 <ActionButton
-                    onClick={previousTrackPlayer}
+                    onClick={clickPrevious}
                     isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
                 >
                     <Prev/>
                 </ActionButton>
                 <PlayPauseButton
-                    onClick={playPauseTrackPlayer}
+                    onClick={clickPlayPause}
                     isPlaying={currentState.is_playing || false}
                 >
                     {currentState.is_playing ? <PauseCircle/> : <PlayCircle/>}
                 </PlayPauseButton>
                 <ActionButton
-                    onClick={nextTrackPlayer}
+                    onClick={clickNext}
                     isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
                 >
                     <Next/>
                 </ActionButton>
                 <RepeatButton
-                    onClick={toggleRepeatPlayer}
+                    onClick={clickRepeat}
                     isAvailable={currentState.actions?.disallows?.toggling_repeat_track === true ? false : true}
-                    repeatState={currentState.repeat_state || ''}
+                    repeatState={currentState.repeat_state || 'off'}
                 >
                     <Repeat/>
                 </RepeatButton>
             </Desktop>
             <Mobile>
                 <ActionButton
-                    onClick={previousTrackPlayer}
+                    onClick={clickPrevious}
                     isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
                 >
                     <Prev/>
                 </ActionButton>
                 <PlayPauseButton
-                    onClick={playPauseTrackPlayer}
+                    onClick={clickPlayPause}
                     isPlaying={currentState.is_playing || false}
                 >
                     {currentState.is_playing ? <Pause/> : <Play/>}
                 </PlayPauseButton>
                 <ActionButton
-                    onClick={nextTrackPlayer}
+                    onClick={clickNext}
                     isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
                 >
                     <Next/>
@@ -82,7 +83,7 @@ interface ShuffleButton extends AvailableAction{
 } 
 
 interface RepeatButton extends AvailableAction{
-    repeatState: string
+    repeatState: ICurrentState['repeat_state']
 }
 
 const ActionButton = styled.figure<AvailableAction>`
@@ -149,35 +150,11 @@ const ShuffleButton = styled(MockupShuffleAndRepeat)<ShuffleButton>`
 `
 
 const RepeatButton = styled(MockupShuffleAndRepeat)<RepeatButton>`
-    position: relative;
-
-    &:before{
-        font-size: 6px;
-        line-height: 11px;
-        height: 11px;
-        width: 11px;
-        padding-left: 1px;
-        padding-top: 3px;
-        box-sizing: border-box;
-        border-radius: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: -1px;
-        right: -2px;
-        z-index: 2;
-        background: ${colors.primary};
-    }
-
     svg{
         fill: none;
     }
 
-    ${({repeatState}) => repeatState === 'context'
-        ? `svg{stroke: ${colors.primary}; opacity: var(--iconOpacityActivate);}`
-        : repeatState === 'track' ? `&:before{content: '1';} svg{stroke: ${colors.primary}; opacity: var(--iconOpacityActivate)}`: ''
-    }
+    ${({repeatState}) => handleRepeatState(repeatState || 'off')}
 `
 
 const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
@@ -255,7 +232,7 @@ const Desktop = styled.div`
 
     figure{
         svg{
-            transition: opacity var(--iconOpacityTransition);
+            transition: var(--iconOpacityTransition);
         }
 
         &:hover{

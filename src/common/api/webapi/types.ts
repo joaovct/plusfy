@@ -247,13 +247,13 @@ export interface IPlayer{
     }
     item?: Track
     shuffle_state?: boolean
-    repeat_state?: string
+    repeat_state?: "off" | "track" | "context" 
     context?: {
         external_urls: {
             spotify: string
         }
         href: string
-        type: string
+        type: 'album' | 'artist' | 'playlist'
         uri: string
     }
     device?: Device

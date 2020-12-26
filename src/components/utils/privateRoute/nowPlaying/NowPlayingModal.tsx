@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useModal from '../../../../common/hooks/components/modal/useModal'
 import { breakpoints, colors, metrics } from '../../../../styles/style'
 import Modal from '../../../common/modal/Modal'
@@ -9,6 +9,13 @@ import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import {ChevronDown as Close, MoreVertical, Heart, Shuffle, Repeat, SkipBack, SkipForward, Volume2} from 'react-feather'
 import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause, Devices} from '@material-ui/icons'
+import { fetchPlaylist } from '../../../../common/api/webapi/playlists'
+import { IPlayer, Playlist } from '../../../../common/api/webapi/types'
+import { IToken } from '../../../../redux/store/token/types'
+import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylistTable'
+import useNowPlayingMainButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons'
+import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying'
+import { cssVariables } from './style'
 
 interface Props{
     toggleModal: boolean
@@ -16,20 +23,38 @@ interface Props{
 }
 
 const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) => {
+    const {clickShuffle, clickPrevious, clickPlayPause, clickNext, clickRepeat} = useNowPlayingMainButtons()
+    const [playlist, setPlaylist] = useState<Playlist | undefined>()
+    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState) 
     const {showModal,closeModal,cssPreparer,status} = useModal({initialStatus: toggleModal ? 'show' : 'hide'})
 
     useEffect(() => {
-        if(toggleModal === true && window.innerWidth <= breakpoints.absoluteDimensions.tbp)
+        fetchData()
+        async function fetchData(){
+            if(currentState.context && accessToken){
+                const id = currentState.context.uri.split(':')[2]
+                if(currentState.context.type === 'playlist'){
+                    const playlist = await fetchPlaylist(accessToken, id)
+                    if(playlist)
+                        setPlaylist(playlist)
+                } 
+            }
+        }
+    },[currentState.context, accessToken])
+
+    useEffect(() => {
+        if(toggleModal === true && currentState.item?.uri && window.innerWidth <= breakpoints.absoluteDimensions.tbp)
             showModal()
     //eslint-disable-next-line
-    },[toggleModal])
+    },[toggleModal, currentState])
 
     useEffect(() => {
         if(status === 'hide')
             handleSetToggleModal(false)
     //eslint-disable-next-line
     },[status])
+
 
     return(
         <>
@@ -38,40 +63,64 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                 <Modal cssPage={cssPreparer} cssModal={cssModal}>
                     <HeaderModal>
                         <Close onClick={closeModal}/>
-                        <strong>mpb <span role="img" aria-label="icon">🎸</span></strong>
+                        <strong>{playlist?.name}</strong>
                         <MoreVertical/>
                     </HeaderModal>
                     <AlbumPhoto>
                         <figure>
-                            <img src="https://i.scdn.co/image/ab67616d0000b2736ea95d31b289864b0cc890b4" alt="Album"/>
+                            <img src={formatTrackPhoto(currentState.item)} alt="Album"/>
                         </figure>
                     </AlbumPhoto>
                     <footer>
-                        <TrackInfo>
-                            <span>
-                                <strong>Pontos de Exclamação</strong>
-                                <small>Jovem Dionisio</small>
-                            </span>
-                            <Heart/>
-                        </TrackInfo>
+                        {
+                            currentState.item ? 
+                            <TrackInfo>
+                                <article>
+                                    <span>
+                                        <strong>{currentState.item.name}</strong>
+                                    </span>
+                                    <span>
+                                        <small>{formatArtistName(currentState.item)}</small>
+                                    </span>
+                                </article>
+                                <Heart/>
+                            </TrackInfo> : <></>
+                        }
                         <Controls>
-                            <Button>
+                            <Button
+                                onClick={clickShuffle}
+                                isAvailable={currentState.actions?.disallows?.toggling_shuffle === true ? false : true}
+                                isActive={currentState.shuffle_state === true ? true : false}
+                            >
                                 <Shuffle/>
                             </Button>
                             <MainControls>
-                                <Button>
+                                <Button
+                                    onClick={clickPrevious}
+                                    isAvailable={currentState.actions?.disallows?.skipping_prev === true ? false : true}
+                                >
                                     <SkipBack/>
                                 </Button> 
-                                <Button>
+                                <Button
+                                    onClick={clickPlayPause}
+                                    isAvailable={true}
+                                >
                                     {
                                         currentState.is_playing ? <Pause/> : <Play/>
                                     }
                                 </Button>
-                                <Button>
+                                <Button
+                                    onClick={clickNext}
+                                    isAvailable={currentState.actions?.disallows?.skipping_next === true ? false : true}
+                                >
                                     <SkipForward/>
                                 </Button> 
                             </MainControls>
-                            <Button>
+                            <Button
+                                onClick={clickRepeat}
+                                isAvailable={currentState.actions?.disallows?.toggling_repeat_track === true ? false : true}
+                                repeatState={currentState.repeat_state || 'off'}
+                            >
                                 <Repeat/>
                             </Button>
                         </Controls>
@@ -91,12 +140,45 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     )
 }
 
-const Button = styled.figure`
+interface ButtonProps{
+    isAvailable?: boolean
+    isActive?: boolean
+    repeatState?: IPlayer['repeat_state']
+}
+
+const Button = styled.button<ButtonProps>`
     svg{
         cursor: pointer;
         height: 20px;
         width: 20px;
+        transition: var(--iconOpacityTransition);
     }
+
+    ${({isAvailable, isActive, repeatState}) => {
+        let css = ''
+
+        if(isAvailable === false)
+            css += `
+                svg{
+                    opacity: var(--iconOpacityDisabled);
+                }
+                pointer-events: none;
+                user-select: none;
+            `
+        if(isActive === true)
+            css += `
+                svg{
+                    stroke: ${colors.primary};
+                    color: ${colors.primary};
+                    opacity: var(--iconOpacityActivate);
+                }
+            `
+        if(repeatState){
+            css += handleRepeatState(repeatState)
+        }
+
+        return css
+    }}
 `
 
 const MainControls = styled.div`
@@ -130,33 +212,53 @@ const Controls = styled.div`
 `
 
 const TrackInfo = styled.div`
+    max-width: 100%;
     width: 100%;
     display: flex;
     justify-content: space-between;
-
-    span{
-        display: flex;
-        flex-flow: column nowrap;
-
-        strong{
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 1.2;
-        }
-
-        small{
-            margin: 2.5px 0 0 0;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 1.2;
-            color: ${colors.gray};
-        }
-    }
 
     svg{
         height: 20px;
         width: 20px;
         cursor: pointer;
+    }
+
+    article{
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 0 5px 0 0;
+
+        span{
+            max-width: 100%;
+            width: 100%;
+            display: table;
+            table-layout: fixed;
+
+            strong, small{
+                text-align: left;
+                display: table-cell;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            strong{
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 1.2;
+            }
+
+            small{
+                margin: 2.5px 0 0 0;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 1.2;
+                color: ${colors.gray};
+            }
+        }
     }
 `
 
@@ -221,13 +323,12 @@ const cssModal = css`
     height: 100%;
     width: 100%;
     background: ${colors.darkerBackground};
-    /* background: ${colors.darkerBackgroundTranslucent}; */
-    /* backdrop-filter: ${metrics.backdropBlurFilter}; */
     border-radius: 0px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
     padding: 40px 20px 20px 20px;
+    ${cssVariables}
 `
 
 export default NowPlayingModal
