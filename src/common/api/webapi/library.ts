@@ -1,3 +1,4 @@
+import { getHeaders } from '../../helpers/helperWebAPI'
 import api from '../api'
 import { SavedTracks } from './types'
 
@@ -31,6 +32,21 @@ export const getSavedTracks = async ({accessToken}: ILibraryRequest) => {
         return data
     }
 }
+
+interface CheckSavedTracks extends ILibraryRequest{
+    ids: string[]
+}
+
+export const checkSavedTracks = async ({accessToken, ids}: CheckSavedTracks) => {
+    let data: Boolean[] = []
+    try{
+        const res = await api.spotify.get<Boolean[]>(`/me/tracks/contains?ids=${ids.toString()}`, {...getHeaders(accessToken)})
+        data = res.data
+    }finally{
+        return data
+    }
+}
+
 
 export const saveTrack = async ({accessToken, ids}: ISaveToLibrary) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}

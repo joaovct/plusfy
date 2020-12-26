@@ -17,6 +17,7 @@ import useNowPlayingMainButtons from '../../../../../common/hooks/components/now
 import { cssVariables } from '../style'
 import {Controls, Button} from './style'
 import ModalAdditionalButtons from './ModalAdditionalButtons'
+import { checkSavedTracks, removeSavedTrack, saveTrack } from '../../../../../common/api/webapi/library'
 
 interface Props{
     toggleModal: boolean
@@ -29,6 +30,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState) 
     const {showModal,closeModal,cssPreparer,status} = useModal({initialStatus: toggleModal ? 'show' : 'hide'})
+    const [isTrackSaved, setIsTrackSaved] = useState(false)
 
     useEffect(() => {
         fetchData()
@@ -45,6 +47,16 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     },[currentState.context, accessToken])
 
     useEffect(() => {
+        if(currentState.item && accessToken)
+            fetchData()
+        async function fetchData(){
+            const id = currentState.item?.id || ''
+            const response = await checkSavedTracks({accessToken, ids: [id]})
+            setIsTrackSaved(response[0] ? true : false)
+        }
+    },[currentState.item, accessToken])
+
+    useEffect(() => {
         if(toggleModal === true)
             showModal()
     //eslint-disable-next-line
@@ -56,6 +68,13 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     //eslint-disable-next-line
     },[status])
 
+    const clickHeart = () => {
+        setIsTrackSaved(old => !old)
+        const id = currentState.item?.id || ''
+        if(isTrackSaved)
+            return removeSavedTrack({accessToken, ids: [id]})
+        return saveTrack({accessToken, ids: [id]})
+    }
 
     return(
         <>
@@ -75,7 +94,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                     <footer>
                         {
                             currentState.item ? 
-                            <TrackInfo>
+                            <TrackInfo isTrackSaved={isTrackSaved}>
                                 <article>
                                     <span>
                                         <strong>{currentState.item.name}</strong>
@@ -84,7 +103,9 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                                         <small>{formatArtistName(currentState.item)}</small>
                                     </span>
                                 </article>
-                                <Heart/>
+                                <button onClick={clickHeart}>
+                                    <Heart/>
+                                </button>
                             </TrackInfo> : <></>
                         }
                         <Controls>
@@ -156,7 +177,7 @@ const MainControls = styled.div`
     }
 `
 
-const TrackInfo = styled.div`
+const TrackInfo = styled.div<{isTrackSaved: boolean}>`
     max-width: 100%;
     width: 100%;
     display: flex;
@@ -166,6 +187,16 @@ const TrackInfo = styled.div`
         height: 20px;
         width: 20px;
         cursor: pointer;
+        transition: .25s;
+
+        ${({isTrackSaved}) => {
+            if(isTrackSaved)
+                return `
+                    stroke: ${colors.primary};
+                    color: ${colors.primary};
+                    fill: ${colors.primary};
+                `
+        }}
     }
 
     article{
@@ -213,6 +244,7 @@ const AlbumPhoto = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    user-select: none;
 
     figure{
         width: 100%;
