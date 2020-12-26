@@ -59,16 +59,14 @@ export const getPlayerDevice = async ({accessToken}: PlayerRequest) => {
     }
 }
 
-interface ItransferPlayback{
+interface TransferPlayback{
     accessToken: string
-    deviceIds: {
-        device_ids: Array<string>
-    }
+    deviceIds: string[]
 }
 
-export const transferPlayback = async ({accessToken, deviceIds}: ItransferPlayback) => {
+export const transferPlayback = async ({accessToken, deviceIds}: TransferPlayback) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
-    const body = {device_ids: deviceIds}
+    const body = {device_ids: deviceIds, play: true}
     await api.spotify.put('/me/player', body, headers)
 }
 

@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import useModal from '../../../../common/hooks/components/modal/useModal'
-import { breakpoints, colors, metrics } from '../../../../styles/style'
-import Modal from '../../../common/modal/Modal'
-import { HandleSetToggleModal } from './types'
+import useModal from '../../../../../common/hooks/components/modal/useModal'
+import { colors, metrics } from '../../../../../styles/style'
+import Modal from '../../../../common/modal/Modal'
+import { HandleSetToggleModal } from '../types'
 import styled, {css} from 'styled-components'
 import { useSelector } from 'react-redux'
-import { IStore } from '../../../../redux/store/types'
-import { ICurrentState } from '../../../../redux/store/currentState/types'
-import {ChevronDown as Close, MoreVertical, Heart, Shuffle, Repeat, SkipBack, SkipForward, Volume2} from 'react-feather'
-import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause, Devices} from '@material-ui/icons'
-import { fetchPlaylist } from '../../../../common/api/webapi/playlists'
-import { IPlayer, Playlist } from '../../../../common/api/webapi/types'
-import { IToken } from '../../../../redux/store/token/types'
-import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylistTable'
-import useNowPlayingMainButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons'
-import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying'
-import { cssVariables } from './style'
+import { IStore } from '../../../../../redux/store/types'
+import { ICurrentState } from '../../../../../redux/store/currentState/types'
+import {ChevronDown as Close, MoreVertical, Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
+import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause} from '@material-ui/icons'
+import { fetchPlaylist } from '../../../../../common/api/webapi/playlists'
+import { Playlist } from '../../../../../common/api/webapi/types'
+import { IToken } from '../../../../../redux/store/token/types'
+import { formatArtistName, formatTrackPhoto } from '../../../../../common/helpers/helperPlaylistTable'
+import useNowPlayingMainButtons from '../../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons'
+import { cssVariables } from '../style'
+import {Controls, Button} from './style'
+import ModalAdditionalButtons from './ModalAdditionalButtons'
 
 interface Props{
     toggleModal: boolean
@@ -44,7 +45,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     },[currentState.context, accessToken])
 
     useEffect(() => {
-        if(toggleModal === true && currentState.item?.uri && window.innerWidth <= breakpoints.absoluteDimensions.tbp)
+        if(toggleModal === true)
             showModal()
     //eslint-disable-next-line
     },[toggleModal, currentState])
@@ -124,14 +125,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                                 <Repeat/>
                             </Button>
                         </Controls>
-                        <Controls>
-                            <Button>
-                                <Devices/>
-                            </Button>
-                            <Button>
-                                <Volume2/>
-                            </Button>
-                        </Controls>
+                        <ModalAdditionalButtons/>
                     </footer>
                 </Modal>
                 : <></>
@@ -139,47 +133,6 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
         </>
     )
 }
-
-interface ButtonProps{
-    isAvailable?: boolean
-    isActive?: boolean
-    repeatState?: IPlayer['repeat_state']
-}
-
-const Button = styled.button<ButtonProps>`
-    svg{
-        cursor: pointer;
-        height: 20px;
-        width: 20px;
-        transition: var(--iconOpacityTransition);
-    }
-
-    ${({isAvailable, isActive, repeatState}) => {
-        let css = ''
-
-        if(isAvailable === false)
-            css += `
-                svg{
-                    opacity: var(--iconOpacityDisabled);
-                }
-                pointer-events: none;
-                user-select: none;
-            `
-        if(isActive === true)
-            css += `
-                svg{
-                    stroke: ${colors.primary};
-                    color: ${colors.primary};
-                    opacity: var(--iconOpacityActivate);
-                }
-            `
-        if(repeatState){
-            css += handleRepeatState(repeatState)
-        }
-
-        return css
-    }}
-`
 
 const MainControls = styled.div`
     flex: 1 1 auto;
@@ -201,14 +154,6 @@ const MainControls = styled.div`
             margin: 0 30px;
         }
     }
-`
-
-const Controls = styled.div`
-    margin: 20px 0 0 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 `
 
 const TrackInfo = styled.div`
@@ -327,7 +272,11 @@ const cssModal = css`
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
-    padding: 40px 20px 20px 20px;
+    --topSpacingModal: 40px;
+    --sideSpacingModal: 20px;
+    --bottomSpacingModal: 20px;
+    --spacingModal: var(--topSpacingModal) var(--sideSpacingModal) var(--bottomSpacingModal) var(--sideSpacingModal);
+    padding: var(--spacingModal);
     ${cssVariables}
 `
 

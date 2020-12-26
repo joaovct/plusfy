@@ -4,7 +4,7 @@ import { ChooseDevice, GetDeviceType } from "../../../../components/utils/privat
 import { ICurrentState } from "../../../../redux/store/currentState/types"
 import { IToken } from "../../../../redux/store/token/types"
 import { IStore } from "../../../../redux/store/types"
-import { getDevices, playPlayer } from "../../../api/webapi/player"
+import { getDevices, playPlayer, transferPlayback } from "../../../api/webapi/player"
 import { Device } from "../../../api/webapi/types"
 import { nowPlayingPositionDropdown } from "../../../helpers/helperUI"
 import {Smartphone, Tablet, Tv, Speaker, Cast, Monitor} from 'react-feather'
@@ -40,7 +40,7 @@ const useNowPlayingDevices: () => Hook  = () => {
 
     useEffect(() => {
         if(dropdownRef.current)
-            nowPlayingPositionDropdown(dropdownRef.current)
+            nowPlayingPositionDropdown(dropdownRef.current, true)
     },[dropdownRef])
 
     const getDeviceIcon: GetDeviceType = (type: Device['type']) => {
@@ -59,7 +59,12 @@ const useNowPlayingDevices: () => Hook  = () => {
 
     const chooseDevice: ChooseDevice = async (id: string) => {
         if(id !== currentState.device?.id){
-            await playPlayer({accessToken, deviceId: id, contextUri: currentState.context?.uri, offset: {uri: currentState.item?.uri}})
+            // console.log(currentState.device?.id)
+            // console.log(accessToken)
+            // console.log(currentState.context?.uri)
+            // console.log(currentState.item?.uri)
+            await transferPlayback({accessToken, deviceIds: [id]})
+            // await playPlayer({accessToken, deviceId: id, contextUri: currentState.context?.uri, offset: {uri: currentState.item?.uri}})
         }
     }
 

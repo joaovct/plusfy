@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import useNowPlayingVolume from '../../../../../common/hooks/components/nowPlaying/useNowPlayingVolume'
-import {NowPlayingDropdown as Dropdown, VolumeControl, RangeBar} from '../style'
-import {InputRange} from '../../../../../styles/style'
+import {NowPlayingDropdown as dropdown, VolumeControl, RangeBar} from '../style'
+import {breakpoints, InputRange} from '../../../../../styles/style'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../../redux/store/types'
 import { ICurrentState } from '../../../../../redux/store/currentState/types'
 import { UpdateFatherVolume } from '../types'
+import styled from 'styled-components'
 
 interface Props{
     show: boolean
@@ -39,3 +40,12 @@ const DropdownVolume: React.FC<Props> = ({show, updateFatherVolume}) => {
 }
 
 export default DropdownVolume
+
+const Dropdown = styled(dropdown)`
+    min-width: calc(var(--widthInput) + var(--spacingWidth));
+
+    @media(max-width: ${breakpoints.tbp}){
+        left: inherit;
+        right: 0;
+    }
+`

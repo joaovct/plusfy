@@ -6,7 +6,7 @@ import { IStore } from '../../../../redux/store/types'
 import {breakpoints, colors, metrics} from '../../../../styles/style'
 import CenterButtons from './CenterButtons'
 import LeftButtons from './LeftButtons'
-import NowPlayingModal from './NowPlayingModal'
+import NowPlayingModal from './nowPlayingModal/NowPlayingModal'
 import RightButtons from './RightButtons'
 import { cssVariables } from './style'
 import { HandleSetToggleModal } from './types'
@@ -16,7 +16,7 @@ const NowPlaying: React.FC = () => {
     const [toggleModal, setToggleModal] = useState(false)
     
     const handleSetToggleModal: HandleSetToggleModal = (state) => {
-        if(currentState.item?.uri)
+        if(!state || (currentState.item?.uri && window.innerWidth <= breakpoints.absoluteDimensions.tbp))
             setToggleModal(state)
     }
 

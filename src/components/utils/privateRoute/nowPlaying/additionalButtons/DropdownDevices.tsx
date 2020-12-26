@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import useNowPlayingDevices from '../../../../../common/hooks/components/nowPlaying/useNowPlayingDevices'
-import { colors, Title } from '../../../../../styles/style'
+import { breakpoints, colors, Title } from '../../../../../styles/style'
 import {NowPlayingDropdown} from '../style'
 import {HandleToggleDropdowns} from '../types'
 
@@ -98,6 +98,17 @@ const Dropdown = styled(NowPlayingDropdown)`
     width: 270px;
     max-height: 270px;
     overflow-y: auto;
+
+    @media(max-width: ${breakpoints.tbp}){
+        right: inherit;
+        left: 0;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        width: calc(100vw - var(--sideSpacingModal) - var(--sideSpacingModal));
+        max-width: 350px;
+        max-height: 370px;
+    }
 
     li span{
         cursor: default;
