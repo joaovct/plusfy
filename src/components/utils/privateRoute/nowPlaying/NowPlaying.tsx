@@ -13,7 +13,7 @@ import { HandleSetToggleModal } from './types'
 
 const NowPlaying: React.FC = () => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState) 
-    const [toggleModal, setToggleModal] = useState(false)
+    const [toggleModal, setToggleModal] = useState(true)
     
     const handleSetToggleModal: HandleSetToggleModal = (state) => {
         if(!state || (currentState.item?.uri && window.innerWidth <= breakpoints.absoluteDimensions.tbp))

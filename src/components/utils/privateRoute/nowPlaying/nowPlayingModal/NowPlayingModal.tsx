@@ -17,8 +17,9 @@ import useNowPlayingMainButtons from '../../../../../common/hooks/components/now
 import { cssVariables } from '../style'
 import {Controls, Button} from './style'
 import ModalAdditionalButtons from './ModalAdditionalButtons'
-import NowPlayingModalHeader from './NowPlayingModalHeader'
+import NowPlayingModalHeaderOptions from './NowPlayingModalHeaderOptions'
 import useNowPlayingLike from '../../../../../common/hooks/components/nowPlaying/useNowPlayingLike'
+import {ChevronDown as Close} from 'react-feather'
 
 interface Props{
     toggleModal: boolean
@@ -64,10 +65,15 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
             {
                 status === 'show' ?
                 <Modal cssPage={cssPreparer} cssModal={cssModal}>
-                    <NowPlayingModalHeader
-                        playlist={playlist}
-                        closeModal={closeModal}
-                    />
+                    <HeaderModal>
+                        <Close onClick={closeModal}/>
+                        <strong>{playlist?.name}</strong>
+                        {
+                            currentState.item ?
+                                <NowPlayingModalHeaderOptions track={currentState.item}/>
+                            : <></>
+                        }
+                    </HeaderModal>
                     <AlbumPhoto>
                         <figure>
                             <img src={formatTrackPhoto(currentState.item)} alt="Album"/>
@@ -247,6 +253,24 @@ const AlbumPhoto = styled.div`
             border-radius: ${metrics.borderRadius};
             box-shadow: ${metrics.boxShadow};
         }
+    }
+`
+
+const HeaderModal = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 auto 0;
+
+    & > svg{
+        height: 35px;
+        width: 35px;
+    }
+
+    strong{
+        font-size: 18px;
+        font-weight: 500;
     }
 `
 

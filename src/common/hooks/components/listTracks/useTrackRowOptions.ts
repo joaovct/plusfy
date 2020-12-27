@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import ContextListTracks from "../../../../components/common/listTracks/ContextListTracks"
 import { IToken } from "../../../../redux/store/token/types"
 import { IStore } from "../../../../redux/store/types"
-import { removeSavedTrack, saveTrack } from "../../../api/webapi/library"
+import { checkSavedTracks, removeSavedTrack, saveTrack } from "../../../api/webapi/library"
 import { addToQueue } from "../../../api/webapi/player"
 import { Track } from "../../../api/webapi/types"
 import useAddToPlaylist from "../addPlaylist/useAddToPlaylist"
@@ -12,6 +12,8 @@ import useAlert from "../alert/useAlert"
 interface HookProps{
     track: Track,
     index: number
+    isContextAvailable?: boolean
+    callbackContextUnavailable?: Function
 }
 
 type Hook = ({track, index}: HookProps) => {
@@ -22,49 +24,72 @@ type Hook = ({track, index}: HookProps) => {
     trackSaved: boolean | null
 }
 
-const useTrackRowOptions: Hook = ({track, index}) => {
+const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, callbackContextUnavailable}) => {
     const {handleToggleOption, updateSavedTracks, savedTracks} = useContext(ContextListTracks)
     const createAlert = useAlert()
     const addToPlaylist = useAddToPlaylist()
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const [trackSaved, setTrackSaved] = useState<boolean | null>(null)
     
+    const handleCallback = () => {
+        if(isContextAvailable)
+            handleToggleOption(index)
+        else if(callbackContextUnavailable)
+            callbackContextUnavailable()
+    }
+
     const actionSaveTrack = async () => {
-        handleToggleOption(index)
+        handleCallback()
         const status = await saveTrack({accessToken, ids: [track.id]})
-        if(status === 200){}
+        if(status === 200 && isContextAvailable && updateSavedTracks)
             updateSavedTracks()
     }
 
     const actionRemoveSavedTrack = async () => {
-        handleToggleOption(index)
+        handleCallback()
         const status = await removeSavedTrack({accessToken, ids: [track.id]})
-        if(status === 200){}
+        if(status === 200 && isContextAvailable && updateSavedTracks)
             updateSavedTracks()
     }
 
     const actionAddToPlaylist = () => {
-        handleToggleOption(index)
+        handleCallback()
         addToPlaylist('track', [track.uri])
     }
 
     const actionAddToQueue = async () => {
-        handleToggleOption(index)
+        handleCallback()
         const res = await addToQueue({accessToken, uri: track.uri})
         if(res?.status === 204)
             createAlert('normal','Música adicionada à fila 🎶')
     }
 
     useEffect(() => {
-        setTrackSaved(() => {
-            const index = savedTracks?.items.findIndex(item => item.track.uri === track.uri)
-            if(index !== undefined && index > -1)
-                return true
-            else if(index !== undefined)
-                return false
-            return null
-        })
-    },[savedTracks, track])
+        if(isContextAvailable){
+            setTrackSaved(() => {
+                const index = savedTracks?.items.findIndex(item => item.track.uri === track.uri)
+                if(index !== undefined && index > -1)
+                    return true
+                else if(index !== undefined)
+                    return false
+                return null
+            })
+        }else
+            fetchData()
+
+        async function fetchData(){
+            if(accessToken){
+                const [isTrackSaved] = await checkSavedTracks({accessToken, ids: [track?.id || '']})
+                setTrackSaved(() => {
+                    if(isTrackSaved === true)
+                        return true
+                    else if(isTrackSaved === false)
+                        return false
+                    return null
+                })
+            }
+        }
+    },[savedTracks, track, isContextAvailable, accessToken])
 
     return {
         actionSaveTrack,
