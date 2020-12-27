@@ -1,17 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
-import { breakpoints } from '../../../../styles/style'
+import { breakpoints, colors } from '../../../../styles/style'
 import {DevicesRounded as Devices} from '@material-ui/icons'
 import { getVolumeIcon } from '../../../../common/helpers/helperNowPlaying'
 import useNowPlayingAdditionalButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingAdditionalButtons'
 import DropdownDevices from './additionalButtons/DropdownDevices'
 import DropdownVolume from './additionalButtons/DropdownVolume'
+import {Heart} from 'react-feather'
+import useNowPlayingLike from '../../../../common/hooks/components/nowPlaying/useNowPlayingLike'
 
 const RightButtons = () => {
     const {toggleDropdowns, volume, updateFatherVolume, handleToggleDropdowns} = useNowPlayingAdditionalButtons()    
+    const {isTrackSaved, handleLike} = useNowPlayingLike()
 
     return(
         <Right>
+            <WrapperDropdown isTrackSaved={isTrackSaved}>
+                <button onClick={handleLike}>
+                    <Heart/>
+                </button>
+            </WrapperDropdown>
             <WrapperDropdown>
                 <button onClick={() => handleToggleDropdowns(0)}>
                     <Devices/>
@@ -36,7 +44,7 @@ const RightButtons = () => {
 
 export default RightButtons
 
-const WrapperDropdown = styled.div`
+const WrapperDropdown = styled.div<{isTrackSaved?: boolean}>`
     height: 100%;
     position: relative;
     padding: 0 var(--innerPaddingHorizontal);
@@ -50,11 +58,21 @@ const WrapperDropdown = styled.div`
         width: 22.5px;
         cursor: pointer;
         opacity: var(--iconOpacity);
-        transition: opacity var(--iconOpacityTransition);
+        transition: var(--iconOpacityTransition);
         
         &:hover{
             opacity: var(--iconOpacityActivate);
         }
+
+        ${({isTrackSaved}) => {
+            if(isTrackSaved)
+                return `
+                    color: ${colors.primary};
+                    stroke: ${colors.primary};
+                    fill: ${colors.primary};
+                    opacity: var(--iconOpacityActivate);
+                `
+        }}
     }
 `
 

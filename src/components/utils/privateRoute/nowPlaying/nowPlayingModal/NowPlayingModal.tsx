@@ -7,7 +7,7 @@ import styled, {css} from 'styled-components'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../../redux/store/types'
 import { ICurrentState } from '../../../../../redux/store/currentState/types'
-import {ChevronDown as Close, MoreVertical, Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
+import { Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
 import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause} from '@material-ui/icons'
 import { fetchPlaylist } from '../../../../../common/api/webapi/playlists'
 import { Playlist } from '../../../../../common/api/webapi/types'
@@ -17,7 +17,8 @@ import useNowPlayingMainButtons from '../../../../../common/hooks/components/now
 import { cssVariables } from '../style'
 import {Controls, Button} from './style'
 import ModalAdditionalButtons from './ModalAdditionalButtons'
-import { checkSavedTracks, removeSavedTrack, saveTrack } from '../../../../../common/api/webapi/library'
+import NowPlayingModalHeader from './NowPlayingModalHeader'
+import useNowPlayingLike from '../../../../../common/hooks/components/nowPlaying/useNowPlayingLike'
 
 interface Props{
     toggleModal: boolean
@@ -30,7 +31,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState) 
     const {showModal,closeModal,cssPreparer,status} = useModal({initialStatus: toggleModal ? 'show' : 'hide'})
-    const [isTrackSaved, setIsTrackSaved] = useState(false)
+    const {isTrackSaved, handleLike} = useNowPlayingLike()
 
     useEffect(() => {
         fetchData()
@@ -47,16 +48,6 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     },[currentState.context, accessToken])
 
     useEffect(() => {
-        if(currentState.item && accessToken)
-            fetchData()
-        async function fetchData(){
-            const id = currentState.item?.id || ''
-            const response = await checkSavedTracks({accessToken, ids: [id]})
-            setIsTrackSaved(response[0] ? true : false)
-        }
-    },[currentState.item, accessToken])
-
-    useEffect(() => {
         if(toggleModal === true)
             showModal()
     //eslint-disable-next-line
@@ -68,24 +59,15 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     //eslint-disable-next-line
     },[status])
 
-    const clickHeart = () => {
-        setIsTrackSaved(old => !old)
-        const id = currentState.item?.id || ''
-        if(isTrackSaved)
-            return removeSavedTrack({accessToken, ids: [id]})
-        return saveTrack({accessToken, ids: [id]})
-    }
-
     return(
         <>
             {
                 status === 'show' ?
                 <Modal cssPage={cssPreparer} cssModal={cssModal}>
-                    <HeaderModal>
-                        <Close onClick={closeModal}/>
-                        <strong>{playlist?.name}</strong>
-                        <MoreVertical/>
-                    </HeaderModal>
+                    <NowPlayingModalHeader
+                        playlist={playlist}
+                        closeModal={closeModal}
+                    />
                     <AlbumPhoto>
                         <figure>
                             <img src={formatTrackPhoto(currentState.item)} alt="Album"/>
@@ -103,7 +85,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                                         <small>{formatArtistName(currentState.item)}</small>
                                     </span>
                                 </article>
-                                <button onClick={clickHeart}>
+                                <button onClick={handleLike}>
                                     <Heart/>
                                 </button>
                             </TrackInfo> : <></>
@@ -187,7 +169,7 @@ const TrackInfo = styled.div<{isTrackSaved: boolean}>`
         height: 20px;
         width: 20px;
         cursor: pointer;
-        transition: .25s;
+        transition: var(--iconOpacityTransition);
 
         ${({isTrackSaved}) => {
             if(isTrackSaved)
@@ -265,30 +247,6 @@ const AlbumPhoto = styled.div`
             border-radius: ${metrics.borderRadius};
             box-shadow: ${metrics.boxShadow};
         }
-    }
-`
-
-const HeaderModal = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 0 auto 0;
-
-    svg{
-        height: 25px;
-        width: 25px;
-        cursor: pointer;
-
-        &:first-child{
-            height: 35px;
-            width: 35px;
-        }
-    }
-
-    strong{
-        font-size: 18px;
-        font-weight: 500;
     }
 `
 
