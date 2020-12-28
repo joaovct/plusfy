@@ -1,9 +1,17 @@
 import {createGlobalStyle} from 'styled-components'
-import {colors} from './style'
+import {breakpoints, colors, metrics} from './style'
 
 const GlobalStyles = createGlobalStyle`
     :root{
         --opacityInputDisabled: .6;
+        --spacingSidesPage: ${metrics.spacing5};
+
+        @media(max-width: ${breakpoints.tbl}){
+            --spacingSidesPage: ${metrics.spacing4};
+        }
+        @media(max-width: ${breakpoints.sml}){
+            --spacingSidesPage: ${metrics.spacing3};
+        }
     }
 
     /* width */

@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {Logo, colors, metrics, Dropdown} from '../../../styles/style'
+import {Logo, colors, metrics, Dropdown, breakpoints} from '../../../styles/style'
 import logoSrc from '../../../assets/logo-minified.png'
 import emptyUserPhoto from '../../../assets/empty-user-photo.svg'
 import { IStore } from '../../../redux/store/types'
@@ -42,23 +42,20 @@ const Header: FunctionComponent = () => {
 
 export default Header
 
-const photoSize = '50px'
-const photoPadding = '15px'
-
 const Options = styled(Dropdown)`
-    top:  calc(${photoSize} + ${photoPadding});
+    top:  calc(var(--photoSize) + var(--photoPadding));
     right: inherit;
     left: inherit;
 
     li{
         a{
-            padding: ${photoPadding};
+            padding: var(--photoPadding);
         }
         &:first-of-type a{
-            padding-bottom: calc(${photoPadding} / 2);
+            padding-bottom: calc(var(--photoPadding) / 2);
         }
         &:last-of-type{
-            padding-top: calc(${photoPadding} / 2);
+            padding-top: calc(var(--photoPadding) / 2);
         }
     }
 `
@@ -69,8 +66,8 @@ const HeaderUserPhoto = styled.div`
     flex-flow: column nowrap;
     align-items: flex-end;
     figure{
-        height: calc(${photoSize} + ${photoPadding});
-        width: calc(${photoSize} + ${photoPadding});
+        height: calc(var(--photoSize) + var(--photoPadding));
+        width: calc(var(--photoSize) + var(--photoPadding));
         border: 1px solid ${colors.border};
         border-radius: 100%;
         display: flex;
@@ -79,8 +76,8 @@ const HeaderUserPhoto = styled.div`
         cursor: pointer;
 
         img{
-            height: ${photoSize};
-            width: ${photoSize};
+            height: var(--photoSize);
+            width: var(--photoSize);
             border-radius: 100%;
         }
     }
@@ -99,13 +96,16 @@ const HeaderWrapper = styled.header`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: ${metrics.spacing3} ${metrics.spacing5} ${metrics.spacing4} ${metrics.spacing5};
+    padding: ${metrics.spacing3} var(--spacingSidesPage) var(--spacingSidesPage) var(--spacingSidesPage); 
+    --photoSize: 50px;
+    --photoPadding: 15px;
 
     a{
         text-decoration: none;
     }
 
-    @media(max-width: 576px){
-        padding: ${metrics.spacing3};
+    @media(max-width: ${breakpoints.tbp}){
+        --photoSize: 45px;
     }
+    
 `

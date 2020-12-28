@@ -10,18 +10,11 @@ export {colors,metrics,breakpoints,GlobalStyles}
 export const Page = styled.section`
     flex: 1;
     width: 100%;
-    padding: 0 ${metrics.spacing5} ${metrics.spacing3} ${metrics.spacing5}; 
+    padding: 0 var(--spacingSidesPage) ${metrics.spacing3} var(--spacingSidesPage); 
     color: #fff;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-
-    @media(max-width: ${breakpoints.tbl}){
-        padding: 0 ${metrics.spacing4};
-    }
-    @media(max-width: ${breakpoints.sml}){
-        padding: 0 ${metrics.spacing3};
-    }
 `
 
 export const Container = styled.section`
@@ -164,6 +157,14 @@ export const ButtonLink = styled(Button).attrs({as: "a"})`
 export const Logo = styled.img`
     height: 70px;
     width: auto;
+
+    @media(max-width: ${breakpoints.tbl}){
+        height: 60px;
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        height: 55px;
+    }
 `
 
 export const Dropdown = styled.ul<{show: Boolean}>`

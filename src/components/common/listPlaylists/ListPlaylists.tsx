@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 
 const ListPlaylists: React.FC<ListPlaylistsProps> = ({playlists, actionOnClick}) => {
-
     return(
         <ListPlaylistsStyled>
             {
@@ -26,7 +25,9 @@ const ListPlaylists: React.FC<ListPlaylistsProps> = ({playlists, actionOnClick})
                                     <Link to={`/playlist/${item.id}`}>
                                         {Strong}
                                     </Link>
-                                    {Small}
+                                    <Link to={`/playlist/${item.id}`}>
+                                        {Small}
+                                    </Link>
                                 </span>
                             </>
                             :
