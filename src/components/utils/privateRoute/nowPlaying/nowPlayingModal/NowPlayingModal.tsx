@@ -35,18 +35,18 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     const {isTrackSaved, handleLike} = useNowPlayingLike()
 
     useEffect(() => {
-        fetchData()
+        if(status === 'show' && currentState.context && accessToken)
+            fetchData()
         async function fetchData(){
-            if(currentState.context && accessToken){
-                const id = currentState.context.uri.split(':')[2]
-                if(currentState.context.type === 'playlist'){
+                const id = currentState.context?.uri.split(':')[2] || ''
+                
+                if(currentState.context?.type === 'playlist'){
                     const playlist = await fetchPlaylist(accessToken, id)
                     if(playlist)
                         setPlaylist(playlist)
                 } 
             }
-        }
-    },[currentState.context, accessToken])
+    },[status, currentState, accessToken])
 
     useEffect(() => {
         if(toggleModal === true)
