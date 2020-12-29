@@ -10,7 +10,7 @@ import { IUser } from '../../../redux/store/user/types'
 import { isUserConnected } from '../../helpers/helperUserAccess'
 import { ICurrentState } from '../../../redux/store/currentState/types'
 import store from '../../../redux/store/store'
-import { isDifferent } from '../../helpers/helperDeepComparative'
+import _ from 'lodash'
 
 let interval = 0
 
@@ -19,6 +19,10 @@ const useCurrentState = () => {
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const dispatch = useDispatch()
+
+    // useEffect(() => {
+    //     console.log(currentState)
+    // },[currentState])
 
     useEffect(() => {
         if(accessToken){
@@ -36,9 +40,11 @@ const useCurrentState = () => {
             if(response?.data){
                 const {progress_ms, ...currentState} = response.data
 
-                if(isDifferent(currentState, store.getState().currentState)){
+                if(!_.isEqual(currentState, store.getState().currentState)){
                     dispatch(actions.currentStateAction(currentState))
                 }
+                // dispatch(actions.progressMsAction(progress_ms || 0))
+
             }
         }
     },[accessToken, dispatch])

@@ -44,6 +44,7 @@ const HeaderInner = styled.header`
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
+    align-items: flex-start;
 
     ${Container}{
         display: flex;
@@ -55,15 +56,16 @@ const HeaderInner = styled.header`
         height: var(--image-size);
         width: var(--image-size);
         border-radius: ${metrics.borderRadius};
+        object-fit: cover;
     }
 
     & > span{
-        padding: 0 0 0 ${metrics.spacing5};
+        padding: 0 0 0 ${metrics.spacing4};
         flex: 1 1 auto;
         min-height: var(--image-size);
         display: flex;
         flex-flow: column nowrap;
-        justify-content: center;
+        justify-content: flex-end;
 
         small{
             margin: 0;

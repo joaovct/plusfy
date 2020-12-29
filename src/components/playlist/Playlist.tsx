@@ -23,7 +23,6 @@ const Playlist = () => {
         return () => {isMounted.current = false}
     },[isMounted])
 
-
     const updatePlaylist = useCallback(async () => {
         const response = await fetchPlaylist(accessToken, id)
 

@@ -172,11 +172,10 @@ const PageList = styled(Page)`
     flex: 0 0 auto;
     width: 100%;
     overflow-x: hidden;
-    padding-top: ${metrics.spacing4};
+    margin: ${metrics.spacing2} 0 0 0;
 
     @media(max-width: ${breakpoints.tbp}){
         max-width: inherit;
-        padding-top: ${metrics.spacing2};
         padding-right: 0;
 
         ${Container}{
@@ -193,10 +192,8 @@ const PageTitle = styled(Page)`
 
 const Content = styled.div`
     --minHeightListItens: 168px;
-    flex: 1 0 0;
-    max-height: calc( var(--minHeightListItens) * 2);
     width: 100%;
-    padding: ${metrics.spacing2} 0 0 0;
+    margin: ${metrics.spacing4} 0 0 0;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;

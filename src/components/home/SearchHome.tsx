@@ -40,7 +40,7 @@ const Input = styled(input)`
 `
 
 const Label = styled.label`
-    padding-top: ${metrics.spacing4};
+    margin: ${metrics.spacing3} 0 0 0;
     position: relative;
     display: flex;
     align-items: center;
@@ -57,7 +57,6 @@ const Label = styled.label`
     }
 
     @media(max-width: ${breakpoints.tbp}){
-        padding-top: ${metrics.spacing2};
 
         svg{
             height: 20px;

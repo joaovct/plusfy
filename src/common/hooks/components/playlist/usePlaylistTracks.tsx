@@ -44,21 +44,11 @@ const usePlaylistTracks: HookProps = () => {
 
     const additionalOptions = useMemo<AdditionalTrackRowOption[]>(() => {
         if(playlist){
-            return [
+            const options: AdditionalTrackRowOption[] = [
                 {
                     content: 'Adicionar à playlist',
                     onClick: async (track) => {
                         addToPlaylist('track', [track.uri], updatePlaylist)
-                    }
-                },
-                {
-                    content: 'Remover dessa playlist',
-                    onClick: async (track, index) => {
-                        const status = await removeTracksPlaylist(accessToken, {playlistId: playlist.id, tracks: [{uri: track.uri, positions: [index]}]})
-                        if(status === 200){
-                            updatePlaylist()
-                            createAlert('normal', 'Música removida dessa playlist')
-                        }
                     }
                 },
                 {
@@ -85,6 +75,22 @@ const usePlaylistTracks: HookProps = () => {
                     }
                 }
             ]
+
+            if(playlist.owner.id === userId){
+                const removePlaylistOption: AdditionalTrackRowOption = {
+                    content: 'Remover dessa playlist',
+                    onClick: async (track, index) => {
+                        const status = await removeTracksPlaylist(accessToken, {playlistId: playlist.id, tracks: [{uri: track.uri, positions: [index]}]})
+                        if(status === 200){
+                            updatePlaylist()
+                            createAlert('normal', 'Música removida dessa playlist')
+                        }
+                    }
+                }
+                
+                return [options[0], removePlaylistOption, ...options.slice(1)]
+            }
+            return [...options]
         }
         return []
     },[addToPlaylist, playlist, actionDisableTracks, userId, accessToken, createAlert, updatePlaylist])
