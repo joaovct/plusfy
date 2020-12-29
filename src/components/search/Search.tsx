@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Page, Container as container, Input as input, metrics, Text, breakpoints} from '../../styles/style'
 import {Search as SearchIcon} from 'react-feather'
 import styled from 'styled-components'
-import { useHistory, useParams } from 'react-router-dom'
-import SearchTracks from './searchTracks/SearchTracks'
+import { Switch, Route, useHistory, useParams } from 'react-router-dom'
+import SearchTracks from './SearchTracks'
+import SearchPlaylists from './searchPlaylists'
 
 let timeout = 0
 
@@ -40,7 +41,18 @@ const Search = () => {
                     {
                         search && query ? 
                         <>
-                            <SearchTracks query={query}/>
+                            <Switch>
+                                <Route exact path={`/search/:q/tracks`}>
+                                    <SearchTracks query={query}/>
+                                </Route>
+                                <Route exact path={`/search/:q/playlists`}>
+                                    <SearchPlaylists query={query}/>
+                                </Route>
+                                <Route path={`/search/:q`}>
+                                    <SearchTracks query={query}/>
+                                    <SearchPlaylists query={query}/>
+                                </Route>
+                            </Switch>
                         </> :
                         <>
                             <EmptySearchMessage>

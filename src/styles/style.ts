@@ -10,7 +10,7 @@ export {colors,metrics,breakpoints,GlobalStyles}
 export const Page = styled.section`
     flex: 1;
     width: 100%;
-    padding: 0 var(--spacingSidesPage) ${metrics.spacing3} var(--spacingSidesPage); 
+    padding: 0 var(--spacingSidesPage); 
     color: #fff;
     display: flex;
     flex-flow: column nowrap;
@@ -207,7 +207,6 @@ export const ListPlaylistsStyled = styled.ul`
     column-gap: ${metrics.spacing5};
     row-gap: ${metrics.spacing4};
     position: relative;
-    margin: ${metrics.spacing5} 0 0 0;
     position: relative;
 
     & > figure{
@@ -225,7 +224,6 @@ export const ListPlaylistsStyled = styled.ul`
     @media(max-width: ${breakpoints.tbp}){
         grid-template-columns: 100%;
         justify-content: center;
-        margin: ${metrics.spacing3} 0 0 0;
         column-gap: 0;
         row-gap: 20px;
     }
@@ -239,6 +237,15 @@ export const ListPlaylistsItemStyled = styled.li`
     animation: fadeIn 1s forwards;
     display: flex;
     flex-flow: column nowrap;
+
+    @keyframes fadeIn{
+        from{
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    }
 
     & > a,
     & > div{
@@ -602,9 +609,6 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
     @media(max-width: ${breakpoints.sml}){
         &:nth-child(1){
             display: none;
-        }
-        &:nth-child(2){
-            padding-top: 10px;
         }
         &:last-child{
             padding-bottom: 10px;

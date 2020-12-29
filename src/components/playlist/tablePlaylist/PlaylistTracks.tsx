@@ -44,6 +44,12 @@ const ListTrackCSS = css`
                 }
             }
         }
+
+        @media(max-width: ${breakpoints.sml}){
+            &:nth-child(2){
+                padding-top: 10px;
+            }
+        }
     }
 `
 

@@ -17,10 +17,12 @@ const AddPlaylist = () => {
                     <WrapperModalContent>
                         <Close onClick={closeModal}/>
                         <Title>Adicionar à playlist</Title>
-                        <ListPlaylists
-                            playlists={playlists}
-                            actionOnClick={(playlist) => addToPlaylist(playlist.id)}
-                        />
+                        <WrapperListPlaylists>
+                            <ListPlaylists
+                                playlists={playlists}
+                                actionOnClick={(playlist) => addToPlaylist(playlist.id)}
+                            />
+                        </WrapperListPlaylists>
                     </WrapperModalContent>
                 </Modal>
                 : <></>
@@ -39,6 +41,10 @@ const cssModal = `
     background: ${colors.backgroundTranslucent};
     border-radius: 0;
     overflow-y: auto;
+`
+
+const WrapperListPlaylists = styled.div`
+    margin: ${metrics.spacing3} 0 0 0;
 `
 
 const WrapperModalContent = styled.div`

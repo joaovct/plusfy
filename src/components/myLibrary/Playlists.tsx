@@ -74,7 +74,9 @@ const Playlists = () => {
                     </Label>
                         {
                             playlists.length ?
-                            <ListPlaylists playlists={playlists}/>
+                            <WrapperListPlaylists>
+                                <ListPlaylists playlists={playlists}/>
+                            </WrapperListPlaylists>
                             :
                             <NotFound>
                                 <HelpCircle/>
@@ -113,6 +115,14 @@ const NotFound = styled.figure`
         font-size: 20px;	
         text-align: center;	
         margin: ${metrics.spacing4} 0 0 0;	
+    }
+`
+
+const WrapperListPlaylists = styled.div`
+    margin: ${metrics.spacing4} 0 0 0;
+    
+    @media(max-width: ${breakpoints.tbp}){
+        margin: ${metrics.spacing3} 0 0 0;
     }
 `
 

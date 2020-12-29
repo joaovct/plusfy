@@ -266,6 +266,7 @@ const HeaderModal = styled.div`
     & > svg{
         height: 35px;
         width: 35px;
+        cursor: pointer;
     }
 
     strong{

@@ -1,8 +1,8 @@
 import React, { useContext, useMemo } from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
 import useAddToPlaylist from '../../../common/hooks/components/addPlaylist/useAddToPlaylist'
-import { PlaylistTable, Button, colors, metrics, breakpoints } from '../../../styles/style'
+import { PlaylistTable, Button, colors, metrics, breakpoints, PlaylistTableRow } from '../../../styles/style'
 import ListTracks from '../../common/listTracks/ListTracks'
 import ContextImportTracks from '../ContextImportTracks'
 
@@ -28,7 +28,7 @@ const FoundTracksTable: React.FC = () => {
 
     return(
         <TableBackground>
-            <ListTracks tracks={tracks} />
+            <ListTracks tracks={tracks} additionalCSS={listTrackCSS}/>
             <ResultsButtons>
                 <Button
                     typeButton="secondary"
@@ -47,6 +47,16 @@ const FoundTracksTable: React.FC = () => {
 }
 
 export default FoundTracksTable
+
+const listTrackCSS = css`
+    ${PlaylistTableRow}{
+        @media(max-width: ${breakpoints.sml}){
+            &:nth-child(2){
+                padding-top: 10px;
+            }
+        }
+    }
+`
 
 const ResultsButtons = styled.div`
     height: auto;
