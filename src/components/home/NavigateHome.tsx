@@ -150,7 +150,7 @@ const Item = styled.li`
 `
 
 const ListItens = styled.ul`
-    min-height: 168px;
+    min-height: var(--minHeightListItens);
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
@@ -169,12 +169,14 @@ const ListItens = styled.ul`
 `
 
 const PageList = styled(Page)`
+    flex: 0 0 auto;
     width: 100%;
-    flex: 1 1 auto;
     overflow-x: hidden;
+    padding-top: ${metrics.spacing4};
 
     @media(max-width: ${breakpoints.tbp}){
         max-width: inherit;
+        padding-top: ${metrics.spacing2};
         padding-right: 0;
 
         ${Container}{
@@ -185,32 +187,22 @@ const PageList = styled(Page)`
 
 const PageTitle = styled(Page)`
     flex: 0 0 auto;
+    padding-top: 0;
+    padding-bottom: 0;
 `
 
 const Content = styled.div`
+    --minHeightListItens: 168px;
     flex: 1 0 0;
+    max-height: calc( var(--minHeightListItens) * 2);
     width: 100%;
-    margin: calc(${metrics.spacing5}) 0 0 0;
+    padding: ${metrics.spacing2} 0 0 0;
     display: flex;
     flex-flow: column nowrap;
+    justify-content: flex-end;
 
-    @media(min-height: 769px) and (min-width: 992px){
-        margin: calc(${metrics.spacing5} * 2) 0 0 0;
-    }
-    @media(min-height: 991px) and (min-width: 992px){
-        margin: calc(${metrics.spacing5} * 3) 0 0 0;
-    }
-    @media(max-height: 768px) and (min-width: 992px){
-        margin: calc(${metrics.spacing5} * 1.5) 0 0 0;
-    }
-    @media(max-height: 576px) and (min-width: 992px){
-        margin: calc(${metrics.spacing5} * 1) 0 0 0;
-    }
-    @media(max-width: 768px){
-        margin: ${metrics.spacing5} 0 0 0;
-    }
-    @media(max-width: 576px){
-        margin: ${metrics.spacing4} 0 0 0;
+    @media(max-width: ${breakpoints.tbl}){
+        justify-content: flex-start;
     }
 `
 
