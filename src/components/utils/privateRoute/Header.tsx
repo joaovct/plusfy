@@ -96,7 +96,7 @@ const HeaderWrapper = styled.header`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: ${metrics.spacing3} var(--spacingSidesPage) var(--spacingSidesPage) var(--spacingSidesPage); 
+    padding: ${metrics.spacing2} var(--spacingSidesPage) var(--spacingSidesPage) var(--spacingSidesPage); 
     --photoSize: 50px;
     --photoPadding: 15px;
 

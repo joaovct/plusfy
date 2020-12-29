@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import { fetchPlaylist } from '../../common/api/webapi/playlists'
@@ -17,22 +17,40 @@ const Playlist = () => {
     const [savedTracks, setSavedTracks] = useState<SavedTracks | null>(null) 
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const history = useHistory()
+    const isMounted = useRef(true)
+
+    useEffect(() => {
+        return () => {isMounted.current = false}
+    },[isMounted])
+
 
     const updatePlaylist = useCallback(async () => {
-        const playlistResponse = await fetchPlaylist(accessToken, id)
-        return playlistResponse
-            ? setPlaylist(playlistResponse)
-            : !playlistResponse && id && accessToken
-                ? history.push("/invalid-id") : null
+        const response = await fetchPlaylist(accessToken, id)
+
+        if(response && isMounted.current)
+            return setPlaylist(response)
+        else if(!response)
+            history.push("/invalid-id")
     },[id, accessToken, history])
 
     const updateSavedTracks = useCallback(async () => {
-        const savedTracksResponse = await getSavedTracks({accessToken})
-        return savedTracksResponse ? setSavedTracks(savedTracksResponse) : setSavedTracks(null)
+        const response = await getSavedTracks({accessToken})
+        if(response && isMounted.current)
+            setSavedTracks(response)
+        else if(isMounted.current)
+            setSavedTracks(null)
     },[accessToken])
 
-    useEffect(() => {updatePlaylist()},[updatePlaylist])
-    useEffect(() => {updateSavedTracks()},[updateSavedTracks])
+    useEffect(() => {
+        if(accessToken && id)
+            updatePlaylist()
+    },[accessToken, id, updatePlaylist])
+
+    useEffect(() => {
+        if(accessToken && id)
+            updateSavedTracks()
+    },[accessToken, id, updateSavedTracks])
+
 
     return( 
         <ContextPlaylist.Provider value={{updatePlaylist, updateSavedTracks, playlist, savedTracks}}>
