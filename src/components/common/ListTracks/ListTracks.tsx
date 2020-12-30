@@ -5,12 +5,21 @@ import TrackRow from './TrackRow/TrackRow'
 import ContextListTracks from './ContextListTracks'
 import useListTracks from '../../../common/hooks/components/listTracks/useListTracks'
 import {ListTracksProps} from './types'
+import { Track } from '../../../common/api/webapi/types'
+
+const filterTracks = (tracks: Track[]) => {
+    return [...tracks.filter(track => track !== null)]
+}
 
 const ListTracks: React.FC<ListTracksProps> = (props) => {
     const {additionalColumns, additionalCSS} = {...props} 
-    const [tracks] = useState([...props.tracks.filter(track => track !== null)])
+    const [tracks, setTracks] = useState<Track[]>([])
     const listTracks = useListTracks()
     const qntColumns = 5 + (additionalColumns?.length || 0)
+
+    useEffect(() => {
+        setTracks(filterTracks(props.tracks))
+    },[props.tracks])
 
     useEffect(() => {
         listTracks.updateQuantitySavedTracks(tracks)
