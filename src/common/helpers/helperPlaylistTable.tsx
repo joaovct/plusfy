@@ -40,7 +40,7 @@ export const formatDuration = (totalMs: number) => {
 export const calculatePlaylistDuration = (playlist: Playlist | null) => {
     if(playlist){
         let totalMs = 0
-        playlist.tracks.items.forEach(item => totalMs += item.track.duration_ms)
+        playlist.tracks.items.forEach(item => totalMs += item.track?.duration_ms || 0)
         const durationSplited = formatDuration(totalMs).split(':')
     
         return durationSplited.length > 2
@@ -60,8 +60,11 @@ export const formatNumberTracks = (playlist: Playlist | null) => playlist
     ? `${playlist.tracks.items.length} ${playlist.tracks.items.length > 1 ? 'músicas' : 'música'}`
     : ''
 
-export const formatArtistName = (track: Track) => 
-    track.artists.map((artist, index: number) => `${index ? ', ' : ''}${artist.name}`)
+export const formatArtistName = (track: Track) => {
+    if(track)
+        return track.artists.map((artist, index: number) => `${index ? ', ' : ''}${artist.name}`)
+    return ''
+}
 
 const capitalizeString = (string: string): string => {
     const words = string.split(' ')

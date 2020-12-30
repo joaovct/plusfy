@@ -59,7 +59,7 @@ export interface Tracks{
     items: Array<Track>
 }
 
-export interface Track{
+export type Track = {
     album: IAlbum
     artists: Array<Artist>
     available_markets: Array<string>
@@ -79,7 +79,7 @@ export interface Track{
     type: string
     uri: string
     is_local: boolean
-}
+} | null
 
 export interface SavedTracks{
     href: string

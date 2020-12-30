@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {PlaylistTable, PlaylistTableRow} from '../../../styles/style'
 import {Clock} from 'react-feather'
 import TrackRow from './TrackRow/TrackRow'
@@ -7,7 +7,8 @@ import useListTracks from '../../../common/hooks/components/listTracks/useListTr
 import {ListTracksProps} from './types'
 
 const ListTracks: React.FC<ListTracksProps> = (props) => {
-    const {tracks, additionalColumns, additionalCSS} = {...props} 
+    const {additionalColumns, additionalCSS} = {...props} 
+    const [tracks] = useState([...props.tracks.filter(track => track !== null)])
     const listTracks = useListTracks()
     const qntColumns = 5 + (additionalColumns?.length || 0)
 
@@ -35,7 +36,7 @@ const ListTracks: React.FC<ListTracksProps> = (props) => {
                 </PlaylistTableRow>
                 {
                     tracks.map((track, index) => (
-                        <TrackRow key={`listtracks${track.uri}${index}`} track={track} index={index}/>
+                        <TrackRow key={`listtracks${track?.uri}${index}`} track={track} index={index}/>
                     ))
                 }
             </PlaylistTable>

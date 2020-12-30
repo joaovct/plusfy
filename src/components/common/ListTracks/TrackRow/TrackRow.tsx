@@ -1,14 +1,13 @@
 import React, { memo, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Track } from '../../../../common/api/webapi/types'
-import { formatArtistName, formatDuration, toggleTrack } from '../../../../common/helpers/helperPlaylistTable'
+import { formatArtistName, formatDuration, formatTrackPhoto, toggleTrack } from '../../../../common/helpers/helperPlaylistTable'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import { IStore } from '../../../../redux/store/types'
 import { breakpoints, PlaylistTableRow } from '../../../../styles/style'
 import { pausePlayer, playPlayer, resumePlayer } from '../../../../common/api/webapi/player'
 import { IToken } from '../../../../redux/store/token/types'
 import {Pause, Play} from 'react-feather'
-import emptyAlbumPhoto from '../../../../assets/empty-playlist-photo.svg'
 import TrackRowOptions from './TrackRowOptions'
 import ContextListTracks from '../ContextListTracks'
 import { isTrackDisabled } from '../../../../common/api/disabledTracks/disabledTracks'
@@ -25,10 +24,10 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const {additionalColumns, contextUri, viewMode} = useContext(ContextListTracks)
-    const isDisabled = isTrackDisabled({userId, trackURI: track.uri, playlistURI: contextUri || ''})
+    const isDisabled = isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: contextUri || ''})
 
     const handleToggleTrack = () => {
-        const uri = track.uri || ''
+        const uri = track?.uri || ''
         const action = toggleTrack(currentState, uri)
         if(action === 'PLAY')
             if(contextUri)
@@ -48,7 +47,7 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
 
     return(
         <PlaylistTableRow
-            uri={track.uri}
+            uri={track?.uri || ''}
             playingUri={currentState?.item?.uri}
             disabled={isDisabled}
             viewMode={viewMode}
@@ -62,14 +61,14 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
                 }
             </div>
             <div onClick={handleClickOnSecondColumn}>
-                <img src={track.album.images[0]?.url || emptyAlbumPhoto} alt={`Album ${track.name}`} />
+                <img src={formatTrackPhoto(track)} alt={`Album ${track?.name}`} />
                 <span>
-                    <strong>{track.name}</strong>
+                    <strong>{track?.name}</strong>
                     <small>{formatArtistName(track)}</small>
                 </span>
             </div>
             <div>
-                {track.album.name}
+                {track?.album.name}
             </div>
             {
                 additionalColumns?.map((column, index) => (
@@ -79,7 +78,7 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
                 ))
             }
             <div>
-                {formatDuration(track.duration_ms)}
+                {formatDuration(track?.duration_ms || 0)}
             </div>
             <div>
                 <TrackRowOptions

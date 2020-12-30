@@ -40,26 +40,26 @@ const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, call
 
     const actionSaveTrack = async () => {
         handleCallback()
-        const status = await saveTrack({accessToken, ids: [track.id]})
+        const status = await saveTrack({accessToken, ids: [track?.id || '']})
         if(status === 200 && isContextAvailable && updateSavedTracks)
             updateSavedTracks()
     }
 
     const actionRemoveSavedTrack = async () => {
         handleCallback()
-        const status = await removeSavedTrack({accessToken, ids: [track.id]})
+        const status = await removeSavedTrack({accessToken, ids: [track?.id || '']})
         if(status === 200 && isContextAvailable && updateSavedTracks)
             updateSavedTracks()
     }
 
     const actionAddToPlaylist = () => {
         handleCallback()
-        addToPlaylist('track', [track.uri])
+        addToPlaylist('track', [track?.uri || ''])
     }
 
     const actionAddToQueue = async () => {
         handleCallback()
-        const res = await addToQueue({accessToken, uri: track.uri})
+        const res = await addToQueue({accessToken, uri: track?.uri || ''})
         if(res?.status === 204)
             createAlert('normal','Música adicionada à fila 🎶')
     }
@@ -67,7 +67,7 @@ const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, call
     useEffect(() => {
         if(isContextAvailable){
             setTrackSaved(() => {
-                const index = savedTracks?.items.findIndex(item => item.track.uri === track.uri)
+                const index = savedTracks?.items.findIndex(item => item.track?.uri === track?.uri)
                 if(index !== undefined && index > -1)
                     return true
                 else if(index !== undefined)

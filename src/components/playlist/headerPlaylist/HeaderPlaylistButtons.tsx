@@ -48,7 +48,7 @@ const HeaderPlaylistButtons = () => {
 
     const copyPlaylist = () => {
         if(playlist){
-            const uris = playlist?.tracks.items.map(item => item.track.uri)
+            const uris = playlist?.tracks.items.map(item => item.track ? item.track.uri : '').filter(uri => uri ? true : false)
             addToPlaylist('track', uris)
         }
     }

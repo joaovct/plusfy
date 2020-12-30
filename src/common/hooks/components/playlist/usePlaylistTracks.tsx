@@ -32,7 +32,7 @@ const usePlaylistTracks: HookProps = () => {
     const createAlert = useAlert()
 
     const tracks = useMemo(() => {
-        return playlist?.tracks.items.map(item => item.track) || []
+        return playlist?.tracks.items.map(item => item.track).filter(track => track !== null) || []
     },[playlist])
 
     const additionalColumns = useMemo<AdditionalColumn[]>(() => [
@@ -48,30 +48,30 @@ const usePlaylistTracks: HookProps = () => {
                 {
                     content: 'Adicionar à playlist',
                     onClick: async (track) => {
-                        addToPlaylist('track', [track.uri], updatePlaylist)
+                        addToPlaylist('track', [track?.uri || ''], updatePlaylist)
                     }
                 },
                 {
                     content: 'Habilitar nessa playlist',
-                    condition: (track) => isTrackDisabled({userId, trackURI: track.uri, playlistURI: playlist.uri}),
+                    condition: (track) => isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: playlist.uri}),
                     onClick: (track) => {
-                        actionDisableTracks({action: 'enable', playlistURI: playlist.uri, uri: track.uri})
+                        actionDisableTracks({action: 'enable', playlistURI: playlist.uri, uri: track?.uri || ''})
                     }
                 },
                 {
                     content: 'Adicionar à fila',
-                    condition: (track) => !isTrackDisabled({userId, trackURI: track.uri, playlistURI: playlist.uri}),
+                    condition: (track) => !isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: playlist.uri}),
                     onClick: async (track) => {
-                        const res = await addToQueue({accessToken, uri: track.uri})
+                        const res = await addToQueue({accessToken, uri: track?.uri || ''})
                         if(res?.status === 204)
                             createAlert('normal','Música adicionada à fila 🎶')
                     }
                 },
                 {
                     content: 'Desabilitar nessa playlist',
-                    condition: (track) => !isTrackDisabled({userId, trackURI: track.uri, playlistURI: playlist.uri}),
+                    condition: (track) => !isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: playlist.uri}),
                     onClick: (track) => {
-                        actionDisableTracks({action: 'disable', playlistURI: playlist.uri, uri: track.uri})
+                        actionDisableTracks({action: 'disable', playlistURI: playlist.uri, uri: track?.uri || ''})
                     }
                 }
             ]
@@ -80,7 +80,7 @@ const usePlaylistTracks: HookProps = () => {
                 const removePlaylistOption: AdditionalTrackRowOption = {
                     content: 'Remover dessa playlist',
                     onClick: async (track, index) => {
-                        const status = await removeTracksPlaylist(accessToken, {playlistId: playlist.id, tracks: [{uri: track.uri, positions: [index]}]})
+                        const status = await removeTracksPlaylist(accessToken, {playlistId: playlist.id, tracks: [{uri: track?.uri || '', positions: [index]}]})
                         if(status === 200){
                             updatePlaylist()
                             createAlert('normal', 'Música removida dessa playlist')
