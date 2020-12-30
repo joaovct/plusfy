@@ -67,7 +67,7 @@ const NowPlayingInner = styled.div`
 const NowPlayingWrapper = styled.div`
     width: 100%;
     box-shadow: 0 0px 12px -6px rgba(0,0,0,0.16);
-    border-top: 1px solid ${colors.border};
+    border-top: 1px solid ${colors.background};
     background: ${colors.darkerBackgroundTranslucent};
     backdrop-filter: ${metrics.backdropBlurFilter};
 `

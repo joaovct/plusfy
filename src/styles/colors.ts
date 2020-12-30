@@ -1,5 +1,5 @@
 export const background = '#252A41'
-export const backgroundTranslucent = 'rgb(37, 42, 65)'
+export const backgroundTranslucent = 'rgba(37, 42, 65, .85)'
 export const darkerBackground = '#1C1F2D'
 export const darkerBackgroundTranslucent = 'rgba(28, 31, 45, .85)'
 export const backdropMeasure = '2px'

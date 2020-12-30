@@ -7,6 +7,7 @@ import { fetchUserPlaylists, addItemsToPlaylist,Status as RequestStatus } from "
 import { AddToPlaylistContext } from "../../../providers/AddToPlaylistProvider"
 import useAlert from "../alert/useAlert"
 import useModal from "../modal/useModal"
+import { IUser } from "../../../../redux/store/user/types"
 
 type AddToPlaylist = (playlistId: string) => Promise<void>
 
@@ -22,6 +23,7 @@ const useAddToPlaylistLogic: Hook = () => {
     const {status: modalStatus, cssPreparer, showModal, closeModal} = useModal({transition_ms: 250})
     const {executeCallback, status} = useContext(AddToPlaylistContext)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
+    const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const createAlert = useAlert()
     const [requestStatus, setRequestStatus] = useState<RequestStatus | ''>('')
     const [playlists, setPlaylists] = useState<Playlist[]>([])
@@ -29,8 +31,9 @@ const useAddToPlaylistLogic: Hook = () => {
     const [show, setShow] = useState(false)
     const isMounted = useRef(true)
 
-
-    useEffect(() => () => {isMounted.current = false}, [])
+    useEffect(() => () => {
+        isMounted.current = false
+    }, [])
 
     useEffect(() => {
         if(status?.state === 'adding' && accessToken){
@@ -38,11 +41,15 @@ const useAddToPlaylistLogic: Hook = () => {
             showModal()
         }
 
+        function filterUsersPlaylists(playlist: Playlist){
+            return playlist.owner?.id === userId
+        }
+
         async function fetchData(){
             const response = await fetchUserPlaylists(accessToken)
             if(isMounted.current){
                 setRequestStatus(response.status)
-                setPlaylists(response.items)
+                setPlaylists([...response.items.filter(filterUsersPlaylists)])
             }
         }
     //eslint-disable-next-line

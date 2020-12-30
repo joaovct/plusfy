@@ -168,7 +168,6 @@ export const Logo = styled.img`
 `
 
 export const Dropdown = styled.ul<{show: Boolean}>`
-    border: 1px solid ${colors.border};
     border-radius: 14px;
     margin: 10px 0 0 0;
     box-shadow: ${metrics.boxShadow};
@@ -181,7 +180,9 @@ export const Dropdown = styled.ul<{show: Boolean}>`
     min-width: 175px;
     top: 0;
     left: 0;
-    background: ${colors.background};
+    border: 1px solid ${colors.darkerBackground};
+    background: ${colors.backgroundTranslucent};
+    backdrop-filter: ${metrics.backdropBlurFilter};
 
     ${ ({show}) => 
     show ? `
