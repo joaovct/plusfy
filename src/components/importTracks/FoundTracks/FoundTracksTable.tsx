@@ -12,7 +12,7 @@ const FoundTracksTable: React.FC = () => {
 
     const addAllToPlaylist = () => {
         const uris = foundTracks.map(track => track.track?.uri || '').filter(v => v ? true : false)
-        addToPlaylist('track', uris, response => {
+        addToPlaylist('add-track', uris, response => {
             console.log(response)
         })
     }

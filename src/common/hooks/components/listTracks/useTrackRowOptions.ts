@@ -54,7 +54,7 @@ const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, call
 
     const actionAddToPlaylist = () => {
         handleCallback()
-        addToPlaylist('track', [track?.uri || ''])
+        addToPlaylist('add-track', [track?.uri || ''])
     }
 
     const actionAddToQueue = async () => {

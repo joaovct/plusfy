@@ -1,14 +1,16 @@
-import React, { useState, useEffect, ChangeEvent, useRef } from 'react'
+import React, { useState, useEffect, useCallback, ChangeEvent, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { fetchUserPlaylists } from '../../common/api/webapi/playlists'
 import {IStore} from '../../redux/store/types'
 import {IToken} from '../../redux/store/token/types'
 import {Playlist} from '../../common/api/webapi/types'
 import styled from 'styled-components'
-import { metrics, Input as input, breakpoints } from '../../styles/style'
-import {XCircle, Loader, Slash, HelpCircle} from 'react-feather'
+import { metrics, Input as input, breakpoints, Button } from '../../styles/style'
+import {PlusCircle, XCircle, Loader, Slash, HelpCircle} from 'react-feather'
 import {Search} from 'react-feather'
 import ListPlaylists from '../common/listPlaylists/ListPlaylists'
+import useAddToPlaylist from '../../common/hooks/components/addPlaylist/useAddToPlaylist'
+import useAlert from '../../common/hooks/components/alert/useAlert'
 
 const Playlists = () => {
     const accessToken = useSelector<IStore, IToken['accessToken']>(store => store.token.accessToken)
@@ -17,9 +19,32 @@ const Playlists = () => {
     const [requestStatus, setRequestStatus] = useState('loading')
     const [search, setSearch] = useState('')
     const isMounted = useRef(true)
+    const addPlaylist = useAddToPlaylist()
+    const createAlert = useAlert()
 
     const updateSearch = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value)
+    }
+
+    const updatePlaylists = useCallback(async () => {
+        if(accessToken){
+            const response = await fetchUserPlaylists(accessToken)
+            if(isMounted.current){
+                setRequestStatus(response.status)
+                setPlaylists(response.items)
+                setNounFilteredPlaylists(response.items)
+            }
+        }
+    },[isMounted, accessToken])
+
+    const handleAddPlaylist = () => {
+        addPlaylist('create-playlist', [], (response) => {
+            if(response === 'success'){
+                updatePlaylists()
+                return createAlert('normal', 'Playlist criada 🎶.')
+            }
+            createAlert('error', 'Ocorreu um erro ao criar a playlist 😢.')
+        },{fullCloseCreatePlaylist: true})
     }
 
     useEffect(() => {
@@ -28,16 +53,8 @@ const Playlists = () => {
 
     useEffect(() => {
         if(accessToken)
-            fetchData()
-        async function fetchData(){
-            const response = await fetchUserPlaylists(accessToken)
-            if(isMounted.current){
-                setRequestStatus(response.status)
-                setPlaylists(response.items)
-                setNounFilteredPlaylists(response.items)
-            }
-        }
-    },[accessToken])
+            updatePlaylists()
+    },[accessToken, updatePlaylists])
 
     useEffect(() => {
         if(search){
@@ -72,6 +89,9 @@ const Playlists = () => {
                         <Search/>
                         <Input onInput={updateSearch} type="text" placeholder="Pesquisar por suas playlists..."/>
                     </Label>
+                    <ButtonNewPlaylist onClick={handleAddPlaylist} typeButton="secondary">
+                        <PlusCircle/> <span>nova playlist</span>
+                    </ButtonNewPlaylist>
                         {
                             playlists.length ?
                             <WrapperListPlaylists>
@@ -131,6 +151,54 @@ const Input = styled(input)`
 
     @media(max-width: ${breakpoints.tbp}){
         padding-left: calc(${metrics.spacing4} + 20px);
+    }
+`
+
+const ButtonNewPlaylist = styled(Button)`
+    min-width: inherit;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    margin: ${metrics.spacing3} 0 0 0;
+    align-self: flex-end;
+
+    &, svg, span{
+        transition: .25s;
+    }
+
+    svg{
+        height: 24px;
+        width: 24px;
+        margin: 0 5px 0 0;
+        stroke-width: 2px;
+    }
+
+    span{
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    @media(max-width: ${breakpoints.tbp}){
+        align-self: flex-start;
+
+        svg{
+            height: 20px;
+            width: 20px;
+        }
+
+        span{
+            font-size: 12px;
+        }
+    }
+    
+    @media(max-width: ${breakpoints.sml}){
+        padding: 8px 16px;
+        width: 100%;
+        justify-content: center;
+
+        svg{
+            margin: 0 10px 0 0;
+        }
     }
 `
 
@@ -201,6 +269,8 @@ const IconStatus = styled.figure<{status: 'loading' | string}>`
 `
 
 const Wrapper = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
     margin: ${metrics.spacing3} 0 0 0;
 
     @media(max-width: ${breakpoints.tbp}){

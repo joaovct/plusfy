@@ -48,7 +48,7 @@ const usePlaylistTracks: HookProps = () => {
                 {
                     content: 'Adicionar à playlist',
                     onClick: async (track) => {
-                        addToPlaylist('track', [track?.uri || ''], updatePlaylist)
+                        addToPlaylist('add-track', [track?.uri || ''], updatePlaylist)
                     }
                 },
                 {

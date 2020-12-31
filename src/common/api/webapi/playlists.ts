@@ -1,4 +1,5 @@
 import qs from 'query-string'
+import { getHeaders } from '../../helpers/helperWebAPI'
 import api from '../api'
 import {Playlists, Playlist, PlaylistTracks} from './types'
 
@@ -87,18 +88,6 @@ interface AddItemsToPlaylist{
     }): Promise<{snapshot_id: string} | null>
 }
 
-// function teste(array: string[]){
-//     if(array){
-//         const length = array.length
-//         const nLoop = Math.ceil(length / 100)
-
-//         for(let start = 0, end = 1; end <= nLoop; start++, end++){
-//             const uris = array.slice(length * start, length * end)
-//             console.log(uris)
-//         }
-//     }
-// }
-
 export const addItemsToPlaylist: AddItemsToPlaylist = async (accessToken, configs) => {
     const headers = {headers: {'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}}
     let response
@@ -117,4 +106,24 @@ export const addItemsToPlaylist: AddItemsToPlaylist = async (accessToken, config
         return response?.data || null
     }
     return null
+}
+
+interface CreatePlaylist{
+    (accessToken: string, configs: {
+        userId: string
+        name: string
+        public?: boolean
+        collaborative?: boolean
+        description?: string
+    }): Promise<Playlist | null>
+}
+
+export const createPlaylist: CreatePlaylist = async (accessToken, configs) => {
+    let response = null
+    const {userId, ...body} = configs
+    try{
+        response = await api.spotify.post<Playlist>(`/users/${userId}/playlists`, body, {...getHeaders(accessToken)})
+    }finally{
+        return response?.data || null
+    }
 }

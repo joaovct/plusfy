@@ -12,16 +12,16 @@ interface Props{
 const Modal: React.FC<Props> = ({cssModal, cssPage, children}) => {
     return(
         <Fullpage cssPage={cssPage}>
-            <WrapperModal cssModal={cssModal}>
+            <StyledModal cssModal={cssModal}>
                 {children}
-            </WrapperModal>
+            </StyledModal>
         </Fullpage>
     ) 
 }
 
 export default Modal
 
-const WrapperModal = styled.main< {cssModal?: css} >`
+export const StyledModal = styled.main< {cssModal?: css} >`
     min-height: 100px;
     min-width: 300px;
     max-width: 600px;
@@ -37,7 +37,7 @@ const WrapperModal = styled.main< {cssModal?: css} >`
     }}
 `
 
-const Fullpage = styled.div< {cssPage?: css} >`
+export const Fullpage = styled.div< {cssPage?: css} >`
     height: 100vh;
     width: 100vw;
     position: fixed;

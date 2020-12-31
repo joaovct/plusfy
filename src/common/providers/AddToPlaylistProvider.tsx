@@ -1,9 +1,10 @@
 import React, { createContext, useState } from 'react'
 
-type Action = 'track' | 'playlist'
+type Action = 'add-track' | 'create-playlist'
 type Uris = Array<string>
 interface Configs{
-    alertAfterTrackAdded: boolean
+    alertAfterTrackAdded?: boolean
+    fullCloseCreatePlaylist?: boolean
 }
 
 interface AddToPlaylist{
@@ -42,7 +43,7 @@ const AddToPlaylistProvider = ({children}: {children: JSX.Element}) => {
     const [status, setStatus] = useState<Status>(null)
     const [callback, setCallback] = useState<Callback | null>(null)
 
-    const addToPlaylist: AddToPlaylist = (action, uris, callback, configs = {alertAfterTrackAdded: true}) => {
+    const addToPlaylist: AddToPlaylist = (action, uris, callback, configs = {alertAfterTrackAdded: true, fullCloseCreatePlaylist: false}) => {
         setStatus({state: 'adding', action, uris, configs})
         setCallback(() => callback)
     } 
