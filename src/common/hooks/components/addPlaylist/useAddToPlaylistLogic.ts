@@ -8,7 +8,6 @@ import { AddToPlaylistContext, Status } from "../../../providers/AddToPlaylistPr
 import useAlert from "../alert/useAlert"
 import useModal from "../modal/useModal"
 import { IUser } from "../../../../redux/store/user/types"
-import { EndOfLineState } from "typescript"
 
 type AddToPlaylist = (playlistId: string) => Promise<void>
 
@@ -96,7 +95,6 @@ const useAddToPlaylistLogic: Hook = () => {
 
     const addToPlaylist: AddToPlaylist = async (playlistId) => {
         if(status){
-            console.log(status.uris)
             const res = await addItemsToPlaylist(accessToken, {playlistId, uris: status.uris})
             setItemsAdded(res?.snapshot_id ? true : false)
         }

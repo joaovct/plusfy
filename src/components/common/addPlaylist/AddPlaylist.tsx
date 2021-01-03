@@ -19,8 +19,8 @@ const AddPlaylist = () => {
                         status?.action === 'add-track' || !status?.configs?.fullCloseCreatePlaylist ?
                         <ModalContent>
                             <Close onClick={closeModal}/>
-                            <Button onClick={showCreatePlaylist}>Nova playlist</Button>
                             <Title>Adicionar à playlist</Title>
+                            <Button onClick={showCreatePlaylist}>Nova playlist</Button>
                             <WrapperListPlaylists>
                                 <ListPlaylists
                                     playlists={playlists}
@@ -48,6 +48,14 @@ const AddPlaylist = () => {
     )
 }
 
+const WrapperListPlaylists = styled.div`
+    margin: ${metrics.spacing5} 0 0 0;
+
+    @media(max-width: ${breakpoints.sml}){
+        margin: ${metrics.spacing4} 0 0 0;
+    }
+`
+
 const ModalContent = styled.div`
     display: flex;
     flex-flow: column nowrap;
@@ -63,7 +71,7 @@ const ModalContent = styled.div`
     ${Title},
     ${Button}{
         text-align: center;
-        margin: ${metrics.spacing4} 0 0 0;
+        margin: ${metrics.spacing3} 0 0 0;
     }
 
     ${Button}{
@@ -71,11 +79,16 @@ const ModalContent = styled.div`
         background: ${colors.primary};
         padding-top: 12px;
         padding-bottom: 12px;
+
+        @media(max-width: ${breakpoints.sml}){
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
     }
 `
 
 const ModalCreatePlaylist = styled(ModalContent)<{show: boolean, translucent: boolean}>`
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100%;
@@ -152,10 +165,6 @@ const ModalCreatePlaylist = styled(ModalContent)<{show: boolean, translucent: bo
     }
 `
 
-const WrapperListPlaylists = styled.div`
-    margin: ${metrics.spacing3} 0 0 0;
-`
-
 const StyledComponent = styled.div<{background?: boolean}>`
     ${StyledModal}{
         min-height: inherit;
@@ -165,6 +174,7 @@ const StyledComponent = styled.div<{background?: boolean}>`
         width: 100%;
         height: 100%;
         background: ${({background}) => background ? colors.darkerBackgroundTranslucent : 'rgba(0,0,0,0)'};
+        backdrop-filter: ${({background}) => background ? metrics.backdropBlurFilter : ''};
         border-radius: 0;
         overflow-y: auto;
     }

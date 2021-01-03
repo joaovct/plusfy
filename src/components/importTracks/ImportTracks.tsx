@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import useImportTracks from '../../common/hooks/components/importTracks/useImportTracks'
-import { breakpoints, Page as page } from '../../styles/style'
+import { breakpoints, Page as page, metrics } from '../../styles/style'
 import FoundTracks from './FoundTracks/FoundTracks'
 import FilesManager from './filesManager/FilesManager'
 import ContextImportTracks from './ContextImportTracks'
@@ -33,6 +33,7 @@ const Main = styled.main`
 const Page = styled(page)`
     display: flex;
     flex-flow: column nowrap;
+    padding-bottom: ${metrics.spacing3};
 
     @media(max-width: ${breakpoints.sml}){
         padding-left: 0;

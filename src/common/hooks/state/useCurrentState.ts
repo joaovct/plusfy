@@ -8,24 +8,19 @@ import { IToken } from '../../../redux/store/token/types'
 import { IStore } from '../../../redux/store/types'
 import { IUser } from '../../../redux/store/user/types'
 import { isUserConnected } from '../../helpers/helperUserAccess'
-import { ICurrentState } from '../../../redux/store/currentState/types'
 import store from '../../../redux/store/store'
 import _ from 'lodash'
 
 let interval = 0
+const intervalTimeout = 850
 
 const useCurrentState = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
-    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     console.log(currentState)
-    // },[currentState])
-
     useEffect(() => {
-        if(accessToken){
+        if(accessToken && userId){
             if(interval)
                 clearInterval(interval)
             
@@ -33,7 +28,7 @@ const useCurrentState = () => {
                 if(isUserConnected().connected)
                     return updateCurrentState()
                 return clearInterval(interval)
-            },1000)
+            },intervalTimeout)
         }
         async function updateCurrentState(){
             const response = await getPlayer({accessToken})
@@ -42,22 +37,19 @@ const useCurrentState = () => {
 
                 if(!_.isEqual(currentState, store.getState().currentState)){
                     dispatch(actions.currentStateAction(currentState))
+
+                    const playlistURI = currentState.context?.uri || ''
+                    const trackURI = currentState.item?.uri || ''
+
+                    if( isTrackDisabled({userId, playlistURI, trackURI}) && currentState.context?.type === 'playlist'){
+                        handleNextPlayer(trackURI, accessToken)
+                    }
                 }
                 // dispatch(actions.progressMsAction(progress_ms || 0))
 
             }
         }
-    },[accessToken, dispatch])
-
-    useEffect(() => {
-        if(accessToken && isUserConnected().connected){ 
-            const playlistURI = currentState.context?.uri || ''
-            const trackURI = currentState.item?.uri || ''
-
-            if( isTrackDisabled({userId, playlistURI, trackURI}) && currentState.context?.type === 'playlist' && trackURI )
-                handleNextPlayer(trackURI, accessToken)
-        }
-    },[accessToken, currentState, userId])
+    },[accessToken, userId, dispatch])
 }
 
 export default useCurrentState

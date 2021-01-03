@@ -48,5 +48,9 @@ const WrapperDropdown = styled.div`
         right: 0;
         width: 200px;
         max-width: calc(100vw - var(--sideSpacingModal) - var(--sideSpacingModal));
+
+        li span{
+            cursor: pointer;
+        }
     }
 `
