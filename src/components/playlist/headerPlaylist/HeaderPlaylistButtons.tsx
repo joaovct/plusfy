@@ -31,8 +31,10 @@ const HeaderPlaylistButtons = () => {
     const toggleOptions = () => setShowOptions(old => !old)
 
     const handlePlayPlaylist = () => {
-        if(playlist)
-            playPlayer({accessToken, contextUri: playlist.uri})
+        if(playlist){
+            const randomPosition = Math.floor(Math.random() * playlist.tracks.items.length || 0)
+            playPlayer({accessToken, contextUri: playlist.uri, offset: {position: randomPosition}})
+        }
     }
 
     const clickHeart = () => {

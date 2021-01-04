@@ -419,7 +419,7 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
                 width: 100%;
                 text-align: center;
                 vertical-align: middle;
-                color: ${ (props) => props.uri === props.playingUri ? colors.primary : colors.gray};
+                color: ${ (props) => props.uri === props.playingUri && !props.disabled ? colors.primary : colors.gray};
                 user-select: none;
             }
             svg{
@@ -435,7 +435,7 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
         &:nth-child(2){
             flex-grow: 5;
             span strong{
-                color: ${ (props) => props.uri === props.playingUri ? colors.primary : '#fff'};
+                color: ${ (props) => props.uri === props.playingUri && !props.disabled ? colors.primary : '#fff'};
             }
         }
 
