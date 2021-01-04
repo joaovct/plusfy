@@ -18,7 +18,9 @@ const DropdownVolume: React.FC<Props> = ({show, updateFatherVolume}) => {
     const {volume, setVolume, dropdownRef} = useNowPlayingVolume()
 
     useEffect(() => {
-        updateFatherVolume(volume)
+        if(volume !== null){
+            updateFatherVolume(volume)
+        }
     },[volume, updateFatherVolume])
 
     return(
@@ -26,13 +28,13 @@ const DropdownVolume: React.FC<Props> = ({show, updateFatherVolume}) => {
             <li>
                 <VolumeControl>
                     <InputRange
-                        value={volume}
+                        value={volume || 100}
                         onChange={e => setVolume(+e.target.value)}
                         type="range"
                         min="0" max="100"
                         disabled={Object.keys(currentState).length ? false : true}
                     />
-                    <RangeBar volume={volume}/>
+                    <RangeBar volume={volume || 100}/>
                 </VolumeControl>
             </li>
         </Dropdown>
