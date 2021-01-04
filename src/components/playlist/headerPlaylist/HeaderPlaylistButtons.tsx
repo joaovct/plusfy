@@ -124,6 +124,12 @@ const MoreOptions = styled.div`
         &:hover svg{
             opacity: 1;
         }
+
+        @media(max-width: ${breakpoints.tbp}){
+            svg{
+                opacity: 1;
+            }
+        }
     }
 `
 

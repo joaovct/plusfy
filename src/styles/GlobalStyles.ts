@@ -82,6 +82,12 @@ const GlobalStyles = createGlobalStyle`
         padding: 0;
         outline: 0;
         appearance: none;
+        &:focus{
+            outline: 0;
+        }
+        @media(max-width: ${breakpoints.tbp}){
+            -webkit-tap-highlight-color: transparent;
+        }
     }
 
     img, svg{

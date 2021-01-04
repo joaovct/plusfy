@@ -18,7 +18,9 @@ const HeaderPlaylist = () => {
             <Header>
                 <Container>
                     <HeaderInner>  
-                        <img src={playlist.images.length ? playlist.images[0].url : emptyPlaylistPhoto} alt={`Playlist: ${playlist.name}`} />
+                        <figure>
+                            <img src={playlist.images.length ? playlist.images[0].url : emptyPlaylistPhoto} alt={`Playlist: ${playlist.name}`} />
+                        </figure>
                         <span>
                             <small>Playlist</small>
                             <Title>{playlist.name}</Title>
@@ -52,12 +54,19 @@ const HeaderInner = styled.header`
         width: 100%;
     }
 
-    img{
+    & > figure{
         height: var(--image-size);
         width: var(--image-size);
-        border-radius: ${metrics.borderRadius};
-        object-fit: cover;
+
+        img{
+            height: 100%;
+            width: 100%;
+            border-radius: ${metrics.borderRadius};
+            box-shadow: ${metrics.boxShadow};
+            object-fit: cover;
+        }
     }
+
 
     & > span{
         padding: 0 0 0 ${metrics.spacing4};
@@ -113,11 +122,14 @@ const HeaderInner = styled.header`
         align-items: center;
         padding: ${metrics.spacing3} 0 0 0;
 
-        img{
+        & > figure{
             height: auto;
             width: 100%;
             max-width: var(--image-size);
-            object-fit: contain;
+
+            img{
+                object-fit: contain;
+            }
         }
 
         & > span{
