@@ -84,6 +84,11 @@ const GlobalStyles = createGlobalStyle`
         appearance: none;
     }
 
+    img, svg{
+        user-select: none;
+        user-drag: none;
+    }
+
     h1{
         font-size: 40px;
         font-weight: 600;

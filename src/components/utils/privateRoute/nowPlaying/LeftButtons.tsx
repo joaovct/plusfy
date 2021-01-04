@@ -50,7 +50,7 @@ const LeftTrackInfo = styled.div`
         }
 
         small{
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 500;
             letter-spacing: 2;
             color: ${colors.gray};
@@ -61,6 +61,10 @@ const LeftTrackInfo = styled.div`
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
+
+            @media(max-width: ${breakpoints.tbp}){
+                user-select: none;
+            }
 
             &:hover{
                 cursor: pointer;
@@ -86,7 +90,7 @@ const LeftTrackInfo = styled.div`
 `
 
 const LeftTrackImg = styled.figure`
-    --sizeThumbnail: 55px;
+    --sizeThumbnail: 60px;
     min-height: var(--sizeThumbnail);
     min-width: var(--sizeThumbnail);
     max-height: var(--sizeThumbnail);
@@ -99,10 +103,6 @@ const LeftTrackImg = styled.figure`
         object-fit: cover;
     }
 
-    @media(max-width: ${breakpoints.lg}){
-        --sizeThumbnail: 50px;
-    }
-
     @media(max-width: ${breakpoints.tbl}){
         margin: 0 ${metrics.spacing2} 0 0;
     }
@@ -113,12 +113,11 @@ const LeftTrackImg = styled.figure`
     }
 
     @media(max-width: ${breakpoints.sml}){
-        --sizeThumbnail: 55px;
         margin: 0 ${metrics.spacing2} 0 0;
     }
 
-    @media(max-width: ${breakpoints.sml}){
-        --sizeThumbnail: 50px;
+    @media(max-width: ${breakpoints.smp}){
+        --sizeThumbnail: 55px;
     }
 `
 
