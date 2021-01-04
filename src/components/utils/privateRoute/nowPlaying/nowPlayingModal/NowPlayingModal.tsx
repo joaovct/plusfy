@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import useModal from '../../../../../common/hooks/components/modal/useModal'
+import React from 'react'
 import { colors, metrics } from '../../../../../styles/style'
 import Modal from '../../../../common/modal/Modal'
 import { HandleSetToggleModal } from '../types'
@@ -9,17 +8,16 @@ import { IStore } from '../../../../../redux/store/types'
 import { ICurrentState } from '../../../../../redux/store/currentState/types'
 import { Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
 import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause} from '@material-ui/icons'
-import { fetchPlaylist } from '../../../../../common/api/webapi/playlists'
-import { Playlist } from '../../../../../common/api/webapi/types'
-import { IToken } from '../../../../../redux/store/token/types'
 import { formatArtistName, formatTrackPhoto } from '../../../../../common/helpers/helperPlaylistTable'
-import useNowPlayingMainButtons from '../../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons'
-import { cssVariables } from '../style'
-import {Controls, Button} from './style'
 import ModalAdditionalButtons from './ModalAdditionalButtons'
 import NowPlayingModalHeaderOptions from './NowPlayingModalHeaderOptions'
 import useNowPlayingLike from '../../../../../common/hooks/components/nowPlaying/useNowPlayingLike'
 import {ChevronDown as Close} from 'react-feather'
+import useNowPlayingModal from '../../../../../common/hooks/components/nowPlaying/useNowPlayingModal'
+import useNowPlayingMainButtons from '../../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons'
+import { Controls, Button } from './style'
+import { cssVariables } from '../style'
+import { useHistory } from 'react-router-dom'
 
 interface Props{
     toggleModal: boolean
@@ -27,38 +25,18 @@ interface Props{
 }
 
 const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) => {
+    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {clickShuffle, clickPrevious, clickPlayPause, clickNext, clickRepeat} = useNowPlayingMainButtons()
-    const [playlist, setPlaylist] = useState<Playlist | undefined>()
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const currentState = useSelector<IStore, ICurrentState>(store => store.currentState) 
-    const {showModal,closeModal,cssPreparer,status} = useModal({initialStatus: toggleModal ? 'show' : 'hide'})
+    const {playlist, closeModal, cssPreparer, status} = useNowPlayingModal({toggleModal, handleSetToggleModal})
     const {isTrackSaved, handleLike} = useNowPlayingLike()
+    const history = useHistory()
 
-    useEffect(() => {
-        if(status === 'show' && currentState.context && accessToken)
-            fetchData()
-        async function fetchData(){
-                const id = currentState.context?.uri.split(':')[2] || ''
-                
-                if(currentState.context?.type === 'playlist'){
-                    const playlist = await fetchPlaylist(accessToken, id)
-                    if(playlist)
-                        setPlaylist(playlist)
-                } 
-            }
-    },[status, currentState, accessToken])
-
-    useEffect(() => {
-        if(toggleModal === true)
-            showModal()
-    //eslint-disable-next-line
-    },[toggleModal, currentState])
-
-    useEffect(() => {
-        if(status === 'hide')
-            handleSetToggleModal(false)
-    //eslint-disable-next-line
-    },[status])
+    const redirectToPlaylist = () => {
+        if(playlist){
+            history.push(`/playlist/${playlist.id}`)
+            closeModal()
+        }
+    }
 
     return(
         <>
@@ -67,7 +45,11 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                 <Modal cssPage={cssPreparer} cssModal={cssModal}>
                     <HeaderModal>
                         <Close onClick={closeModal}/>
-                        <strong>{playlist?.name}</strong>
+                        <button onClick={redirectToPlaylist}>
+                            <span>
+                                <strong>{playlist?.name || ''}</strong>
+                            </span>
+                        </button>
                         {
                             currentState.item ?
                                 <NowPlayingModalHeaderOptions track={currentState.item}/>
@@ -257,21 +239,36 @@ const AlbumPhoto = styled.div`
 `
 
 const HeaderModal = styled.div`
+    --sizeCloseButton: 35px;
+    --sizeOptionsButton: 25px;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: var(--sizeCloseButton) 1fr var(--sizeOptionsButton); 
+    column-gap: ${metrics.spacing1};
     align-items: center;
     margin: 0 0 auto 0;
 
     & > svg{
-        height: 35px;
-        width: 35px;
+        height: var(--sizeCloseButton);
+        width: var(--sizeCloseButton);
         cursor: pointer;
     }
 
-    strong{
-        font-size: 18px;
-        font-weight: 500;
+    span{
+        strong{
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            --lineHeight: 1.2em;
+            --numberLines: 2;
+            line-height: var(--lineHeight);
+            max-height: calc(var(--lineHeight) * var(--numberLines));
+            display: -webkit-box;
+            -webkit-line-clamp: var(--numberLines);
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+            color: #fff;
+        }
     }
 `
 
@@ -282,7 +279,8 @@ const cssModal = css`
     max-width: inherit;
     height: 100%;
     width: 100%;
-    background: ${colors.darkerBackground};
+    background: ${colors.darkerBackgroundTranslucent};
+    backdrop-filter: ${metrics.backdropBlurFilter};
     border-radius: 0px;
     display: flex;
     flex-flow: column nowrap;

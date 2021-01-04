@@ -33,11 +33,12 @@ const NowPlayingModalHeaderOptions: React.FC<Props> = ({track}) => {
 export default NowPlayingModalHeaderOptions
 
 const WrapperDropdown = styled.div`
+    grid-area: "options";
     position: relative; 
 
     svg{
-        height: 25px;
-        width: 25px;
+        height: var(--sizeOptionsButton);
+        width: var(--sizeOptionsButton);
         cursor: pointer
     }
 

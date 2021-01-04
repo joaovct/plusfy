@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import ContextListTracks from "../../../../components/common/listTracks/ContextListTracks"
 import { IToken } from "../../../../redux/store/token/types"
@@ -30,7 +30,12 @@ const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, call
     const addToPlaylist = useAddToPlaylist()
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const [trackSaved, setTrackSaved] = useState<boolean | null>(null)
-    
+    const isMounted = useRef(true)
+
+    useEffect(() => {
+        return () => {isMounted.current = false}
+    },[])
+        
     const handleCallback = () => {
         if(isContextAvailable)
             handleToggleOption(index)
@@ -65,7 +70,7 @@ const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, call
     }
 
     useEffect(() => {
-        if(isContextAvailable){
+        if(isContextAvailable && isMounted.current){
             setTrackSaved(() => {
                 const index = savedTracks?.items.findIndex(item => item.track?.uri === track?.uri)
                 if(index !== undefined && index > -1)
@@ -74,19 +79,22 @@ const useTrackRowOptions: Hook = ({track, index, isContextAvailable = true, call
                     return false
                 return null
             })
-        }else
+        }else{
             fetchData()
+        }
 
         async function fetchData(){
             if(accessToken){
                 const [isTrackSaved] = await checkSavedTracks({accessToken, ids: [track?.id || '']})
-                setTrackSaved(() => {
-                    if(isTrackSaved === true)
-                        return true
-                    else if(isTrackSaved === false)
-                        return false
-                    return null
-                })
+                if(isMounted.current){
+                    setTrackSaved(() => {
+                        if(isTrackSaved === true)
+                            return true
+                        else if(isTrackSaved === false)
+                            return false
+                        return null
+                    })
+                }
             }
         }
     },[savedTracks, track, isContextAvailable, accessToken])

@@ -70,4 +70,8 @@ const NowPlayingWrapper = styled.div`
     border-top: 1px solid ${colors.background};
     background: ${colors.darkerBackgroundTranslucent};
     backdrop-filter: ${metrics.backdropBlurFilter};
+
+    @media(max-width: ${breakpoints.tbp}){
+        border-top: inherit;
+    }
 `
