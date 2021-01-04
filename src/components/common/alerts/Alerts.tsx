@@ -14,7 +14,7 @@ const Alerts = () => {
     },[alerts])
 
     return (
-        <WrapperAlerts>
+        <WrapperAlerts thereAreAlerts={alerts.length > 0}>
             {
                 alerts.map((alert, index) => (
                     <Alert key={`alert-${index}-${alert.type}`} type={alert.type} timing={alert.configs.timing_sec} backgroundColor={alert.configs.backgroundColor} >
@@ -26,7 +26,7 @@ const Alerts = () => {
     )
 }
 
-const WrapperAlerts = styled.div`
+const WrapperAlerts = styled.div<{thereAreAlerts: boolean}>`
     display: grid;
     grid-auto-flow: row;
     row-gap: ${metrics.spacing3};
@@ -39,6 +39,14 @@ const WrapperAlerts = styled.div`
         width: 100%;
         justify-content: center;
     }
+
+    ${({thereAreAlerts}) => {
+        if(!thereAreAlerts)
+            return `
+                pointer-events: none;
+                user-select: none;
+            `
+    }}
 `
 
 const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: string}>`

@@ -16,7 +16,7 @@ const SearchPlaylists: React.FC<ChildProps> = ({query}) => {
     },[setQuery, query])
 
     useEffect(() => {
-        const n = window.innerWidth >= 1200 ? 10 : window.innerWidth >= 991 ? 8 : window.innerWidth >= 768 ? 6 : 4
+        const n = getNumberPlaylistsToShow()
         setSlicedPlaylists([...playlists.slice(0,n)])
     },[playlists])
 
@@ -45,11 +45,15 @@ const SearchPlaylists: React.FC<ChildProps> = ({query}) => {
                             <WrapperListItens>
                                 <ListPlaylists playlists={slicedPlaylists}/>
                             </WrapperListItens>
-                            <SeeMore>
-                                <Link to={`/search/${query}/playlists`}>
-                                    Ver tudo
-                                </Link>
-                            </SeeMore>
+                            {
+                                playlists.length > getNumberPlaylistsToShow() ?
+                                <SeeMore>
+                                    <Link to={`/search/${query}/playlists`}>
+                                        Ver tudo
+                                    </Link>
+                                </SeeMore>
+                                : <></>    
+                            }
                         </Route>
                     </Switch>
                 </Content>
@@ -57,6 +61,16 @@ const SearchPlaylists: React.FC<ChildProps> = ({query}) => {
             }
         </>
     )
+}
+
+function getNumberPlaylistsToShow(){
+    if(window.innerWidth >= 1200)
+        return 10
+    else if(window.innerWidth >= 991)
+        return 8
+    else if(window.innerWidth >= 768)
+        return 6
+    return 4
 }
 
 export default SearchPlaylists

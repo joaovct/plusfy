@@ -44,11 +44,15 @@ const SearchTracks: React.FC<ChildProps> = ({query}) => {
                             <WrapperListItens>
                                 <ListTracks tracks={firstFiveTracks}/>
                             </WrapperListItens>
-                            <SeeMore>
-                                <Link to={`/search/${query}/tracks`}>
-                                    Ver tudo
-                                </Link>
-                            </SeeMore>
+                            {
+                                tracks.length > 5 ?
+                                <SeeMore>
+                                    <Link to={`/search/${query}/tracks`}>
+                                        Ver tudo
+                                    </Link>
+                                </SeeMore>
+                                : <></>    
+                        }
                         </Route>
                     </Switch>
                 </Content>
