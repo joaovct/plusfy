@@ -64,7 +64,9 @@ const LeftTrackInfo = styled.div`
 
             &:hover{
                 cursor: pointer;
-                text-decoration: underline;
+                @media(min-width: ${breakpoints.tbp}){
+                    text-decoration: underline;
+                }
             }
         }
 
