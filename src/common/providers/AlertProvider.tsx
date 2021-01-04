@@ -10,12 +10,11 @@ interface ConfigsAlert{
 type CreateAlert = (type: TypeAlert, message: MessageAlert, configs?: ConfigsAlert) => void
 type RemoveAlert = (index: number) => void
 type Alert = {type: TypeAlert, message: MessageAlert, configs: ConfigsAlert}
-type Alerts = Array<Alert>
 
 interface ContextValue{
     createAlert: CreateAlert
     removeAlert: RemoveAlert
-    alerts: Alerts
+    alerts: Alert[]
 }
 
 export const AlertContext = createContext<ContextValue>({
@@ -25,7 +24,7 @@ export const AlertContext = createContext<ContextValue>({
 })
 
 const AlertProvider = ({children}: {children: JSX.Element}) => {
-    const [alerts, setAlerts] = useState<Alerts>([])
+    const [alerts, setAlerts] = useState<Alert[]>([])
 
     const createAlert: CreateAlert = (type, message, configs = {timing_sec: 3}) => {
         setAlerts(old => [...old, {type, message, configs}])

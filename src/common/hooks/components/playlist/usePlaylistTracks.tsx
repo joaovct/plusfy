@@ -64,7 +64,7 @@ const usePlaylistTracks: HookProps = () => {
                     onClick: async (track) => {
                         const res = await addToQueue({accessToken, uri: track?.uri || ''})
                         if(res?.status === 204)
-                            createAlert('normal','Música adicionada à fila 🎶')
+                            createAlert('normal','Música adicionada à fila 🎶.')
                     }
                 },
                 {
@@ -83,7 +83,7 @@ const usePlaylistTracks: HookProps = () => {
                         const status = await removeTracksPlaylist(accessToken, {playlistId: playlist.id, tracks: [{uri: track?.uri || '', positions: [index]}]})
                         if(status === 200){
                             updatePlaylist()
-                            createAlert('normal', 'Música removida dessa playlist')
+                            createAlert('normal', 'Música removida dessa playlist 👋.')
                         }
                     }
                 }

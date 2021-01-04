@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import {AlertContext, TypeAlert} from '../../../common/providers/AlertProvider'
-import { colors, metrics } from '../../../styles/style'
+import { colors, metrics, breakpoints } from '../../../styles/style'
 
 const Alerts = () => {
     const {alerts, removeAlert} = useContext(AlertContext)
@@ -34,6 +34,11 @@ const WrapperAlerts = styled.div`
     bottom: 100%;
     right: 0;
     padding: 0 ${metrics.spacing4} ${metrics.spacing4} ${metrics.spacing4};
+
+    @media(max-width: ${breakpoints.tbp}){
+        width: 100%;
+        justify-content: center;
+    }
 `
 
 const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: string}>`
@@ -43,9 +48,14 @@ const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: str
     border-radius: 8px;
     box-shadow: 0 6px 16px 8px rgba(0,0,0,.16);
     ${getBackgroundColor};
-    ${props => props.backgroundColor ? `background-color: ${props.backgroundColor}` : ''};
+    background-color: ${({backgroundColor}) => backgroundColor ? backgroundColor : ''};
+    backdrop-filter: ${metrics.backdropBlurFilter};
     opacity: 0;
     animation: fadeInAlert .5s linear forwards 0s, fadeOutAlert .5s linear forwards ${({timing}) => timing}s;
+
+    @media(max-width: ${breakpoints.tbp}){
+        max-width: 100%;
+    }
 
     @keyframes fadeInAlert{
         from{
@@ -70,7 +80,7 @@ const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: str
 function getBackgroundColor(props: {type: TypeAlert}) {
     switch(props.type){
         case 'normal':
-            return `background-color: ${colors.backgroundTranslucent}`
+            return `background-color: ${colors.darkerBackgroundTranslucent}`
         case 'success':
             return `background-color: ${colors.green}`
         case 'warning':

@@ -103,7 +103,7 @@ const useAddToPlaylistLogic: Hook = () => {
     const handleCreateAlert = useCallback(() => {
         const messagePlural = status?.uris.length || 0 > 1
         if(itemsAdded === true){
-            const message = messagePlural ? 'Música adicionada à playlist 🎉´.' : 'Músicas adicionadas à playlist 🎉.'
+            const message = messagePlural ? 'Música adicionada à playlist 🎉.' : 'Músicas adicionadas à playlist 🎉.'
             createAlert('normal', message)
         }else if(itemsAdded === false){
             const message = messagePlural ? 'Ocorreu um erro ao adicionar as músicas à playlist.' : 'Ocorreu um erro ao adicionar a música à playlist.'
