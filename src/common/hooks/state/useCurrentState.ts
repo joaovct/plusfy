@@ -2,7 +2,7 @@ import {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../../redux/actions/actions'
 import { isTrackDisabled } from '../../api/disabledTracks/disabledTracks'
-import { handleNextPlayer } from '../../helpers/helperWebAPI'
+import { skipTrack } from '../../helpers/helperWebAPI'
 import { getPlayer } from '../../api/webapi/player'
 import { IToken } from '../../../redux/store/token/types'
 import { IStore } from '../../../redux/store/types'
@@ -41,12 +41,11 @@ const useCurrentState = () => {
                     const playlistURI = currentState.context?.uri || ''
                     const trackURI = currentState.item?.uri || ''
 
-                    if( isTrackDisabled({userId, playlistURI, trackURI}) && currentState.context?.type === 'playlist'){
-                        handleNextPlayer(trackURI, accessToken)
+                    if(isTrackDisabled({userId, playlistURI, tracks: [{uri: trackURI}]})[0]){
+                        skipTrack(trackURI,accessToken)
                     }
                 }
                 // dispatch(actions.progressMsAction(progress_ms || 0))
-
             }
         }
     },[accessToken, userId, dispatch])

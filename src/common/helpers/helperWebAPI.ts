@@ -9,13 +9,15 @@ export const defineActiveDevice = (devices?: Array<Device>): Device | null => (
     devices ? devices.find(device => device.is_active) || devices[0] : null
 )
 
-let lastUri = ''
+// let skippedURI = ''
 
-export const handleNextPlayer = (uri: string, accessToken: string) => {
-    if(uri !== lastUri){
-        nextPlayer({accessToken})
-        lastUri = uri
-    }
+export const skipTrack = (uri: string, accessToken: string) => {
+    nextPlayer({accessToken})
+
+    // if(uri && uri !== skippedURI){
+    //     nextPlayer({accessToken})
+    //     skippedURI = ''
+    // }
 }
 
 export const encodeSpaces = (string: string) => string.replace(' ', '%20')

@@ -53,14 +53,14 @@ const usePlaylistTracks: HookProps = () => {
                 },
                 {
                     content: 'Habilitar nessa playlist',
-                    condition: (track) => isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: playlist.uri}),
+                    condition: (track) => isTrackDisabled({userId, playlistURI: playlist.uri, tracks: [{uri: track?.uri || ''}]})[0],
                     onClick: (track) => {
-                        actionDisableTracks({action: 'enable', playlistURI: playlist.uri, uri: track?.uri || ''})
+                        actionDisableTracks({action: 'enable', playlistURI: playlist.uri, tracks: [{uri: track?.uri || ''}]})
                     }
                 },
                 {
                     content: 'Adicionar à fila',
-                    condition: (track) => !isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: playlist.uri}),
+                    condition: (track) => !isTrackDisabled({userId, playlistURI: playlist.uri, tracks: [{uri: track?.uri || ''}]})[0],
                     onClick: async (track) => {
                         const res = await addToQueue({accessToken, uri: track?.uri || ''})
                         if(res?.status === 204)
@@ -69,9 +69,9 @@ const usePlaylistTracks: HookProps = () => {
                 },
                 {
                     content: 'Desabilitar nessa playlist',
-                    condition: (track) => !isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: playlist.uri}),
+                    condition: (track) => !isTrackDisabled({userId, playlistURI: playlist.uri, tracks: [{uri: track?.uri || ''}]})[0],
                     onClick: (track) => {
-                        actionDisableTracks({action: 'disable', playlistURI: playlist.uri, uri: track?.uri || ''})
+                        actionDisableTracks({action: 'disable', playlistURI: playlist.uri, tracks: [{uri: track?.uri || ''}]})
                     }
                 }
             ]

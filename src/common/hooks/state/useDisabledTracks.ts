@@ -1,14 +1,15 @@
 import {useCallback, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import actions from '../../../redux/actions/actions'
-import { setDisabledTrack, deleteDisabledTrack, getDisabledTracks, initDisabledTracks } from '../../api/disabledTracks/disabledTracks'
+import { setDisabledTrack, deleteDisabledTrack, getDisabledStorage, initDisabledTracks } from '../../api/disabledTracks/disabledTracks'
 import { IStore } from '../../../redux/store/types'
 import { IUser } from '../../../redux/store/user/types'
+import { DisabledTrack } from '../../api/disabledTracks/types'
 
-interface Iaction{
+interface Action{
     action: 'enable' | 'disable'
     playlistURI: string
-    uri: string
+    tracks: DisabledTrack[]
 }
 
 const useDisabledTracks = () => {
@@ -20,17 +21,17 @@ const useDisabledTracks = () => {
             dispatch(actions.disabledTracksAction( initDisabledTracks({userId}) ))
     },[userId, dispatch])
 
-    const action = useCallback(({action, playlistURI: playlistUri, uri}: Iaction) => {
+    const action = useCallback(({action, playlistURI, tracks}: Action) => {
         if(userId){
             switch(action){
                 case 'disable':
-                    setDisabledTrack({playlistUri, uri, userId})
+                    setDisabledTrack({playlistURI, tracks, userId})
                     break
                 case 'enable':
-                    deleteDisabledTrack({playlistUri, uri, userId})
+                    deleteDisabledTrack({playlistURI, tracks, userId})
                     break
             }
-            dispatch(actions.disabledTracksAction(getDisabledTracks({userId})))
+            dispatch(actions.disabledTracksAction(getDisabledStorage({userId})))
         }
     },[userId, dispatch])
 

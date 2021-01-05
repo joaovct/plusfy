@@ -23,17 +23,17 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
-    const {additionalColumns, contextUri, viewMode} = useContext(ContextListTracks)
-    const isDisabled = isTrackDisabled({userId, trackURI: track?.uri || '', playlistURI: contextUri || ''})
+    const {additionalColumns, contextUri: playlistURI, viewMode} = useContext(ContextListTracks)
+    const isDisabled = isTrackDisabled({userId, playlistURI: playlistURI || '', tracks: [{uri: track?.uri || ''}]})[0]
 
     const handleToggleTrack = () => {
         const uri = track?.uri || ''
         const action = toggleTrack(currentState, uri)
         if(action === 'PLAY')
-            if(contextUri)
-                playPlayer({accessToken,contextUri, offset: {uri: uri}})
+            if(playlistURI)
+                playPlayer({accessToken,contextUri: playlistURI, offset: {uri: uri}})
             else
-                playPlayer({accessToken,contextUri, uris: [uri]})
+                playPlayer({accessToken,contextUri: playlistURI, uris: [uri]})
         else if(action === 'PAUSE')
             pausePlayer({accessToken})
         else if(action === 'RESUME')

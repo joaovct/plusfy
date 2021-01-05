@@ -1,69 +1,88 @@
-import { IDisabledTracks } from "./types"
+import { DisabledStorage, DisabledTrack } from "./types"
 
-interface Idisable{
+interface Disable{
     userId: string
 }
 
 const localStoragePrefix = 'plusfy-user-'
 
-export const initDisabledTracks = ({userId}: Idisable) => {
-    localStorage.setItem(`${localStoragePrefix}${userId}`, JSON.stringify( getDisabledTracks({userId}) ))
-    return getDisabledTracks({userId})
+export const initDisabledTracks = ({userId}: Disable) => {
+    localStorage.setItem(`${localStoragePrefix}${userId}`, JSON.stringify(getDisabledStorage({userId})))
+    return getDisabledStorage({userId})
 }
 
-export const getDisabledTracks = ({userId}: Idisable): IDisabledTracks => {
+export const getDisabledStorage = ({userId}: Disable): DisabledStorage => {
     const disabledTracks = localStorage.getItem(`${localStoragePrefix}${userId}`)
     return disabledTracks ? JSON.parse(disabledTracks) : {}
 }
 
-interface IsetDisabledTrack extends Idisable{
-    uri: string
-    playlistUri: string
-}
-
-export const setDisabledTrack = ({userId, playlistUri, uri}: IsetDisabledTrack) => {
-    let disabledTracks = getDisabledTracks({userId})
-
-    if(disabledTracks.playlists){
-        const playlistIncludedIndex = disabledTracks.playlists.findIndex( playlist => playlist.uri === playlistUri )
-        if(playlistIncludedIndex > -1 && disabledTracks.playlists[playlistIncludedIndex].tracks.findIndex(track => track === uri)  === -1)
-            disabledTracks.playlists[playlistIncludedIndex].tracks.push(uri)
-        else if(playlistIncludedIndex === -1)
-            disabledTracks.playlists.push({uri: playlistUri, tracks: [uri]})
-    }else{
-        disabledTracks.playlists = [{uri: playlistUri, tracks: [uri]}]
-    }
-    localStorage.setItem(`${localStoragePrefix}${userId}`, JSON.stringify(disabledTracks))
-    return getDisabledTracks({userId})
-}
-
-interface IdeleteDisableTrack extends IsetDisabledTrack{}
-
-export const deleteDisabledTrack = ({userId, playlistUri, uri}: IdeleteDisableTrack) => {
-    const disabledTracks = getDisabledTracks({userId})
-
-    disabledTracks.playlists = disabledTracks.playlists?.map(playlist => {
-        if(playlist.uri === playlistUri)
-            playlist.tracks = playlist.tracks.filter(item => item !== uri ? true : false)
-        return playlist
-    })
-
-    localStorage.setItem(`${localStoragePrefix}${userId}`, JSON.stringify(disabledTracks))
-    return getDisabledTracks({userId})
-}
-
-interface IisTrackDisabled extends Idisable{
-    trackURI: string
+interface SetDisabledTracks extends Disable{
+    tracks: DisabledTrack[]
     playlistURI: string
 }
 
-export const isTrackDisabled = ({userId, trackURI, playlistURI}: IisTrackDisabled) => {
-    const disabledTracks = getDisabledTracks({userId})
-    const disabledPlaylist = disabledTracks.playlists?.find(disabledPlaylist => disabledPlaylist.uri === playlistURI)
-    if(disabledPlaylist){
-        if(disabledPlaylist.tracks.find(disabledTrack => disabledTrack === trackURI)){
+export const setDisabledTrack = ({userId, playlistURI, tracks}: SetDisabledTracks) => {
+    let storage = getDisabledStorage({userId})
+
+    const playlistIndex = storage.playlists ? storage.playlists.findIndex((playlist) => {
+        return playlist.uri === playlistURI
+    }) : -1
+    
+    if(playlistIndex >= 0){
+        tracks.forEach(track => {
+            if(track.uri && !isTrackDisabled({userId, playlistURI, tracks: [track]})[0]){
+                storage.playlists[playlistIndex] = {
+                    uri: playlistURI, tracks: [
+                        ...storage.playlists[playlistIndex].tracks,
+                        track
+                    ]
+                }
+            }
+        })
+    }else{
+        storage = {...storage, playlists: [...(storage.playlists ? storage.playlists : []), {uri: playlistURI, tracks}]}
+    }
+    localStorage.setItem(`${localStoragePrefix}${userId}`, JSON.stringify(storage))
+    return getDisabledStorage({userId})
+}
+
+interface DeleteDisabledTrack extends SetDisabledTracks{}
+
+export const deleteDisabledTrack = ({userId, playlistURI, tracks}: DeleteDisabledTrack) => {
+    let storage = getDisabledStorage({userId})
+
+    const playlistIndex = storage.playlists ? storage.playlists.findIndex((playlist) => {
+        return playlist.uri === playlistURI
+    }) : -1
+    if(playlistIndex >= 0){
+        tracks.forEach(track => {
+            if(track.uri && isTrackDisabled({userId, playlistURI, tracks: [track]})[0]){
+                storage.playlists[playlistIndex] = {
+                    uri: playlistURI, tracks: [
+                        ...storage.playlists[playlistIndex].tracks.filter(disabledTrack => disabledTrack.uri !== track.uri)
+                    ]
+                }
+            }
+        })
+    }
+
+    localStorage.setItem(`${localStoragePrefix}${userId}`, JSON.stringify(storage))
+    return getDisabledStorage({userId})
+}
+
+interface IsTrackDisabled extends Disable{
+    tracks: DisabledTrack[]
+    playlistURI: string
+}
+
+export const isTrackDisabled = ({userId, tracks, playlistURI}: IsTrackDisabled): boolean[] => {
+    const disabledTracks = getDisabledStorage({userId})
+
+    return tracks.map(track => {
+        const playlist = disabledTracks.playlists?.find(playlist => playlist.uri === playlistURI)
+        if(playlist && playlist.tracks.find(disabledTrack => disabledTrack.uri === track.uri)){
             return true
         }
-    }
-    return false
+        return false
+    })
 }
