@@ -316,10 +316,15 @@ export const ListPlaylistsItemStyled = styled.li`
             margin: 0 ${metrics.spacing3} 0 0;
 
             figure{
-                height: 50px;
-                width: 50px;
+                height: 60px;
+                width: 60px;
                 user-select: none;
                 object-fit: cover;
+
+                @media(max-width: ${breakpoints.sml}){
+                    height: 55px;
+                    width: 55px;
+                }
 
                 img{
                     border-radius: 0;
