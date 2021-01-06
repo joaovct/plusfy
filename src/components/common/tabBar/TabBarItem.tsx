@@ -41,6 +41,14 @@ const TabBarItemStyled = styled.figure<{active: boolean}>`
     border-radius: 5px;
     transition: .15s background; 
 
+    @media(max-width: ${breakpoints.sml}){
+        max-width: 125px;
+    }
+
+    @media(max-width: 400px){
+        max-width: 100px;
+    }
+
     a{
         width: 100%;
         --iconSize: 32px;
