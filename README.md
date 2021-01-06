@@ -1,12 +1,6 @@
 # Plusfy
-Plusfy is a web app that add new features to Spotify.
-(Current in development ⏳)
+### Plusfy is a web player that add new features to Spotify: mood analysis, favorite tracks, music importation into Spotify's library from audio files, disabling tracks, copy playlists and more.
+Plusfy is under development 🏗👷‍♂️, but you can already test it [here](http://plusfy.vercel.app).   
+Current only available in portuguese (Brazil). English available soon.   
 
-Home
-![home](https://user-images.githubusercontent.com/29873725/98714420-9e566d80-2367-11eb-8fb5-a045a56b6f32.png)
-
-My Library / Playlists page
-![my library](https://user-images.githubusercontent.com/29873725/98714529-c34ae080-2367-11eb-842e-70cfbb52980e.png)
-
-Playlist page
-![playlist](https://user-images.githubusercontent.com/29873725/98714548-c776fe00-2367-11eb-996b-507751ab4954.png)
+![Plusfy devices](https://user-images.githubusercontent.com/29873725/103816963-97389c80-5044-11eb-82e1-a20dcf83c03a.png)
