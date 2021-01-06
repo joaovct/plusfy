@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { breakpoints, colors, metrics } from '../../../../styles/style'
+import { breakpoints, colors, metrics } from '../../../styles/style'
 import { useSelector } from 'react-redux'
-import { IStore } from '../../../../redux/store/types'
-import { ICurrentState } from '../../../../redux/store/currentState/types'
-import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylistTable'
+import { IStore } from '../../../redux/store/types'
+import { ICurrentState } from '../../../redux/store/currentState/types'
+import { formatArtistName, formatTrackPhoto } from '../../../common/helpers/helperPlaylistTable'
 import { HandleSetToggleModal } from './types'
 
 interface Props{

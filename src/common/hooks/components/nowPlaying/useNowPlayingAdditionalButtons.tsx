@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { HandleToggleDropdowns, UpdateFatherVolume } from "../../../../components/utils/privateRoute/nowPlaying/types"
+import { HandleToggleDropdowns, UpdateFatherVolume } from "../../../../components/common/nowPlaying/types"
 
 
 interface Hook{

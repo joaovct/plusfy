@@ -1,6 +1,6 @@
 import React from 'react'
 import { Volume, Volume1, Volume2, VolumeX } from "react-feather";
-import { GetVolumeIcon } from "../../components/utils/privateRoute/nowPlaying/types";
+import { GetVolumeIcon } from "../../components/common/nowPlaying/types"
 import { ICurrentState } from "../../redux/store/currentState/types";
 import { colors } from "../../styles/style";
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styled, { css } from 'styled-components'
-import useNowPlayingDevices from '../../../../../common/hooks/components/nowPlaying/useNowPlayingDevices'
-import { breakpoints, colors, Title } from '../../../../../styles/style'
+import useNowPlayingDevices from '../../../../common/hooks/components/nowPlaying/useNowPlayingDevices'
+import { breakpoints, colors, Title } from '../../../../styles/style'
 import {NowPlayingDropdown} from '../style'
 import {HandleToggleDropdowns} from '../types'
 

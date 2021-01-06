@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
-import { ChooseDevice, GetDeviceType } from "../../../../components/utils/privateRoute/nowPlaying/types"
+import { ChooseDevice, GetDeviceType } from "../../../../components/common/nowPlaying/types"
 import { ICurrentState } from "../../../../redux/store/currentState/types"
 import { IToken } from "../../../../redux/store/token/types"
 import { IStore } from "../../../../redux/store/types"

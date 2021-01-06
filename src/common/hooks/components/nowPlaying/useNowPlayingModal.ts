@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { HandleSetToggleModal } from "../../../../components/utils/privateRoute/nowPlaying/types"
+import { HandleSetToggleModal } from "../../../../components/common/nowPlaying/types"
 import { ICurrentState } from "../../../../redux/store/currentState/types"
 import { IToken } from "../../../../redux/store/token/types"
 import { IStore } from "../../../../redux/store/types"

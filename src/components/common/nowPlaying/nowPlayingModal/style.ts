@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { IPlayer } from '../../../../../common/api/webapi/types'
-import { handleRepeatState } from '../../../../../common/helpers/helperNowPlaying'
-import { colors } from '../../../../../styles/style'
+import { IPlayer } from '../../../../common/api/webapi/types'
+import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying'
+import { colors } from '../../../../styles/style'
 
 export const Controls = styled.div`
     margin: 20px 0 0 0;

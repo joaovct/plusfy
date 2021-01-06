@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { MoreVertical } from 'react-feather'
-import { Track } from '../../../../../common/api/webapi/types'
-import { Dropdown } from '../../../../../styles/style'
-import useTrackRowOptions from '../../../../../common/hooks/components/listTracks/useTrackRowOptions'
+import { Track } from '../../../../common/api/webapi/types'
+import { Dropdown } from '../../../../styles/style'
+import useTrackRowOptions from '../../../../common/hooks/components/listTracks/useTrackRowOptions'
 
 interface Props{
     track: Track

@@ -1,4 +1,4 @@
-import { Device } from "../../../../common/api/webapi/types"
+import { Device } from "../../../common/api/webapi/types"
 
 export type HandleSetToggleModal = (state: boolean) => void
 export type HandleToggleDropdowns = (index: number) => void

@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { breakpoints, colors } from '../../../../styles/style'
+import { breakpoints, colors } from '../../../styles/style'
 import {DevicesRounded as Devices} from '@material-ui/icons'
-import { getVolumeIcon } from '../../../../common/helpers/helperNowPlaying'
-import useNowPlayingAdditionalButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingAdditionalButtons'
+import { getVolumeIcon } from '../../../common/helpers/helperNowPlaying'
+import useNowPlayingAdditionalButtons from '../../../common/hooks/components/nowPlaying/useNowPlayingAdditionalButtons'
 import DropdownDevices from './additionalButtons/DropdownDevices'
 import DropdownVolume from './additionalButtons/DropdownVolume'
 import {Heart} from 'react-feather'
-import useNowPlayingLike from '../../../../common/hooks/components/nowPlaying/useNowPlayingLike'
+import useNowPlayingLike from '../../../common/hooks/components/nowPlaying/useNowPlayingLike'
 
 const RightButtons = () => {
     const {toggleDropdowns, volume, updateFatherVolume, handleToggleDropdowns} = useNowPlayingAdditionalButtons()    

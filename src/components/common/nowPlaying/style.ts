@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { metrics, Dropdown as dropdown, InputRange, colors } from "../../../../styles/style";
+import { metrics, Dropdown as dropdown, InputRange, colors } from "../../../styles/style";
 
 export const RangeBar = styled.div<{volume: number}>`
     height: ${({volume}) => `calc( var(--heightInput) * ${volume / 100} + var(--additionThumbSize))`};

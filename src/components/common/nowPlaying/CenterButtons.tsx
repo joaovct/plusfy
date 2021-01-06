@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import {PlayCircle, PauseCircle, Play, Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
-import { breakpoints, colors, metrics } from '../../../../styles/style';
-import useNowPlayingMainButtons from '../../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons';
-import { ICurrentState } from '../../../../redux/store/currentState/types';
-import { IStore } from '../../../../redux/store/types';
+import { breakpoints, colors, metrics } from '../../../styles/style';
+import useNowPlayingMainButtons from '../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons';
+import { ICurrentState } from '../../../redux/store/currentState/types';
+import { IStore } from '../../../redux/store/types';
 import { useSelector } from 'react-redux';
-import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying';
+import { handleRepeatState } from '../../../common/helpers/helperNowPlaying';
 
 const CenterButtons = () => {
     const {clickShuffle, clickPrevious, clickPlayPause, clickNext, clickRepeat} = useNowPlayingMainButtons()
