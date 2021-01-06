@@ -10,11 +10,12 @@ import Header from './Header'
 import styled from 'styled-components'
 import useCurrentState from '../../../common/hooks/state/useCurrentState'
 import usePlaybackSDK from '../../../common/hooks/state/useDispatchSpotifyPlayer'
-import NowPlaying from '../../common/nowPlaying/NowPlaying'
 import AddToPlaylistProvider from '../../../common/providers/AddToPlaylistProvider'
 import AddPlaylist from '../../common/addPlaylist/AddPlaylist'
 import AlertProvider from '../../../common/providers/AlertProvider'
 import Alerts from '../../common/alerts/Alerts'
+import NowPlaying from '../../common/nowPlaying/NowPlaying'
+import TabBar from '../../common/tabBar/TabBar'
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshToken, expiresIn}) => {
     useDispatchToken(accessToken, refreshToken, expiresIn)
@@ -39,6 +40,7 @@ const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshT
                         <StickyElements>
                             <Alerts/>
                             <NowPlaying/>
+                            <TabBar/>
                         </StickyElements>
                     </WrapperComponent>
                     <AddPlaylist/>

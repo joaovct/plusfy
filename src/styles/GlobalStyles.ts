@@ -21,7 +21,8 @@ const GlobalStyles = createGlobalStyle`
 
     /* Track */
     &::-webkit-scrollbar-track {
-        background: ${colors.darkerBackground};
+        background: ${colors.darkerBackgroundTranslucent};
+        backdrop-filter: ${metrics.backdropBlurFilter};
     }
     
     /* Handle */
