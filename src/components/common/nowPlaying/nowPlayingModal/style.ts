@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { IPlayer } from '../../../../common/api/webapi/types'
 import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying'
-import { colors } from '../../../../styles/style'
+import { colors, breakpoints } from '../../../../styles/style'
 
 export const Controls = styled.div`
     margin: 20px 0 0 0;
@@ -20,9 +20,19 @@ interface ButtonProps{
 export const Button = styled.button<ButtonProps>`
     svg{
         cursor: pointer;
-        height: 20px;
-        width: 20px;
+        height: 25px;
+        width: 25px;
         transition: var(--iconOpacityTransition);
+
+        @media(max-width: 400px){
+            height: 22.5px;
+            width: 22.5px;
+        }
+
+        @media(max-width: ${breakpoints.smp}){
+            height: 20px;
+            width: 20px;
+        }
     }
 
     ${({isAvailable, isActive, repeatState}) => {

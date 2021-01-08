@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, metrics } from '../../../../styles/style'
+import { colors, metrics, breakpoints } from '../../../../styles/style'
 import Modal from '../../modal/Modal'
 import { HandleSetToggleModal } from '../types'
 import styled, {css} from 'styled-components'
@@ -135,19 +135,63 @@ const MainControls = styled.div`
 
     ${Button}{
         &:not(:nth-child(2)) svg{
-            height: 24px;
-            width: 24px;
+            height: 35px;
+            width: 35px;
             fill: #fff;
         }
         &:nth-child(2) svg{
-            height: 60px;
-            width: 60px;
-            margin: 0 30px;
+            height: 70px;
+            width: 70px;
+            margin: 0 20px;
         }
+        
+        @media(max-width: ${breakpoints.sml}){
+            &:nth-child(2) svg{
+                margin: 0 15px;
+            }
+        }
+
+        @media(max-width: 340px){
+            &:not(:nth-child(2)) svg{
+                height: 30px;
+                width: 30px;
+            }
+            &:nth-child(2) svg{
+                height: 65px;
+                width: 65px;
+            }
+        }
+
+        @media(max-width: ${breakpoints.smp}){
+            &:not(:nth-child(2)) svg{
+                height: 25px;
+                width: 25px;
+            }
+            &:nth-child(2) svg{
+                height: 60px;
+                width: 60px;
+            }
+        }
+
+        @media(max-width: 280px){
+            &:not(:nth-child(2)) svg{
+                height: 20px;
+                width: 20px;
+            }
+            &:nth-child(2) svg{
+                height: 55px;
+                width: 55px;
+            }
+        }
+    }
+
+    @media(max-width: ${breakpoints.smp}){
+        padding: 0 10px;
     }
 `
 
 const TrackInfo = styled.div<{isTrackSaved: boolean}>`
+    flex: 1 1 auto;
     max-width: 100%;
     width: 100%;
     display: flex;
@@ -193,16 +237,25 @@ const TrackInfo = styled.div<{isTrackSaved: boolean}>`
 
             strong{
                 font-weight: 600;
-                font-size: 18px;
+                font-size: 20px;
                 line-height: 1.2;
             }
 
             small{
                 margin: 2.5px 0 0 0;
                 font-weight: 400;
-                font-size: 14px;
+                font-size: 16px;
                 line-height: 1.2;
                 color: ${colors.gray};
+            }
+
+            @media(max-width: 400px){
+                strong{
+                    font-size: 18px;
+                }
+                small{
+                    font-size: 14px;
+                }
             }
         }
     }
@@ -215,6 +268,10 @@ const AlbumPhoto = styled.div`
     align-items: center;
     justify-content: center;
     user-select: none;
+
+    @media(max-width: ${breakpoints.smp}){
+        padding: 30px 0;
+    }
 
     figure{
         width: 100%;
@@ -286,11 +343,15 @@ const cssModal = css`
     flex-flow: column nowrap;
     justify-content: flex-end;
     --topSpacingModal: 40px;
-    --sideSpacingModal: 20px;
+    --sideSpacingModal: 40px;
     --bottomSpacingModal: 20px;
     --spacingModal: var(--topSpacingModal) var(--sideSpacingModal) var(--bottomSpacingModal) var(--sideSpacingModal);
     padding: var(--spacingModal);
     ${cssVariables}
+
+    @media(max-width: ${breakpoints.smp}){
+        --sideSpacingModal: 25px;
+    }
 `
 
 export default NowPlayingModal
