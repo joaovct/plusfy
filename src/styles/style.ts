@@ -10,7 +10,7 @@ export {colors,metrics,breakpoints,GlobalStyles}
 export const Page = styled.section`
     flex: 1;
     width: 100%;
-    padding: 0 var(--spacingSidesPage); 
+    padding: 0 var(--spacingSidesPage) ${metrics.spacing3} var(--spacingSidesPage); 
     color: #fff;
     display: flex;
     flex-flow: column nowrap;
@@ -99,6 +99,60 @@ export const Input = styled.input`
     @media(max-width: ${breakpoints.tbp}){
         font-size: 14px;
         padding: 12px ${metrics.spacing4};
+    }
+`
+
+export const FieldsetSelect = styled.div`
+    position: relative;
+    border: 1px solid ${colors.border};
+    border-radius: 24px;
+    --sizeArrow: 28px;
+    --spacingArrow: 4px;
+    --rightArrowBorder: calc(var(--sizeArrow) + var(--spacingArrow) * 2);
+
+    &:after,
+    &:before{
+        content: '';
+        display: block;
+        position: absolute;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    &:after{
+        width: 1px;
+        height: 100%;
+        background: ${colors.border};
+        top: 0;
+        right: var(--rightArrowBorder);
+    }
+
+    &:before{
+        content: 'expand_more';
+        top: 50%;
+        right: var(--spacingArrow);
+        margin-top: calc(var(--sizeArrow) / -2);
+        font-family: 'Material Icons';
+        font-size: var(--sizeArrow);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: 'liga';
+    }
+
+    select{
+        display: inline-block;
+        font-size: 1rem;
+        padding: 4px calc(var(--rightArrowBorder) + var(--spacingArrow) * 2) 4px 12px;
+        background-color: transparent;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        text-align: center;
+
+        option{
+            background: ${colors.darkerBackgroundTranslucent};
+        }
     }
 `
 

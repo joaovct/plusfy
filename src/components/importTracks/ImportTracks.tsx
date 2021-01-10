@@ -38,6 +38,10 @@ const Page = styled(page)`
     @media(max-width: ${breakpoints.sml}){
         padding-left: 0;
         padding-right: 0;
+        &, ${page}{
+            padding-top: 0;
+            padding-bottom: 0;
+        }
     }
 `
 

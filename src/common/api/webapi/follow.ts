@@ -11,7 +11,6 @@ export const followPlaylist: FollowPlaylist = async (accessToken, {playlistId, i
         const res = await api.spotify.put(`/playlists/${playlistId}/followers`, {public: isPublic}, {...getHeaders(accessToken)})
         status = res.status
     }finally{
-        console.log(status)
         return status
     }
 }
@@ -26,7 +25,6 @@ export const unfollowPlaylist: UnfollowPlaylist = async (accessToken, {playlistI
         const res = await api.spotify.delete(`/playlists/${playlistId}/followers`, {...getHeaders(accessToken)})
         status = res.status
     }finally{
-        console.log(status)
         return status
     }
 }
