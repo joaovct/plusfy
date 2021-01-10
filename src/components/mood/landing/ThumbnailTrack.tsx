@@ -1,17 +1,17 @@
 import React from 'react'
-import { ThumbnailTrack as Props} from './types'
+import { ThumbnailTrack as Props} from '../../../common/hooks/components/mood/landing/types'
 import styled from 'styled-components'
 import { colors } from '../../../styles/style'
 
 const ThumbnailTrack: React.FC<Props> = ({name, imgSrc}) => {
-    return(
-        <ThumbnailStyled title={name}>
+    return (
+        <ThumbnailStyled imgSrc={imgSrc} title={name}>
             <img src={imgSrc} alt={name}/>
         </ThumbnailStyled>
     )
 }
 
-const ThumbnailStyled = styled.figure`
+const ThumbnailStyled = styled.figure<{imgSrc: string}>`
     height: 100%;
     width: 100%;
     background: ${colors.darkerBackground};
@@ -22,7 +22,7 @@ const ThumbnailStyled = styled.figure`
         padding-bottom: 100%;
         display: block;
     }
-
+    
     img{
         height: 100%;
         width: 100%;
@@ -32,6 +32,16 @@ const ThumbnailStyled = styled.figure`
         top: 0;
         left: 0;
         object-fit: cover;
+        transition: .5s opacity;
+        opacity: 0;
+
+        ${({imgSrc}) => {
+            if(imgSrc){
+                return `
+                    opacity: 1;
+                `
+            }
+        }}
     }
 `
 

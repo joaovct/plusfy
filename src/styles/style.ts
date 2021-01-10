@@ -10,7 +10,7 @@ export {colors,metrics,breakpoints,GlobalStyles}
 export const Page = styled.section`
     flex: 1;
     width: 100%;
-    padding: 0 var(--spacingSidesPage) ${metrics.spacing3} var(--spacingSidesPage); 
+    padding: ${metrics.spacing3} var(--spacingSidesPage); 
     color: #fff;
     display: flex;
     flex-flow: column nowrap;
