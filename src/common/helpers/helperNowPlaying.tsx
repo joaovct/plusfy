@@ -35,7 +35,7 @@ export const handleRepeatState = (state: ICurrentState['repeat_state']) => {
                 position: absolute;
                 top: -1px;
                 right: -2px;
-                z-index: 2;
+                z-index: var(--zIndexSticky);
                 background: ${colors.primary};
             }
         `

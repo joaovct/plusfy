@@ -52,7 +52,7 @@ const WrapperAlerts = styled.div<{thereAreAlerts: boolean}>`
 const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: string}>`
     padding: 12px 24px;
     min-width: 200px;
-    z-index: 4;
+    z-index: var(--zIndexAlert);
     border-radius: 8px;
     box-shadow: 0 6px 16px 8px rgba(0,0,0,.16);
     ${getBackgroundColor};

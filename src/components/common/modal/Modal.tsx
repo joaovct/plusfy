@@ -42,7 +42,7 @@ export const Fullpage = styled.div< {cssPage?: css} >`
     width: 100vw;
     position: fixed;
     top: 0;
-    z-index: 3;
+    z-index: var(--zIndexModal);
     display: flex;
     justify-content: center;
     align-items: center;

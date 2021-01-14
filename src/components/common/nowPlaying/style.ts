@@ -52,7 +52,7 @@ export const VolumeControl = styled.span`
         --translateX: calc(var(--spacingHeight) / -2 + var(--additionThumbSize) / -2);
         transform: rotate(-90deg) translateY(var(--translateY)) translateX(var(--translateX));
         position: relative;
-        z-index: 2;
+        z-index: var(--zIndexOverlay);
 
         &::-webkit-slider-thumb{
             appearance: none;

@@ -7,6 +7,13 @@ import GlobalStyles from './GlobalStyles'
 
 export {colors,metrics,breakpoints,GlobalStyles}
 
+export const PrivateRouteComponent = styled.div`
+    min-height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    transition: 5s background-image;
+`
+
 export const Page = styled.section`
     flex: 1;
     width: 100%;
@@ -230,7 +237,7 @@ export const Dropdown = styled.ul<{show: Boolean}>`
     pointer-events: none;
     user-select: none;
     position: absolute;
-    z-index: 2;
+    z-index: var(--zIndexOverlay);
     min-width: 175px;
     top: 0;
     left: 0;

@@ -16,46 +16,56 @@ import AlertProvider from '../../../common/providers/AlertProvider'
 import Alerts from '../../common/alerts/Alerts'
 import NowPlaying from '../../common/nowPlaying/NowPlaying'
 import TabBar from '../../common/tabBar/TabBar'
+import { PrivateRouteComponent as privateroutecomponent } from '../../../styles/style'
+import { useLocation } from 'react-router-dom'
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshToken, expiresIn}) => {
     useDispatchToken(accessToken, refreshToken, expiresIn)
     usePlaybackSDK()
     useCurrentState()
     useDispatchUser()
-
     const user = useSelector<IStore, IUser>(store => store.user)
+    const {pathname} = useLocation()
 
     const userIsPremium = useCallback(() =>
         Object.keys(user).length && user.product !== "premium" ? false : true
     ,[user])
 
     return (
-        <AlertProvider>
-            <AddToPlaylistProvider>
-                <>
-                    <WrapperComponent>
-                        <Header/>
-                        <Component/>
-                        {!userIsPremium() ? <NotPremium/> : <></>}
-                        <StickyElements>
-                            <Alerts/>
-                            <NowPlaying/>
-                            <TabBar/>
-                        </StickyElements>
-                    </WrapperComponent>
-                    <AddPlaylist/>
-                </>
-            </AddToPlaylistProvider>
-        </AlertProvider>
+        <>  
+            <AlertProvider>
+                <AddToPlaylistProvider>
+                    <>
+                        <PrivateRouteComponent pathname={pathname}>
+                            <Header/>
+                            <Component/>
+                            {!userIsPremium() ? <NotPremium/> : <></>}
+                            <StickyElements>
+                                <Alerts/>
+                                <NowPlaying/>
+                                <TabBar/>
+                            </StickyElements>
+                        </PrivateRouteComponent>
+                        <AddPlaylist/>
+                    </>
+                </AddToPlaylistProvider>
+            </AlertProvider>
+        </>
     )
 }
 
-export default PrivateRoute
-
-const WrapperComponent = styled.div`
-    min-height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
+const PrivateRouteComponent = styled(privateroutecomponent)<{pathname: string}>`
+    ${({pathname}) => {
+        if(pathname !== '/mood'){
+            return `
+                &:nth-child(n+0){
+                    background-image: inherit;
+                    background: inherit;
+                    animation: inherit;
+                }
+            `
+        }
+    }}
 `
 
 const StickyElements = styled.div`
@@ -63,5 +73,7 @@ const StickyElements = styled.div`
     position: sticky;
     bottom: 0;
     right: 0;
-    z-index: 2;
+    z-index: var(--zIndexSticky);
 `
+
+export default PrivateRoute

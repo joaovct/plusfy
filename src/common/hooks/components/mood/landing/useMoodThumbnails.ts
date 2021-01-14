@@ -11,13 +11,13 @@ type UpdateSelect = (e: React.ChangeEvent<HTMLSelectElement>) => void
 interface Hook{
     (): {
         updateSelect: UpdateSelect
-        thumbnailsTracks: ThumbnailTrack[]
+        tracksImages: ThumbnailTrack[]
     }
 }
 
 const useMoodThumbnails: Hook = () => {
     const [timeRange, setTimeRange] = useState<UserTopArtistsAndTracksTimeRange>('medium_term')
-    const [thumbnailsTracks, setThumbnailTracks] = useState<ThumbnailTrack[]>([])
+    const [tracksImages, setTracksImages] = useState<ThumbnailTrack[]>([])
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const isMounted = useRef(true)
 
@@ -27,15 +27,13 @@ const useMoodThumbnails: Hook = () => {
 
     useEffect(() => {
         if(accessToken){
-            fetchData()
-            getUserTopArtistsAndTracks(accessToken, "tracks", {time_range: timeRange})
+            fetchTracks(6)
         }
-        async function fetchData(){
+        async function fetchTracks(numberImages: number){
             const data = await getUserTopArtistsAndTracks<Track>(accessToken, "tracks", {time_range: timeRange})
             if(isMounted.current && data.items){
-                const nItems = 6
                 let tracks: ThumbnailTrack[] = []
-                for(let i = 0; i < nItems; i++){
+                for(let i = 0; i < numberImages; i++){
                     let alreadyUsed = true
                     do{
                         const index = Math.floor(Math.random() * (data.items.length))
@@ -46,7 +44,7 @@ const useMoodThumbnails: Hook = () => {
                         }
                     }while(alreadyUsed)
                 }
-                setThumbnailTracks(tracks)
+                setTracksImages(tracks)
             }
         }
     },[timeRange, accessToken])
@@ -59,7 +57,7 @@ const useMoodThumbnails: Hook = () => {
 
     return {
         updateSelect,
-        thumbnailsTracks
+        tracksImages
     }
 }
 

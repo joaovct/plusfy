@@ -1,10 +1,14 @@
-import {createGlobalStyle} from 'styled-components'
-import {breakpoints, colors, metrics} from './style'
+import { createGlobalStyle } from "styled-components";
+import { breakpoints, colors, metrics } from "./style";
 
 const GlobalStyles = createGlobalStyle`
     :root{
         --opacityInputDisabled: .6;
         --spacingSidesPage: ${metrics.spacing5};
+        --zIndexAlert: 400;
+        --zIndexModal: 300;
+        --zIndexOverlay: 200;
+        --zIndexSticky: 100;
 
         @media(max-width: ${breakpoints.tbl}){
             --spacingSidesPage: ${metrics.spacing4};
@@ -101,6 +105,6 @@ const GlobalStyles = createGlobalStyle`
         font-weight: 600;
         line-height: 49px;
     }
-`
+`;
 
-export default GlobalStyles
+export default GlobalStyles;

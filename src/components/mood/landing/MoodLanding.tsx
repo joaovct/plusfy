@@ -5,19 +5,16 @@ import styled from 'styled-components'
 import ThumbnailTrack from './ThumbnailTrack'
 
 const MoodLanding = () => {
-    const {thumbnailsTracks, updateSelect} = useMoodThumbnails()
+    const {tracksImages, updateSelect} = useMoodThumbnails()
 
     return(
         <Content>
             <Article>
                 <GridThumbnailTracks>
                     {
-                        [0,1,2,3,4,5].map((_, index) => (
-                            <ThumbnailTrack
-                                key={`mood-thumbnailtrack-${index}`}
-                                {...thumbnailsTracks[index] || {name: '', imgSrc: ''}}
-                            />
-                        ))
+                        tracksImages.map((trackImage, index) =>
+                            <ThumbnailTrack key={`mood-thumbnailtrack-${index}`} {...trackImage}/>
+                        )
                     }
                 </GridThumbnailTracks>
                 <MainText>
