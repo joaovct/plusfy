@@ -1,11 +1,23 @@
-import React from 'react'
-import { metrics, colors, Title, Text, Button, FieldsetSelect, breakpoints } from '../../../styles/style'
+import React, {useEffect} from 'react'
+import { metrics, colors, Title, Text, Button, FieldsetSelect, breakpoints, PrivateRouteComponent } from '../../../styles/style'
 import useMoodThumbnails from '../../../common/hooks/components/mood/landing/useMoodThumbnails'
 import styled from 'styled-components'
 import ThumbnailTrack from './ThumbnailTrack'
+import useAddGlobalStyles from '../../../common/hooks/useAddGlobalStyles'
 
 const MoodLanding = () => {
-    const {tracksImages, updateSelect} = useMoodThumbnails()
+    const {tracksImages,artistsImages,updateSelect} = useMoodThumbnails()
+    const addGlobalStyles = useAddGlobalStyles()
+
+    useEffect(() => {
+        if(artistsImages.length){
+            const css = generateCSS(artistsImages)
+            addGlobalStyles(css,'/mood')
+        }
+
+    //eslint-disable-next-line
+    },[artistsImages])
+
 
     return(
         <Content>
@@ -38,6 +50,91 @@ const MoodLanding = () => {
         </Content>
     )
 }
+
+function generateCSS(images: string[]): string{
+    const keyframesBackground = getBackgroundKeyframes(images)
+    console.log(keyframesBackground)
+    
+    return `
+        @media(max-width: ${breakpoints.tbp}){
+            ${PrivateRouteComponent}, ${PrivateRouteComponent} *{
+                z-index: 1;
+            }
+
+            ${PrivateRouteComponent}{
+                &:before{
+                    content: '';
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 100vh;
+                    width: 100vw;
+                    pointer-events: none;
+                    user-select: none;
+                    background: ${colors.darkerBackgroundTranslucent};
+                }
+            }
+
+            ${keyframesBackground}
+        }
+    `
+}
+
+function getBackgroundKeyframes(images: string[]): string{
+    return `
+        ${PrivateRouteComponent}{
+            animation: ${10 * images.length}s background forwards;
+            animation-iteration-count: infinite; 
+            transition: 0s background-image;
+            background-image: url(${images[0]});
+            background-size: cover;
+            &:before{
+                transition: .25s opacity;
+            }
+
+            @keyframes background{
+                ${images.map((image, index) => {
+                    const percentage = 100 / (images.length + 1) * index + '%'
+                    console.log(percentage)
+                    return`
+                        ${percentage}{
+                            background-image: url(${image});
+                        }
+                    `
+                }).join('')}
+                ${(() => `
+                    100%{
+                        background-image: url(${images[0]});
+                    }
+                `)()}
+            }
+
+            @keyframes opacity{
+                0%{
+                    opacity: 1;
+                }
+                50%{
+                    opacity: 0;
+                }
+                100%{
+                    opacity: 1;
+                }
+            }
+        }
+    `
+}
+
+// ${images.map((image, index) => {
+//     const percentage = 100 / (images.length + 1) * (index + 1) + '%'
+//     return`
+//         ${percentage}{
+//             background-image: url(${image});
+//             &:before{
+//                 opacity: 0;
+//             }
+//         }
+//     `
+// }).join('')}
 
 const SelectRange = styled.div`
     margin: ${metrics.spacing5} 0 0 0;

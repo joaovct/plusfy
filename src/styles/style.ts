@@ -11,7 +11,6 @@ export const PrivateRouteComponent = styled.div`
     min-height: 100%;
     display: flex;
     flex-flow: column nowrap;
-    transition: 5s background-image;
 `
 
 export const Page = styled.section`

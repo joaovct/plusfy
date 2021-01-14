@@ -92,11 +92,10 @@ const HeaderInner = styled.div`
     align-items: flex-start;
 `
 
-const HeaderWrapper = styled.header`
+export const HeaderWrapper = styled.header`
     width: 100%;
     display: flex;
     justify-content: center;
-    /* padding: ${metrics.spacing2} var(--spacingSidesPage) ${metrics.spacing3} var(--spacingSidesPage);  */
     padding: ${metrics.spacing3} var(--spacingSidesPage); 
     --photoSize: 50px;
     --photoPadding: 15px;
