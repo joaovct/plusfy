@@ -5,6 +5,7 @@ export const darkerBackgroundTranslucent = 'rgba(28, 31, 45, .85)'
 export const backdropMeasure = '2px'
 export const primaryGradient = "linear-gradient(136.17deg, #3552D8 21.35%, #5B4CC0 55.81%, #7E46A9 70.48%, #C53A7D 92.22%);"
 export const primary = "#3552D8"
+export const primaryTranslucent = "rgba(53,82,216,.60);"
 export const secondary = "#C53A7D"
 export const gray = '#bbb'
 export const darkerGray = '#4F4F4F'

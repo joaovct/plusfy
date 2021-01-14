@@ -50,7 +50,7 @@ const WrapperAlerts = styled.div<{thereAreAlerts: boolean}>`
 `
 
 const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: string}>`
-    padding: 12px 24px;
+    padding: 12px 16px;
     min-width: 200px;
     z-index: 4;
     border-radius: 8px;
@@ -88,7 +88,7 @@ const Alert = styled.div<{type: TypeAlert, timing: number, backgroundColor?: str
 function getBackgroundColor(props: {type: TypeAlert}) {
     switch(props.type){
         case 'normal':
-            return `background-color: ${colors.darkerBackgroundTranslucent}`
+            return `background-color: ${colors.primaryTranslucent}`
         case 'success':
             return `background-color: ${colors.green}`
         case 'warning':
