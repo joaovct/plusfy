@@ -42,7 +42,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
         <>
             {
                 status === 'show' ?
-                <Modal cssPage={cssPreparer} cssModal={cssModal}>
+                <Modal cssPage={cssPreparer+cssModalPage} cssModal={cssModal}>
                     <HeaderModal>
                         <Close onClick={closeModal}/>
                         <button onClick={redirectToPlaylist}>
@@ -277,6 +277,7 @@ const AlbumPhoto = styled.div`
         width: 100%;
         position: relative;
         max-width: 50vh;
+        box-shadow: ${metrics.boxShadow};
 
         &:after{
             content: "";
@@ -329,6 +330,10 @@ const HeaderModal = styled.div`
     }
 `
 
+const cssModalPage = css`
+    backdrop-filter: blur(8px);
+`
+
 const cssModal = css`
     min-height: inherit;
     min-width: inherit;
@@ -337,7 +342,6 @@ const cssModal = css`
     height: 100%;
     width: 100%;
     background: ${colors.darkerBackgroundTranslucent};
-    backdrop-filter: ${metrics.backdropBlurFilter};
     border-radius: 0px;
     display: flex;
     flex-flow: column nowrap;
