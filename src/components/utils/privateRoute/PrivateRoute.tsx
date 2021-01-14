@@ -16,8 +16,9 @@ import AlertProvider from '../../../common/providers/AlertProvider'
 import Alerts from '../../common/alerts/Alerts'
 import NowPlaying from '../../common/nowPlaying/NowPlaying'
 import TabBar from '../../common/tabBar/TabBar'
-import { PrivateRouteComponent as privateroutecomponent } from '../../../styles/style'
-import { useLocation } from 'react-router-dom'
+import { PrivateRouteComponent } from '../../../styles/style'
+import GlobalStylesProvider from '../../../common/providers/GlobalStylesProvider'
+import GlobalStylesManager from '../../common/globalStylesManager/GlobalStylesManager'
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshToken, expiresIn}) => {
     useDispatchToken(accessToken, refreshToken, expiresIn)
@@ -25,18 +26,18 @@ const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshT
     useCurrentState()
     useDispatchUser()
     const user = useSelector<IStore, IUser>(store => store.user)
-    const {pathname} = useLocation()
 
     const userIsPremium = useCallback(() =>
         Object.keys(user).length && user.product !== "premium" ? false : true
     ,[user])
 
     return (
-        <>  
+        <GlobalStylesProvider>
             <AlertProvider>
                 <AddToPlaylistProvider>
                     <>
-                        <PrivateRouteComponent pathname={pathname}>
+                        <GlobalStylesManager/>
+                        <PrivateRouteComponent>
                             <Header/>
                             <Component/>
                             {!userIsPremium() ? <NotPremium/> : <></>}
@@ -50,23 +51,23 @@ const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshT
                     </>
                 </AddToPlaylistProvider>
             </AlertProvider>
-        </>
+        </GlobalStylesProvider> 
     )
 }
 
-const PrivateRouteComponent = styled(privateroutecomponent)<{pathname: string}>`
-    ${({pathname}) => {
-        if(pathname !== '/mood'){
-            return `
-                &:nth-child(n+0){
-                    background-image: inherit;
-                    background: inherit;
-                    animation: inherit;
-                }
-            `
-        }
-    }}
-`
+// const PrivateRouteComponent = styled(privateroutecomponent)<{pathname: string}>`
+//     ${({pathname}) => {
+//         if(pathname !== '/mood'){
+//             return `
+//                 &:nth-child(n+0){
+//                     background-image: inherit;
+//                     background: inherit;
+//                     animation: inherit;
+//                 }
+//             `
+//         }
+//     }}
+// `
 
 const StickyElements = styled.div`
     width: 100%;
