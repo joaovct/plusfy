@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react'
-import { metrics, colors, Title, Text, Button, FieldsetSelect, breakpoints, PrivateRouteComponent } from '../../../styles/style'
+import { metrics, colors, Title, Text, Button, FieldsetSelect, breakpoints, PrivateRouteComponent, Page} from '../../../styles/style'
 import useMoodThumbnails from '../../../common/hooks/components/mood/landing/useMoodThumbnails'
 import styled from 'styled-components'
 import ThumbnailTrack from './ThumbnailTrack'
 import useAddGlobalStyles from '../../../common/hooks/useAddGlobalStyles'
+import { HeaderWrapper } from '../../utils/privateRoute/Header'
+import { StickyElements } from '../../utils/privateRoute/PrivateRoute'
 
 const MoodLanding = () => {
     const {tracksImages,artistsImages,updateSelect} = useMoodThumbnails()
@@ -53,12 +55,25 @@ const MoodLanding = () => {
 
 function generateCSS(images: string[]): string{
     const keyframesBackground = getBackgroundKeyframes(images)
-    console.log(keyframesBackground)
     
     return `
         @media(max-width: ${breakpoints.tbp}){
-            ${PrivateRouteComponent}, ${PrivateRouteComponent} *{
-                z-index: 1;
+            ${PrivateRouteComponent}{
+                ${StickyElements}{
+                    &, *{
+                        z-index: 3;
+                    }
+                }
+                ${HeaderWrapper}{
+                    &, *{
+                        z-index: 2;
+                    }
+                }
+                ${Page}{
+                    &, *{
+                        z-index: 1;
+                    }
+                }
             }
 
             ${PrivateRouteComponent}{
@@ -72,6 +87,7 @@ function generateCSS(images: string[]): string{
                     pointer-events: none;
                     user-select: none;
                     background: ${colors.darkerBackgroundTranslucent};
+                    transition: background .25s;
                 }
             }
 
@@ -81,60 +97,34 @@ function generateCSS(images: string[]): string{
 }
 
 function getBackgroundKeyframes(images: string[]): string{
+    function calculatePercentage(n: number){
+        return Math.floor(100 / (images.length + 1) * n)
+    }
+
     return `
         ${PrivateRouteComponent}{
-            animation: ${10 * images.length}s background forwards;
-            animation-iteration-count: infinite; 
-            transition: 0s background-image;
             background-image: url(${images[0]});
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
             background-size: cover;
-            &:before{
-                transition: .25s opacity;
-            }
-
+            animation: ${10 * images.length}s background infinite;
+            animation-iteration-count: infnite;
+            transition: background-image 0.5s ease-in-out;
+            
             @keyframes background{
                 ${images.map((image, index) => {
-                    const percentage = 100 / (images.length + 1) * index + '%'
-                    console.log(percentage)
+                    const percentage = calculatePercentage(index)
+
                     return`
-                        ${percentage}{
+                        ${percentage}%{
                             background-image: url(${image});
                         }
                     `
                 }).join('')}
-                ${(() => `
-                    100%{
-                        background-image: url(${images[0]});
-                    }
-                `)()}
-            }
-
-            @keyframes opacity{
-                0%{
-                    opacity: 1;
-                }
-                50%{
-                    opacity: 0;
-                }
-                100%{
-                    opacity: 1;
-                }
             }
         }
     `
 }
-
-// ${images.map((image, index) => {
-//     const percentage = 100 / (images.length + 1) * (index + 1) + '%'
-//     return`
-//         ${percentage}{
-//             background-image: url(${image});
-//             &:before{
-//                 opacity: 0;
-//             }
-//         }
-//     `
-// }).join('')}
 
 const SelectRange = styled.div`
     margin: ${metrics.spacing5} 0 0 0;

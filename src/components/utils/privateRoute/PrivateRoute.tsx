@@ -55,21 +55,7 @@ const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshT
     )
 }
 
-// const PrivateRouteComponent = styled(privateroutecomponent)<{pathname: string}>`
-//     ${({pathname}) => {
-//         if(pathname !== '/mood'){
-//             return `
-//                 &:nth-child(n+0){
-//                     background-image: inherit;
-//                     background: inherit;
-//                     animation: inherit;
-//                 }
-//             `
-//         }
-//     }}
-// `
-
-const StickyElements = styled.div`
+export const StickyElements = styled.div`
     width: 100%;
     position: sticky;
     bottom: 0;
