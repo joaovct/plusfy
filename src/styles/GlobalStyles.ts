@@ -5,6 +5,7 @@ const GlobalStyles = createGlobalStyle`
     :root{
         --opacityInputDisabled: .6;
         --spacingSidesPage: ${metrics.spacing5};
+        --zIndexNowPlayingModal: 500;
         --zIndexAlert: 400;
         --zIndexModal: 300;
         --zIndexOverlay: 200;

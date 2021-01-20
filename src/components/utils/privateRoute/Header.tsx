@@ -17,7 +17,7 @@ const Header: FunctionComponent = () => {
     }
 
     return(
-        <HeaderWrapper>
+        <HeaderStyled>
             <HeaderInner>
                 <Link to="/home">
                     <Logo src={logoSrc}/>
@@ -36,7 +36,7 @@ const Header: FunctionComponent = () => {
                     </Options>
                 </HeaderUserPhoto>
             </HeaderInner>
-        </HeaderWrapper>
+        </HeaderStyled>
     )
 }
 
@@ -92,7 +92,7 @@ const HeaderInner = styled.div`
     align-items: flex-start;
 `
 
-export const HeaderWrapper = styled.header`
+export const HeaderStyled = styled.header`
     width: 100%;
     display: flex;
     justify-content: center;

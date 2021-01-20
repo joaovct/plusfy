@@ -4,7 +4,7 @@ import useMoodThumbnails from '../../../common/hooks/components/mood/landing/use
 import styled from 'styled-components'
 import ThumbnailTrack from './ThumbnailTrack'
 import useAddGlobalStyles from '../../../common/hooks/useAddGlobalStyles'
-import { HeaderWrapper } from '../../utils/privateRoute/Header'
+import { HeaderStyled } from '../../utils/privateRoute/Header'
 import { StickyElements } from '../../utils/privateRoute/PrivateRoute'
 
 const MoodLanding = () => {
@@ -20,6 +20,9 @@ const MoodLanding = () => {
     //eslint-disable-next-line
     },[artistsImages])
 
+    const clickStartAnalyse = () => {
+        
+    }
 
     return(
         <Content>
@@ -47,7 +50,7 @@ const MoodLanding = () => {
                         </select>
                     </FieldsetSelect>
                 </span>
-                <Button>Começar</Button>
+                <Button onClick={clickStartAnalyse}>Começar</Button>
             </SelectRange>
         </Content>
     )
@@ -60,11 +63,11 @@ function generateCSS(images: string[]): string{
         @media(max-width: ${breakpoints.tbp}){
             ${PrivateRouteComponent}{
                 ${StickyElements}{
-                    &, *{
+                    &:not(:nth-last-child(2)){
                         z-index: 3;
                     }
                 }
-                ${HeaderWrapper}{
+                ${HeaderStyled}{
                     &, *{
                         z-index: 2;
                     }

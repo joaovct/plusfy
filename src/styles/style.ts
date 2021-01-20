@@ -51,7 +51,7 @@ export const Title = styled.h1`
 
 export const Text = styled.p`
     display: block;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 300;
     line-height: 1.2;
     color: #fff;

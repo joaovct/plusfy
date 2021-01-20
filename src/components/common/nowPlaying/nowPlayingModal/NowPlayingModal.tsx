@@ -348,6 +348,7 @@ const cssModal = css`
     --spacingModal: var(--topSpacingModal) var(--sideSpacingModal) var(--bottomSpacingModal) var(--sideSpacingModal);
     padding: var(--spacingModal);
     ${cssVariables}
+    z-index: var(--zIndexNowPlayingModal);
 
     @media(max-width: ${breakpoints.smp}){
         --sideSpacingModal: 25px;
