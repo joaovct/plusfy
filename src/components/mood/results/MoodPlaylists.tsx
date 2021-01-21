@@ -237,23 +237,26 @@ const Playlist = styled.div`
     background: #fff;
     border-radius: ${metrics.borderRadius};
     padding: 10px 20px;
-
-    @media(max-width: 400px){
-        margin: 0 0 20px 0;
-    }
 `
 
 const Playlists = styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 375px));
+    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
     justify-content: center;
     gap: 20px;
     margin: 40px 0 0 0;
 
-    @media(max-width: 400px){
-        display: flex;
-        flex-flow: column nowrap;
+    @media(max-width: ${metrics.maxWidthContainer}){
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media(max-width: ${breakpoints.xlg}){
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media(max-width: 700px){
+        grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 `
 
