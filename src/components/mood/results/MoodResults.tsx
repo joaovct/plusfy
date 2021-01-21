@@ -3,21 +3,23 @@ import styled from 'styled-components'
 import MainResult from './MainResult'
 import SectionDivider from './SectionDivider'
 import MoodPlaylists from './MoodPlaylists'
+import { Container as container } from '../styles'
+import useManageScreenMood from '../../../common/hooks/components/mood/useManageScreenMood'
 
 const MoodResults = () => {
+    const css = useManageScreenMood({target: 'success'})
+
     return(
-        <Content>
+        <Container css={css}>
             <MainResult/>
             <SectionDivider/>
             <MoodPlaylists/>
-        </Content>
+        </Container>
     )
 }
 
-const Content = styled.div`
+const Container = styled(container)`
     width: 100%;
-    display: flex;
-    flex-flow: column nowrap;
     align-items: center;
 `
 

@@ -1,28 +1,25 @@
 import React  from 'react'
 import styled from 'styled-components'
-import { Page as page, Container as container } from '../../styles/style'
+import { Page as page } from '../../styles/style'
 import MoodLanding from './landing/MoodLanding'
-// import MoodLoading from './loading/MoodLoading'
-// import MoodResults from './results/MoodResults'
+import MoodLoading from './loading/MoodLoading'
+import MoodResults from './results/MoodResults'
+import MoodContext from './ContextMood'
+import useMood from '../../common/hooks/components/mood/useMood'
 
 const Mood = () => {
+    const moodValues = useMood()
 
     return(
-        <Page>
-            <Container>
+        <MoodContext.Provider value={{...moodValues}}>
+            <Page>
                 <MoodLanding/>
-                {/* <MoodLoading/> */}
-                {/* <MoodResults/> */}
-            </Container>
-        </Page>
+                <MoodLoading/>
+                <MoodResults/>
+            </Page>
+        </MoodContext.Provider>
     )
 }
-
-const Container = styled(container)`
-    flex: 1 1 auto;
-    display: flex;
-    flex-flow: column nowrap;
-`
 
 const Page = styled(page)`
     position: relative;

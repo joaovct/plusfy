@@ -1,31 +1,35 @@
-import React, {useEffect} from 'react'
-import { metrics, colors, Title, Text, Button, FieldsetSelect, breakpoints, PrivateRouteComponent, Page} from '../../../styles/style'
+import React, { useEffect } from 'react'
+import { metrics, colors, Title, Text, Button, FieldsetSelect, breakpoints } from '../../../styles/style'
+import { Container as container } from '../styles'
+import { generateCSS } from '../helper'
 import useMoodThumbnails from '../../../common/hooks/components/mood/landing/useMoodThumbnails'
 import styled from 'styled-components'
 import ThumbnailTrack from './ThumbnailTrack'
 import useAddGlobalStyles from '../../../common/hooks/useAddGlobalStyles'
-import { HeaderStyled } from '../../utils/privateRoute/Header'
-import { StickyElements } from '../../utils/privateRoute/PrivateRoute'
+import useMoodContext from '../../../common/hooks/components/mood/useMoodContext'
+import useManageScreenMood from '../../../common/hooks/components/mood/useManageScreenMood'
+import { minAwaitTimingFade } from '../../../common/hooks/components/mood/types'
 
 const MoodLanding = () => {
+    const css = useManageScreenMood({target: "initial", active: true})
+    const { status, loadMood } = useMoodContext()
     const {tracksImages,artistsImages,updateSelect} = useMoodThumbnails()
     const addGlobalStyles = useAddGlobalStyles()
 
     useEffect(() => {
-        if(artistsImages.length){
+        if(status === 'initial' && artistsImages.length){
             const css = generateCSS(artistsImages)
-            addGlobalStyles(css,'/mood')
+            setTimeout(() => {
+                addGlobalStyles(css, '/mood')
+            },minAwaitTimingFade)
+        }else if(status !== 'initial'){
+            addGlobalStyles('', '/mood')
         }
-
     //eslint-disable-next-line
-    },[artistsImages])
-
-    const clickStartAnalyse = () => {
-        
-    }
+    },[artistsImages, status])
 
     return(
-        <Content>
+        <Container css={css}>
             <Article>
                 <GridThumbnailTracks>
                     {
@@ -43,90 +47,17 @@ const MoodLanding = () => {
                 <span>
                     <Text>Analisar faixas dos últimos:</Text>
                     <FieldsetSelect>
-                        <select onChange={updateSelect} defaultValue="medium_term">
+                        <select onChange={updateSelect} defaultValue="short_term">
                             <option value="long_term">Todo o tempo</option>
                             <option value="medium_term">6 meses</option>
                             <option value="short_term">Último mês</option>
                         </select>
                     </FieldsetSelect>
                 </span>
-                <Button onClick={clickStartAnalyse}>Começar</Button>
+                <Button onClick={loadMood}>Começar</Button>
             </SelectRange>
-        </Content>
+        </Container>
     )
-}
-
-function generateCSS(images: string[]): string{
-    const keyframesBackground = getBackgroundKeyframes(images)
-    
-    return `
-        @media(max-width: ${breakpoints.tbp}){
-            ${PrivateRouteComponent}{
-                ${StickyElements}{
-                    &:not(:nth-last-child(2)){
-                        z-index: 3;
-                    }
-                }
-                ${HeaderStyled}{
-                    &, *{
-                        z-index: 2;
-                    }
-                }
-                ${Page}{
-                    &, *{
-                        z-index: 1;
-                    }
-                }
-            }
-
-            ${PrivateRouteComponent}{
-                &:before{
-                    content: '';
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    height: 100vh;
-                    width: 100vw;
-                    pointer-events: none;
-                    user-select: none;
-                    background: ${colors.darkerBackgroundTranslucent};
-                    transition: background .25s;
-                }
-            }
-
-            ${keyframesBackground}
-        }
-    `
-}
-
-function getBackgroundKeyframes(images: string[]): string{
-    function calculatePercentage(n: number){
-        return Math.floor(100 / (images.length + 1) * n)
-    }
-
-    return `
-        ${PrivateRouteComponent}{
-            background-image: url(${images[0]});
-            background-position: 50% 50%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            animation: ${10 * images.length}s background infinite;
-            animation-iteration-count: infnite;
-            transition: background-image 0.5s ease-in-out;
-            
-            @keyframes background{
-                ${images.map((image, index) => {
-                    const percentage = calculatePercentage(index)
-
-                    return`
-                        ${percentage}%{
-                            background-image: url(${image});
-                        }
-                    `
-                }).join('')}
-            }
-        }
-    `
 }
 
 const SelectRange = styled.div`
@@ -281,18 +212,6 @@ const GridThumbnailTracks = styled.div`
     @media(max-width: ${breakpoints.tbp}){
         display: none;
     }
-
-    /* @media(max-width: ${breakpoints.tbp}){
-        width: 100%;
-        order: 1;
-        grid-template-columns: repeat(8, 1fr);
-        justify-content: center;
-        grid-auto-flow: dense;
-        gap: 0;
-    }
-    @media(max-width: 380px){
-        grid-template-columns: repeat(4, 1fr);
-    } */
 `
 
 const Article = styled.article`
@@ -309,11 +228,8 @@ const Article = styled.article`
     }
 `
 
-const Content = styled.div`
+const Container = styled(container)`
     width: 100%;
-    flex: 1 1 auto;
-    display: flex;
-    flex-flow: column nowrap;
     justify-content: center;
 `
 

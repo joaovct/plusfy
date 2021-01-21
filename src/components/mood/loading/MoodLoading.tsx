@@ -1,34 +1,23 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import loadingAnimation from '../../../assets/mood/loading-animation.webm'
+import useManageScreenMood from '../../../common/hooks/components/mood/useManageScreenMood'
 import { Title, Text, breakpoints } from '../../../styles/style'
+import { Container } from '../styles'
 
 const MoodLoading = () => {
-    const animationRef = useRef<HTMLVideoElement>(null)
-    const isMounted = useRef(true)
-    
-    useEffect(() => {
-        return () => {isMounted.current = false}
-    },[])
-
-    useEffect(() => {
-        if(animationRef.current){
-            setInterval(() => {
-                if(isMounted.current){
-                    animationRef.current?.play()
-                }
-            }, 2500)
-        }
-    },[animationRef])
+    const css = useManageScreenMood({target: 'loading'})
 
     return(
-        <Loading>
-            <Animation ref={animationRef} autoPlay>
-                <source src={loadingAnimation} type="video/webm"/>
-            </Animation>
-            <Title>Um momento...</Title>
-            <Text>Estamos analisando suas músicas</Text>
-        </Loading>
+        <Container css={css}>
+            <Loading>
+                <Animation autoPlay loop>
+                    <source src={loadingAnimation} type="video/webm"/>
+                </Animation>
+                <Title>Um momento...</Title>
+                <Text>Estamos analisando suas músicas</Text>
+            </Loading>
+        </Container>
     )
 }
 

@@ -4,6 +4,7 @@ import { IToken } from "../../../../../redux/store/token/types"
 import { IStore } from "../../../../../redux/store/types"
 import { getUserTopArtistsAndTracks } from "../../../../api/webapi/personalization"
 import { Artist, Track, UserTopArtistsAndTracksTimeRange } from "../../../../api/webapi/types"
+import useMoodContext from "../useMoodContext"
 import { ThumbnailTrack } from "./types"
 
 type UpdateSelect = (e: React.ChangeEvent<HTMLSelectElement>) => void
@@ -18,6 +19,7 @@ interface Hook{
 }
 
 const useMoodThumbnails: Hook = () => {
+    const {updateTimeRange} = useMoodContext()
     const [timeRange, setTimeRange] = useState<UserTopArtistsAndTracksTimeRange>('medium_term')
     const [tracksImages, setTracksImages] = useState<ThumbnailTrack[]>([])
     const [artistsImages, setArtistsImages] = useState<string[]>([])
@@ -82,6 +84,7 @@ const useMoodThumbnails: Hook = () => {
     const updateSelect: UpdateSelect = (e) => {
         if(e.target.value === "long_term" || e.target.value === "medium_term" || e.target.value === "short_term"){
             setTimeRange(e.target.value)
+            updateTimeRange(e.target.value)
         }
     }
 
