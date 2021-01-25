@@ -1,21 +1,24 @@
 import React from 'react'
 import { breakpoints, Text, Title } from '../../../styles/style'
-import dancerIcon from '../../../assets/mood/mood-dancer.png'
 import styled from 'styled-components'
+import useMoodContext from '../../../common/hooks/components/mood/useMoodContext'
+import { getMoodDescription, getMoodAnimation, getMoodTitle } from '../../../common/helpers/helperMood'
+import { Mood } from '../types'
 
 const MainResult = () => {
+    const {results} = useMoodContext()
+
     return(
         <MainResultStyled>
             <Subtitle>O seu principal mood é:</Subtitle>
-            <MoodIcon>
-                <img src={dancerIcon} alt="Mood dancer"/>
+            <MoodIcon mood={results?.mood}>
+                <video autoPlay loop>
+                    <source src={getMoodAnimation(results?.mood || '')} type="video/webm"/>
+                </video>
             </MoodIcon>
             <Description>
-                <Title>Dançante</Title>
-                <Text>
-                    A maioria das suas músicas tem uma sonoridade muito animada para uma boa dança.
-                    É bem provável não consiga se segurar e comece a dançar enquanto escuta suas músicas.
-                </Text>
+                <Title>{getMoodTitle(results?.mood || '')}</Title>
+                <Text>{getMoodDescription(results?.mood || '')}</Text>
             </Description>
         </MainResultStyled>
     )
@@ -64,19 +67,42 @@ const Description = styled.article`
     }
 `
 
-const MoodIcon = styled.figure`
-    margin: 40px 0 0 0;
+const MoodIcon = styled.figure<{mood: Mood | undefined}>`
+    --sizeVideo: 200px;
+    margin: 20px 0 0 0;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
 
-    img{
-        height: 125px;
-        width: 125px;
+    video{
+        height: var(--sizeVideo);
+        width: var(--sizeVideo);
+        filter: brightness(.95);
+        user-select: none;
+    }
+
+    ${({mood}) => {
+        if(mood === 'energetic')
+            return `
+                height: var(--sizeVideo);
+                width: var(--sizeVideo);
+
+                video{
+                    height: calc(var(--sizeVideo) + 50px);
+                    width: calc(var(--sizeVideo) + 50px); 
+                    position: relative;
+                    top: -12.5px;
+                }
+            `
+    }}
+
+    @media(max-width: ${breakpoints.tbl}){
+        --sizeVideo: 175px;
     }
 
     @media(max-width: ${breakpoints.sml}){
-        img{
-            height: 100px;
-            width: 100px;
-        }
+        --sizeVideo: 150px;
     }
 `
 

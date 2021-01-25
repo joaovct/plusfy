@@ -19,7 +19,7 @@ const SectionDivider = () => {
         "https://i.scdn.co/image/ab67616d0000b2731813ea8f590a0aab2820f922",
         "https://i.scdn.co/image/ab67616d0000b2730507c0a364f274bd5c86fa78",
         "https://i.scdn.co/image/ab67616d0000b27322c614bdaf27ea223bcb2add",
-        "https://i.scdn.co/image/ab67616d0000b2736e7cb1429534f0d21133b714"
+        "https://i.scdn.co/image/ab67616d0000b2736e7cb1429534f0d21133b714",
     ]
 
     const renderThumbnails = () => (

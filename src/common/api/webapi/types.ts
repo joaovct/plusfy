@@ -310,9 +310,36 @@ export type GetUserTopArtistsAndTracksResult<T> = {
 }
 
 export interface GetUserTopArtistsAndTracks{
-    <T>(accessToken: string, type: UserTopArtistsAndTracksType, configs?: UserTopArtistsAndTracksConfigs): Promise<GetUserTopArtistsAndTracksResult<T>>
+    <T>(accessToken: string, type: UserTopArtistsAndTracksType, configs?: UserTopArtistsAndTracksConfigs): Promise<GetUserTopArtistsAndTracksResult<T> | undefined>
 }
 
 export interface GetNextUserTopArtistsAndTracks{
-    <T>(accessToken: string, nextURL: string, configs?: UserTopArtistsAndTracksConfigs): Promise<GetUserTopArtistsAndTracksResult<T>>
+    <T>(accessToken: string, nextURL: string, configs?: UserTopArtistsAndTracksConfigs): Promise<GetUserTopArtistsAndTracksResult<T> | undefined>
+}
+
+export interface AudioFeature{
+    danceability: number
+    energy: number
+    key: number
+    loudness: number
+    mode: number
+    speechiness: number
+    acousticness: number
+    instrumentalness: number
+    liveness: number
+    valence: number
+    tempo: number
+    type: "audio_features"
+    id: string
+    uri: string
+    track_href: string
+    analysis_url: string
+    duration_ms: number
+    time_signature: number
+}
+
+export interface GetAudioFeatures{
+    (accessToken: string, ids: string[]): Promise<{
+        audio_features: AudioFeature[]
+    }>
 }

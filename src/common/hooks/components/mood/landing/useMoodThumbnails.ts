@@ -36,17 +36,17 @@ const useMoodThumbnails: Hook = () => {
         }
         async function fetchTracks(numberImages: number){
             const data = await getUserTopArtistsAndTracks<Track>(accessToken, "tracks", {time_range: timeRange})
-            if(isMounted.current && data.items){
+            if(isMounted.current && data?.items){
                 let tracks: ThumbnailTrack[] = []
-                numberImages = numberImages > data.items.length ? data.items.length : numberImages
+                numberImages = numberImages > data?.items.length ? data?.items.length : numberImages
 
                 for(let i = 0; i < numberImages; i++){
                     let alreadyUsed = true
                     do{
-                        const index = Math.floor(Math.random() * (data.items.length))
-                        alreadyUsed = !tracks.every(track => data.items[index]?.album.images[0] && data.items[index]?.album.images[0].url && track.imgSrc !== data.items[index]?.album.images[0].url)
+                        const index = Math.floor(Math.random() * (data?.items.length))
+                        alreadyUsed = !tracks.every(track => data?.items[index]?.album.images[0] && data?.items[index]?.album.images[0].url && track.imgSrc !== data?.items[index]?.album.images[0].url)
                         if(!alreadyUsed){
-                            const track = {name: data.items[index]?.name || '', imgSrc: data.items[index]?.album.images[0].url || ''}
+                            const track = {name: data?.items[index]?.name || '', imgSrc: data?.items[index]?.album.images[0].url || ''}
                             tracks = [...tracks, track]
                         }
                     }while(alreadyUsed)
@@ -62,16 +62,16 @@ const useMoodThumbnails: Hook = () => {
         }
         async function fetchArtists(numberImages: number){
             const data = await getUserTopArtistsAndTracks<Artist>(accessToken, "artists", {time_range: "short_term"})
-            if(isMounted.current && data.items){
+            if(isMounted.current && data?.items){
                 let artists: string[] = []
-                numberImages = numberImages > data.items.length ? data.items.length : numberImages
+                numberImages = numberImages > data?.items.length ? data?.items.length : numberImages
                 for(let i = 0; i < numberImages; i++){
                     let alreadyUsed = true
                     do{
-                        const index = Math.floor(Math.random() * (data.items.length))
-                        alreadyUsed = !artists.every(artist => data.items[index]?.images[0] && data.items[index]?.images[0].url && artist !== data.items[index]?.images[0].url)
+                        const index = Math.floor(Math.random() * (data?.items.length))
+                        alreadyUsed = !artists.every(artist => data?.items[index]?.images[0] && data?.items[index]?.images[0].url && artist !== data?.items[index]?.images[0].url)
                         if(!alreadyUsed){
-                            const artist = data.items[index].images[0].url
+                            const artist = data?.items[index].images[0].url
                             artists = [...artists, artist]
                         }
                     }while(alreadyUsed)

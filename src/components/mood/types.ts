@@ -1,10 +1,10 @@
-import { UserTopArtistsAndTracksTimeRange } from "../../common/api/webapi/types";
+import { Track, UserTopArtistsAndTracksTimeRange } from "../../common/api/webapi/types";
 import { UpdateTimeRange } from "../../common/hooks/components/mood/types";
 
 export interface ContextProps {
     status: Status
     timeRange: UserTopArtistsAndTracksTimeRange
-    results: Results
+    results: Results | null
     loadMood: () => void
     resetMood: () => void
     updateTimeRange: UpdateTimeRange
@@ -12,6 +12,14 @@ export interface ContextProps {
 
 export type Status = "initial" | "loading" | "success" | "reseting" | "error"
 
-export interface Results{
+export type Mood = "" | "dancing" | "happy" | "energetic" | "relaxing" | "mellow" 
 
+export interface Results{
+    [key: string]: Mood | Track[]
+    mood: Mood
+    dancing: Track[]
+    happy: Track[]
+    energetic: Track[]
+    relaxing: Track[]
+    mellow: Track[]
 }

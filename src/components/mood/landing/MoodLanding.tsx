@@ -13,15 +13,17 @@ import { minAwaitTimingFade } from '../../../common/hooks/components/mood/types'
 const MoodLanding = () => {
     const css = useManageScreenMood({target: "initial", active: true})
     const { status, loadMood } = useMoodContext()
-    const {tracksImages,artistsImages,updateSelect} = useMoodThumbnails()
+    const { tracksImages, artistsImages, updateSelect } = useMoodThumbnails()
     const addGlobalStyles = useAddGlobalStyles()
 
     useEffect(() => {
         if(status === 'initial' && artistsImages.length){
             const css = generateCSS(artistsImages)
+        
             setTimeout(() => {
                 addGlobalStyles(css, '/mood')
             },minAwaitTimingFade)
+        
         }else if(status !== 'initial'){
             addGlobalStyles('', '/mood')
         }

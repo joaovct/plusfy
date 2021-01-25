@@ -59,13 +59,12 @@ const show = `
 `
 
 const fadeIn = `
-    position: relative;
+    position: none;
     opacity: 0;    
     animation: ${(timingFade - 100) / 1000}s fadeIn forwards;
 `
 
 const fadeOut = `
-    position: absolute;
     opacity: 1;
     animation: ${(timingFade - 100) / 1000}s fadeOut forwards;
 `

@@ -25,8 +25,8 @@ const MoodPlaylists = () => {
 
         async function fetchData(){
             const data = await getUserTopArtistsAndTracks<Track>(accessToken, "tracks", {limit: 5})
-            if(data.items){
-                setTracks([...data.items])
+            if(data?.items){
+                setTracks([...data?.items])
             }
         }
     },[accessToken])
