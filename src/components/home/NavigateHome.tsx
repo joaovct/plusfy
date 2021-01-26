@@ -154,7 +154,7 @@ const ListItens = styled.ul`
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
-    margin: ${metrics.spacing2} 0 0 0;
+    margin: 0;
 
     @media(max-width: ${breakpoints.tbp}){
         width: 100%;
@@ -172,7 +172,12 @@ const PageList = styled(Page)`
     flex: 0 0 auto;
     width: 100%;
     overflow-x: hidden;
-    margin: ${metrics.spacing2} 0 0 0;
+    margin: 16px 0 0 0;
+
+    ${Container}{
+        padding: 0;
+        margin: 0;
+    }
 
     @media(max-width: ${breakpoints.tbp}){
         max-width: inherit;
@@ -181,6 +186,10 @@ const PageList = styled(Page)`
         ${Container}{
             max-width: inherit;
         }
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        margin: 8px 0 0 0;
     }
 `
 
@@ -193,13 +202,17 @@ const PageTitle = styled(Page)`
 const Content = styled.div`
     --minHeightListItens: 168px;
     width: 100%;
-    margin: ${metrics.spacing4} 0 0 0;
+    margin: 40px 0 0 0;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
 
     @media(max-width: ${breakpoints.tbl}){
         justify-content: flex-start;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        margin: 20px 0 0 0;
     }
 `
 

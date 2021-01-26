@@ -40,7 +40,7 @@ const Input = styled(input)`
 `
 
 const Label = styled.label`
-    margin: ${metrics.spacing3} 0 0 0;
+    margin: 16px 0 0 0;
     position: relative;
     display: flex;
     align-items: center;
@@ -57,12 +57,15 @@ const Label = styled.label`
     }
 
     @media(max-width: ${breakpoints.tbp}){
-
         svg{
             height: 20px;
             width: 20px;
             left: calc(40px - 24px);
         }
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        margin: 8px 0 0 0;
     }
 `
 
