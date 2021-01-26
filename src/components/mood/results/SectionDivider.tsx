@@ -1,26 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { getFormattedThumbnails } from '../../../common/helpers/helperMood'
+import useMoodContext from '../../../common/hooks/components/mood/useMoodContext'
+import { breakpoints } from '../../../styles/style'
 
 const SectionDivider = () => {
-    const thumbnails = [
-        "https://i.scdn.co/image/ab67616d0000b273b6567be9f8b996a2b5f9b7fa",
-        "https://i.scdn.co/image/ab67616d0000b273670f171832a0e3c834ee3895",
-        "https://i.scdn.co/image/ab67616d0000b273c9103bcebb6bf4ca93c7ad3d",
-        "https://i.scdn.co/image/ab67616d0000b27398aea4df8e6f328d0e25666c",
-        "https://i.scdn.co/image/ab67616d0000b273ce89e28d6505ffc574dc9417",
-        "https://i.scdn.co/image/ab67616d0000b273d3e175f246db232064293c7d",
-        "https://i.scdn.co/image/ab67616d0000b2732b79437b4d0aa1145add6bb0",
-        "https://i.scdn.co/image/ab67616d0000b273768d57b555e39929fea69b02",
-        "https://i.scdn.co/image/ab67616d0000b273f837b364ac37809bdb656d3b",
-        "https://i.scdn.co/image/ab67616d0000b273330ee208e4938ba122a9675a",
-        "https://i.scdn.co/image/ab67616d0000b273f41af553cddb6c2f424c77dc",
-        "https://i.scdn.co/image/ab67616d0000b273de03bfc2991fd5bcfde65ba3",
-        "https://i.scdn.co/image/ab67616d0000b27364075ce6abb765fb8ac8d391",
-        "https://i.scdn.co/image/ab67616d0000b2731813ea8f590a0aab2820f922",
-        "https://i.scdn.co/image/ab67616d0000b2730507c0a364f274bd5c86fa78",
-        "https://i.scdn.co/image/ab67616d0000b27322c614bdaf27ea223bcb2add",
-        "https://i.scdn.co/image/ab67616d0000b2736e7cb1429534f0d21133b714",
-    ]
+    const {results} = useMoodContext()
+    const [thumbnails, setThumbnails] = useState<string[]>([])
+
+    useEffect(() => {
+        if(results){
+            const thumbnails = getFormattedThumbnails([...results.dancing, ...results.energetic, ...results.happy, ...results.mellow, ...results.relaxing], 18)
+            setThumbnails(thumbnails)
+        }
+    },[results])
 
     const renderThumbnails = () => (
         thumbnails.map(item => (
@@ -65,7 +58,7 @@ const Thumbnail = styled.div`
 `
 
 const InnerDivider = styled.div<{nThumbnails: number}>`
-    --widthThumbnail: calc(var(--sizeThumbnail) + 40px);
+    --widthThumbnail: calc(var(--sizeThumbnail) + var(--thumbnailGap));
     height: var(--sizeThumbnail);
     width: calc((var(--widthThumbnail)) * ${({nThumbnails}) => nThumbnails * 2});
     left: 0;
@@ -92,9 +85,21 @@ const InnerDivider = styled.div<{nThumbnails: number}>`
 const SectionDividerStyled = styled.div`
     margin: 80px 0;
     --sizeThumbnail: 150px;
+    --thumbnailGap: 40px;
     height: var(--sizeThumbnail);
     width: 100%;
     overflow-x: hidden;
+
+    @media(max-width: ${breakpoints.tbp}){
+        --sizeThumbnail: 125px;
+        margin: 60px 0;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        --sizeThumbnail: 100px;
+        --thumbnailGap: 20px;
+        margin: 40px 0;
+    }
 `
 
 export default SectionDivider

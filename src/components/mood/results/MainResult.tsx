@@ -68,7 +68,9 @@ const Description = styled.article`
 `
 
 const MoodIcon = styled.figure<{mood: Mood | undefined}>`
-    --sizeVideo: 200px;
+    --sizeFigure: 200px;
+    height: var(--sizeFigure);
+    max-height: var(--sizeFigure);
     margin: 20px 0 0 0;
     display: flex;
     flex-flow: column nowrap;
@@ -76,10 +78,16 @@ const MoodIcon = styled.figure<{mood: Mood | undefined}>`
     align-items: center;
 
     video{
+        --increase: 0px;
+        --sizeVideo: calc(var(--sizeFigure) + var(--increase));
         height: var(--sizeVideo);
         width: var(--sizeVideo);
         filter: brightness(.95);
         user-select: none;
+
+        @media(max-width: ${breakpoints.tbp}){
+            --increase: 20px;
+        }
     }
 
     ${({mood}) => {
@@ -98,11 +106,11 @@ const MoodIcon = styled.figure<{mood: Mood | undefined}>`
     }}
 
     @media(max-width: ${breakpoints.tbl}){
-        --sizeVideo: 175px;
+        --sizeFigure: 175px;
     }
 
     @media(max-width: ${breakpoints.sml}){
-        --sizeVideo: 150px;
+        --sizeFigure: 150px;
     }
 `
 

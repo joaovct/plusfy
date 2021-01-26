@@ -6,6 +6,8 @@ import iconEnergetic from '../../assets/mood/energetic-animation.webm'
 import iconHappy from '../../assets/mood/happy-animation.webm'
 import iconMellow from '../../assets/mood/mellow-animation.webm'
 import iconRelaxing from '../../assets/mood/relaxing-animation.webm'
+import emptyAlbumPhoto from '../../assets/empty-playlist-photo.svg'
+import _ from 'lodash'
 
 type GetAllFavoriteTracksByRange = (accessToken: string, timeRange: UserTopArtistsAndTracksTimeRange) => Promise<Track[]>
 
@@ -80,4 +82,26 @@ export const getMoodDescription = (mood: Mood): string => {
         `
 
     return ''
+}
+
+export const getFormattedThumbnails = (tracks: Track[], length: number) => {
+    let thumbnails: string[] = []
+    tracks = _.shuffle(tracks)
+
+    tracks.forEach(track => {
+        if(track && track.album && track.album.images[0]){
+            const url = track.album.images[0].url
+
+            if(!thumbnails.find(thumbnail => url === thumbnail)){
+                thumbnails = [...thumbnails, url]
+            }
+        }
+    })
+
+    while(thumbnails.length < length){
+        thumbnails = [...thumbnails, emptyAlbumPhoto]
+    }
+    
+
+    return thumbnails.slice(0, length)
 }
