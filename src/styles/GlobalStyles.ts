@@ -17,6 +17,10 @@ const GlobalStyles = createGlobalStyle`
     /* width */
     &::-webkit-scrollbar {
         width: 10px;
+
+        @media(max-width: ${breakpoints.sml}){
+            width: 0px;
+        }
     }
 
     /* Track */
