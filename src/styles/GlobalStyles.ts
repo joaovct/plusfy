@@ -101,6 +101,12 @@ const GlobalStyles = createGlobalStyle`
         user-drag: none;
     }
 
+    video{
+        &::-internal-media-controls-overlay-cast-button{
+            display: none;
+        }
+    }
+
     h1{
         font-size: 40px;
         font-weight: 600;
