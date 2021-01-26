@@ -1,116 +1,48 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import styled, {css} from 'styled-components'
 import { Title, Text, metrics, colors, PlaylistTableRow, Button as button, breakpoints } from '../../../styles/style'
-import dancerIcon from '../../../assets/mood/mood-dancer.png'
-import { Track } from '../../../common/api/webapi/types'
-import { useSelector } from 'react-redux'
-import { IStore } from '../../../redux/store/types'
-import { IToken } from '../../../redux/store/token/types'
-import { getUserTopArtistsAndTracks } from '../../../common/api/webapi/personalization'
 import ListTracks from '../../common/listTracks/ListTracks'
 import { Link } from 'react-router-dom'
+import useMoodContext from '../../../common/hooks/components/mood/useMoodContext'
+import { getMoodIcon, getMoodTitle } from '../../../common/helpers/helperMood'
+import { Mood } from '../types'
 
 const MoodPlaylists = () => {
-    const [tracks, setTracks] = useState<Track[]>([])
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const isMounted = useRef(true)
+    const { results } = useMoodContext()
 
-    useEffect(() => () => {
-        isMounted.current = false
-    },[])
+    const renderPlaylist = (mood: Mood, index: number): JSX.Element => {
+        if(results && results.tracks[mood]){
 
-    useEffect(() => {
-        if(accessToken)
-            fetchData()
-
-        async function fetchData(){
-            const data = await getUserTopArtistsAndTracks<Track>(accessToken, "tracks", {limit: 5})
-            if(data?.items){
-                setTracks([...data?.items])
-            }
-        }
-    },[accessToken])
+            return (
+                <Playlist key={`mood-moodplaylists-playlist-${mood}${index}`}>
+                    <PlaylistName>
+                        {getMoodTitle(mood)}
+                        <img src={getMoodIcon(mood)} alt={`${mood} playlist`}/>
+                    </PlaylistName>
+                    <ListTracks
+                        tracks={results.tracks[mood].slice(0, 5)}
+                        showHeader={false}
+                        viewMode="simplified"
+                        additionalCSS={listTracksCSS}
+                    />
+                    <SeeMore>
+                        <Link to="#">Ver tudo</Link>
+                    </SeeMore>
+                    <Button>Salvar Playlist</Button>
+                </Playlist>
+            )    
+    }
+        return <></>
+    }
 
     return(
         <Content>
             <Title>Para você <br/> continuar ouvindo</Title>
             <Text>Criamos algumas playlists separadas por mood <br/> com base em suas músicas.</Text>
             <Playlists>
-                {
-                    tracks.length ?
-                    <Playlist>
-                        <PlaylistName>
-                            Dançante <img src={dancerIcon} alt="Dancer playlist"/>
-                        </PlaylistName>
-                        <ListTracks
-                            tracks={tracks}
-                            showHeader={false}
-                            viewMode="simplified"
-                            additionalCSS={listTracksCSS}
-                        />
-                        <SeeMore>
-                            <Link to="#">Ver tudo</Link>
-                        </SeeMore>
-                        <Button >Salvar Playlist</Button>
-                    </Playlist>
-                    : <></>
-                }
-                {
-                    tracks.length ?
-                    <Playlist>
-                        <PlaylistName>
-                            Dançante <img src={dancerIcon} alt="Dancer playlist"/>
-                        </PlaylistName>
-                        <ListTracks
-                            tracks={tracks}
-                            showHeader={false}
-                            viewMode="simplified"
-                            additionalCSS={listTracksCSS}
-                        />
-                        <SeeMore>
-                            <Link to="#">Ver tudo</Link>
-                        </SeeMore>
-                        <Button >Salvar Playlist</Button>
-                    </Playlist>
-                    : <></>
-                }
-                {
-                    tracks.length ?
-                    <Playlist>
-                        <PlaylistName>
-                            Dançante <img src={dancerIcon} alt="Dancer playlist"/>
-                        </PlaylistName>
-                        <ListTracks
-                            tracks={tracks}
-                            showHeader={false}
-                            viewMode="simplified"
-                            additionalCSS={listTracksCSS}
-                        />
-                        <SeeMore>
-                            <Link to="#">Ver tudo</Link>
-                        </SeeMore>
-                        <Button >Salvar Playlist</Button>
-                    </Playlist>
-                    : <></>
-                }
-                {
-                    tracks.length ?
-                    <Playlist>
-                        <PlaylistName>
-                            Dançante <img src={dancerIcon} alt="Dancer playlist"/>
-                        </PlaylistName>
-                        <ListTracks
-                            tracks={tracks}
-                            showHeader={false}
-                            viewMode="simplified"
-                            additionalCSS={listTracksCSS}
-                        />
-                        <SeeMore>
-                            <Link to="#">Ver tudo</Link>
-                        </SeeMore>
-                        <Button >Salvar Playlist</Button>
-                    </Playlist>
-                    : <></>
+                {   
+                    //@ts-ignore
+                    Object.keys(results?.tracks || {}).map(renderPlaylist)
                 }
             </Playlists>
         </Content>

@@ -15,11 +15,13 @@ export type Status = "initial" | "loading" | "success" | "reseting" | "error"
 export type Mood = "" | "dancing" | "happy" | "energetic" | "relaxing" | "mellow" 
 
 export interface Results{
-    [key: string]: Mood | Track[]
     mood: Mood
-    dancing: Track[]
-    happy: Track[]
-    energetic: Track[]
-    relaxing: Track[]
-    mellow: Track[]
+    tracks: {
+        [key: string]: Track[]
+        dancing: Track[]
+        happy: Track[]
+        energetic: Track[]
+        relaxing: Track[]
+        mellow: Track[]
+    }
 }

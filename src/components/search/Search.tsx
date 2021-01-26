@@ -102,7 +102,6 @@ const Input = styled(input)`
 `
 
 const Label = styled.label`
-    padding-top: ${metrics.spacing4};
     position: relative;
     display: flex;
     align-items: center;

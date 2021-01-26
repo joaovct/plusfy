@@ -1,11 +1,16 @@
 import { Mood } from "../../components/mood/types";
 import { getNextUserTopArtistsAndTracks, getUserTopArtistsAndTracks } from "../api/webapi/personalization";
 import { Track, UserTopArtistsAndTracksTimeRange } from "../api/webapi/types";
-import iconDancing from '../../assets/mood/dancing-animation.webm'
-import iconEnergetic from '../../assets/mood/energetic-animation.webm'
-import iconHappy from '../../assets/mood/happy-animation.webm'
-import iconMellow from '../../assets/mood/mellow-animation.webm'
-import iconRelaxing from '../../assets/mood/relaxing-animation.webm'
+import animationDancing from '../../assets/mood/dancing-animation.webm'
+import animationEnergetic from '../../assets/mood/energetic-animation.webm'
+import animationHappy from '../../assets/mood/happy-animation.webm'
+import animationMellow from '../../assets/mood/mellow-animation.webm'
+import animationRelaxing from '../../assets/mood/relaxing-animation.webm'
+import iconDancing from '../../assets/mood/dancing-icon.png'
+import iconEnergetic from '../../assets/mood/energetic-icon.png'
+import iconHappy from '../../assets/mood/happy-icon.png'
+import iconMellow from '../../assets/mood/mellow-icon.png'
+import iconRelaxing from '../../assets/mood/relaxing-icon.png'
 import emptyAlbumPhoto from '../../assets/empty-playlist-photo.svg'
 import _ from 'lodash'
 
@@ -31,6 +36,20 @@ export const getAllFavoriteTracksByRange: GetAllFavoriteTracksByRange = async (a
 }
 
 export const getMoodAnimation = (mood: Mood): string => {
+    if(mood === 'dancing')
+        return animationDancing
+    else if(mood === 'energetic')
+        return  animationEnergetic
+    else if(mood === 'happy')
+        return animationHappy
+    else if(mood === 'mellow')
+        return animationMellow
+    else if(mood === 'relaxing')
+        return animationRelaxing
+    return ''
+}
+
+export const getMoodIcon = (mood: Mood): string => {
     if(mood === 'dancing')
         return iconDancing
     else if(mood === 'energetic')

@@ -61,11 +61,10 @@ const useMood: Hook = () => {
         else
             mood = 'mellow'
         
-
         setTimeout(() => {
             if(mood){
                 setStatus('success')
-                return setResults({mood, happy, energetic, dancing, relaxing, mellow})
+                return setResults({mood, tracks: {happy, energetic, dancing, relaxing, mellow}})
             }
             setStatus('error')
             return setResults(null)
