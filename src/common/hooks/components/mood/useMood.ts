@@ -38,9 +38,9 @@ const useMood: Hook = () => {
                     mellow = [...mellow, track]
                 if(item.valence > .6 && item.energy > .3)
                     happy = [...happy, track]
-                if(item.energy > .7)
+                if(item.energy > .8)
                     energetic = [...energetic, track]
-                if(item.danceability > .7)
+                if(item.valence > .3 && item.danceability > .75)
                     dancing = [...dancing, track]
                 if(item.valence > .3 && item.energy < .4){
                     relaxing = [...relaxing, track]
@@ -49,7 +49,7 @@ const useMood: Hook = () => {
         })
 
         let mood: Mood = ''
-        
+
         if(happy.length >= energetic.length && happy.length >= dancing.length && happy.length >= relaxing.length && happy.length >= mellow.length)
             mood = 'happy'
         else if(energetic.length >= happy.length && energetic.length >= dancing.length && energetic.length >= relaxing.length && energetic.length >= mellow.length)
