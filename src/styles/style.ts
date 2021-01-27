@@ -1,4 +1,4 @@
-import styled, { FlattenSimpleInterpolation, css } from 'styled-components'
+import styled, { FlattenSimpleInterpolation, css, FlattenInterpolation, ThemedStyledProps } from 'styled-components'
 import {ListTracksViewMode} from '../components/common/listTracks/types'
 import * as colors from './colors'
 import * as metrics from './metrics'
@@ -426,7 +426,13 @@ export const ListPlaylistsItemStyled = styled.li`
     }
 `
 
-export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string | FlattenSimpleInterpolation, showHeader?: boolean}>`
+export interface PlaylistTableProps{
+    qntColumns: number
+    additionalCSS?: string | FlattenSimpleInterpolation | FlattenInterpolation<ThemedStyledProps<any, any>>
+    showHeader?: boolean
+}
+
+export const PlaylistTable = styled.ol<PlaylistTableProps>`
     display: flex;
     flex-flow: column nowrap;
     --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 4};
@@ -443,7 +449,14 @@ export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: stri
     }}
 `
 
-export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, disabled?: boolean, viewMode?: ListTracksViewMode}>`
+export interface PlaylistTableRowProps{
+    playingUri?: string
+    uri?: string
+    disabled?: boolean
+    viewMode?: ListTracksViewMode
+}
+
+export const PlaylistTableRow = styled.li<PlaylistTableRowProps>`
     display: flex;
     width: 100%;
     border-radius: ${metrics.borderRadius};
@@ -499,8 +512,20 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
         }
         &:nth-child(2){
             flex-grow: 5;
-            span strong{
-                color: ${ (props) => props.uri === props.playingUri && !props.disabled ? colors.primary : '#fff'};
+            span{
+                strong{
+                    color: #fff;
+                }
+
+                ${props => {
+                    if(!props.disabled && props.uri === props.playingUri)
+                        return `
+                            /* increase selector */
+                            &:nth-child(n+1) strong:nth-child(n+1){
+                                color: ${colors.primary};
+                            }
+                        `
+                }}
             }
         }
 

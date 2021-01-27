@@ -1,4 +1,4 @@
-import { FlattenSimpleInterpolation } from 'styled-components'
+import { FlattenInterpolation, FlattenSimpleInterpolation, ThemedStyledProps } from 'styled-components'
 import { Track } from '../../../common/api/webapi/types'
 import { SavedTracks } from '../../../common/api/webapi/types'
 
@@ -8,7 +8,7 @@ export interface ListTracksProps{
     tracks: Track[]
     contextUri?: string
     additionalColumns?: AdditionalColumn[]
-    additionalCSS?: string | FlattenSimpleInterpolation
+    additionalCSS?: string | FlattenSimpleInterpolation | FlattenInterpolation<ThemedStyledProps<any, any>>
     additionalTrackRowOptions?: AdditionalTrackRowOption[]
     viewMode?: ListTracksViewMode
     showHeader?: boolean

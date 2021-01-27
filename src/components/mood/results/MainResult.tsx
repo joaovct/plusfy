@@ -58,11 +58,13 @@ const Description = styled.article`
         }
     }
     @media(max-width: ${breakpoints.smp}){
+        margin: 0;
+
         ${Title}{
-            font-size: 35px;
+            font-size: 30px;
         }
         ${Text}{
-            font-size: 16px;
+            font-size: 14px;
         }
     }
 `
@@ -110,7 +112,7 @@ const MoodIcon = styled.figure<{mood: Mood | undefined}>`
     }
 
     @media(max-width: ${breakpoints.sml}){
-        --sizeFigure: 150px;
+        --sizeFigure: 125px;
     }
 `
 

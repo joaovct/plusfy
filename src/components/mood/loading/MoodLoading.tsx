@@ -27,6 +27,10 @@ const Animation = styled.video`
     width: var(--size);
     filter: brightness(.95);
     user-select: none;
+
+    @media(max-width: ${breakpoints.smp}){
+        --size: 150px;
+    }
 `
 
 const Loading = styled.div`
@@ -55,6 +59,10 @@ const Loading = styled.div`
 
     ${Title}, ${Text}{
         text-align: center;
+        
+        @media(max-width: ${breakpoints.sml}){
+            margin: 0;
+        }
     }
 `
 

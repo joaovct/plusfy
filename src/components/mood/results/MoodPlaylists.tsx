@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, {css} from 'styled-components'
-import { Title, Text, metrics, colors, PlaylistTableRow, Button as button, breakpoints } from '../../../styles/style'
+import { Title, Text, metrics, colors, PlaylistTableRow, Button as button, breakpoints, PlaylistTableRowProps} from '../../../styles/style'
 import ListTracks from '../../common/listTracks/ListTracks'
 import { Link } from 'react-router-dom'
 import useMoodContext from '../../../common/hooks/components/mood/useMoodContext'
@@ -49,7 +49,7 @@ const MoodPlaylists = () => {
     )
 }
 
-const listTracksCSS = css`
+const listTracksCSS = css<PlaylistTableRowProps>`
     width: 100%;
 
     ${PlaylistTableRow}{
@@ -82,6 +82,14 @@ const listTracksCSS = css`
                     font-size: 18px;
                     font-weight: 600;
                     color: #000;
+
+                    @media(max-width: ${breakpoints.sml}){
+                        font-size: 16px;
+                    }
+
+                    @media(max-width: ${breakpoints.smp}){
+                        font-size: 16px;
+                    }
                 }
 
                 //increase selector
@@ -138,7 +146,7 @@ const SeeMore = styled.span`
     }
 ` 
 
-const PlaylistName = styled.strong`
+const PlaylistName = styled.div`
     width: 100%;
     font-size: 1.75rem;
     font-weight: 600;
@@ -158,6 +166,14 @@ const PlaylistName = styled.strong`
         height: 1.75rem;
         width: 1.75rem;
         margin: 0 0 0 5px;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        font-size: 1.5rem;
+    }
+
+    @media(max-width: ${breakpoints.sml}){
+        font-size: 1.25rem;
     }
 `
 
