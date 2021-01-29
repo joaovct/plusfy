@@ -7,6 +7,7 @@
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.20.0",
     "lodash": "^4.17.20",
+    "macy": "^2.5.1",
     "musicmetadata": "^2.0.5",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
