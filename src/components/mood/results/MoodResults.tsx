@@ -6,6 +6,7 @@ import MoodPlaylists from './MoodPlaylists'
 import { Container as container } from '../styles'
 import useManageScreenMood from '../../../common/hooks/components/mood/useManageScreenMood'
 import useMoodContext from '../../../common/hooks/components/mood/useMoodContext'
+import { colors } from '../../../styles/style'
 
 const MoodResults = () => {
     const css = useManageScreenMood({target: 'success'})
@@ -19,12 +20,30 @@ const MoodResults = () => {
                     <MainResult/>
                     <SectionDivider/>
                     <MoodPlaylists/>
+                    <Inspired>
+                        Inspired by <a href="http://moooodify.com" target="_blank" rel="noopener noreferrer">moooodify</a>.
+                    </Inspired>
                 </>
                 : <></>
             }
         </Container>
     )
 }
+
+const Inspired = styled.span`
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    
+    &, a{
+        font-size: 14px;
+        color: ${colors.gray};
+    }
+
+    a{
+        text-decoration: underline;
+    }
+`
 
 const Container = styled(container)`
     width: 100%;
