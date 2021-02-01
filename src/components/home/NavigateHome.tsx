@@ -172,6 +172,8 @@ const PageList = styled(Page)`
     flex: 0 0 auto;
     width: 100%;
     overflow-x: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
     margin: 16px 0 0 0;
 
     ${Container}{
@@ -202,7 +204,7 @@ const PageTitle = styled(Page)`
 const Content = styled.div`
     --minHeightListItens: 168px;
     width: 100%;
-    margin: 40px 0 0 0;
+    margin: 32px 0 0 0;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
