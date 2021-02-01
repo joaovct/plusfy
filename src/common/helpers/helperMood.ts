@@ -42,7 +42,7 @@ export const getMoodAnimation = (mood: Mood): string => {
         return  animationEnergetic
     else if(mood === 'happy')
         return animationHappy
-    else if(mood === 'mellow')
+    else if(mood === 'melancholic')
         return animationMellow
     else if(mood === 'relaxing')
         return animationRelaxing
@@ -56,7 +56,7 @@ export const getMoodIcon = (mood: Mood): string => {
         return  iconEnergetic
     else if(mood === 'happy')
         return iconHappy
-    else if(mood === 'mellow')
+    else if(mood === 'melancholic')
         return iconMellow
     else if(mood === 'relaxing')
         return iconRelaxing
@@ -70,7 +70,7 @@ export const getMoodTitle = (mood: Mood): string => {
         return 'Energético'
     else if(mood === 'happy')
         return 'Alegre'
-    else if(mood === 'mellow')
+    else if(mood === 'melancholic')
         return 'Melancólico'
     else if(mood === 'relaxing')
         return 'Calmo'
@@ -85,19 +85,22 @@ export const getMoodDescription = (mood: Mood): string => {
         `
     else if(mood === 'energetic')
         return `
-
+            As músicas que você escuta são bem agitadas e cheias de energia.
+            Elas te empoderam a realizar grandes coisas.
         `
     else if(mood === 'happy')
         return `
-
+            A maioria das músicas que você escuta são alegres.
+            Quando você está escutando música, é bem provável que esteja com um sorriso no rosto.
         `
-    else if(mood === 'mellow')
+    else if(mood === 'melancholic')
         return `
-        
+            A maioria de suas músicas são lentas e calmas, um bom remédio para um coração quebrado.
         `
     else if(mood === 'relaxing')
         return `
-        
+            As suas músicas mais ouvidas são bem calmas e tranquilas.
+            Sons relaxantes são ótimos para diminuir o estresse e a ansiedade.
         `
 
     return ''

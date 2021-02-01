@@ -10,7 +10,7 @@ const SectionDivider = () => {
 
     useEffect(() => {
         if(results){
-            const thumbnails = getFormattedThumbnails([...results?.tracks.dancing, ...results?.tracks.energetic, ...results?.tracks.happy, ...results?.tracks.mellow, ...results?.tracks.relaxing], 18)
+            const thumbnails = getFormattedThumbnails([...results?.tracks.dancing, ...results?.tracks.energetic, ...results?.tracks.happy, ...results?.tracks.melancholic, ...results?.tracks.relaxing], 18)
             setThumbnails(thumbnails)
         }
     },[results])

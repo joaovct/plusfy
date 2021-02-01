@@ -12,7 +12,7 @@ export interface ContextProps {
 
 export type Status = "initial" | "loading" | "success" | "reseting" | "error"
 
-export type Mood = "" | "dancing" | "happy" | "energetic" | "relaxing" | "mellow" 
+export type Mood = "" | "dancing" | "happy" | "energetic" | "relaxing" | "melancholic" 
 
 export interface Results{
     mood: Mood
@@ -22,6 +22,6 @@ export interface Results{
         happy: Track[]
         energetic: Track[]
         relaxing: Track[]
-        mellow: Track[]
+        melancholic: Track[]
     }
 }

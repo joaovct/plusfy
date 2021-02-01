@@ -24,6 +24,7 @@ const MoodPlaylists = () => {
             container: selector,
             margin: 16,
             columns: 4,
+            trueOrder: true,
             breakAt: {
                 1400: 3,
                 991: 2,

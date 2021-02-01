@@ -162,15 +162,10 @@ const PlaylistName = styled.div`
     font-size: 1.75rem;
     font-weight: 600;
     font-style: normal;
-    color: ${colors.secondary};
     background: ${colors.primaryGradient};
-    background-size: 100%;
-    background-repeat: repeat;
     background-clip: text;
     -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-    -moz-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;

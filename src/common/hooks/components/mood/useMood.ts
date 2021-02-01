@@ -28,15 +28,15 @@ const useMood: Hook = () => {
         let energetic: Track[] = []
         let dancing: Track[] = []
         let relaxing: Track[] = []
-        let mellow: Track[] = []
+        let melancholic: Track[] = []
 
         features.audio_features.forEach(item => {
             const track = tracks.find(track => track?.id === item.id)
 
             if(track){
-                if(item.valence < .3 && item.energy < .6)
-                    mellow = [...mellow, track]
-                if(item.valence > .6 && item.energy > .3)
+                if(item.valence < .3 && item.energy < .4)
+                    melancholic = [...melancholic, track]
+                if(item.valence > .6 && item.energy > .4)
                     happy = [...happy, track]
                 if(item.energy > .8)
                     energetic = [...energetic, track]
@@ -50,21 +50,21 @@ const useMood: Hook = () => {
 
         let mood: Mood = ''
 
-        if(happy.length >= energetic.length && happy.length >= dancing.length && happy.length >= relaxing.length && happy.length >= mellow.length)
+        if(happy.length >= energetic.length && happy.length >= dancing.length && happy.length >= relaxing.length && happy.length >= melancholic.length)
             mood = 'happy'
-        else if(energetic.length >= happy.length && energetic.length >= dancing.length && energetic.length >= relaxing.length && energetic.length >= mellow.length)
+        else if(energetic.length >= happy.length && energetic.length >= dancing.length && energetic.length >= relaxing.length && energetic.length >= melancholic.length)
             mood = 'energetic'
-        else if(dancing.length >= happy.length && dancing.length >= energetic.length && dancing.length >= relaxing.length && dancing.length >= mellow.length)
+        else if(dancing.length >= happy.length && dancing.length >= energetic.length && dancing.length >= relaxing.length && dancing.length >= melancholic.length)
             mood = 'dancing'
-        else if(relaxing.length >= happy.length && relaxing.length >= energetic.length && relaxing.length >= dancing.length && relaxing.length >= mellow.length)
+        else if(relaxing.length >= happy.length && relaxing.length >= energetic.length && relaxing.length >= dancing.length && relaxing.length >= melancholic.length)
             mood = 'relaxing'
         else
-            mood = 'mellow'
+            mood = 'melancholic'
         
         setTimeout(() => {
             if(mood){
                 setStatus('success')
-                return setResults({mood, tracks: {happy, energetic, dancing, relaxing, mellow}})
+                return setResults({mood, tracks: {happy, energetic, dancing, relaxing, melancholic}})
             }
             setStatus('error')
             return setResults(null)
