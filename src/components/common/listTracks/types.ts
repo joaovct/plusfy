@@ -4,16 +4,6 @@ import { SavedTracks } from '../../../common/api/webapi/types'
 
 export type ListTracksViewMode = 'simplified' | 'full'
 
-export interface ListTracksProps{
-    tracks: Track[]
-    contextUri?: string
-    additionalColumns?: AdditionalColumn[]
-    additionalCSS?: string | FlattenSimpleInterpolation | FlattenInterpolation<ThemedStyledProps<any, any>>
-    additionalTrackRowOptions?: AdditionalTrackRowOption[]
-    viewMode?: ListTracksViewMode
-    showHeader?: boolean
-}
-
 export interface AdditionalTrackRowOption{
     content: string | JSX.Element
     onClick: (track: Track, index: number) => void
@@ -25,7 +15,19 @@ export interface AdditionalColumn{
     bodyContent: string[] | JSX.Element[]
 }
 
+export interface ListTracksProps{
+    tracks: Track[]
+    contextUri?: string
+    additionalColumns?: AdditionalColumn[]
+    additionalCSS?: string | FlattenSimpleInterpolation | FlattenInterpolation<ThemedStyledProps<any, any>>
+    additionalTrackRowOptions?: AdditionalTrackRowOption[]
+    viewMode?: ListTracksViewMode
+    showHeader?: boolean
+    continuousPlayback?: boolean
+}
+
 export interface ContextListTracksProps{
+    tracks: Track[]
     handleToggleOption: HandleToggleOption
     toggleOptions: boolean[]
     savedTracks: SavedTracks | null
@@ -35,6 +37,7 @@ export interface ContextListTracksProps{
     additionalTrackRowOptions?: AdditionalTrackRowOption[]
     viewMode: ListTracksViewMode
     showHeader?: boolean
+    continuousPlayback: boolean
 }
 
 export type HandleToggleOption = (index: number) => void

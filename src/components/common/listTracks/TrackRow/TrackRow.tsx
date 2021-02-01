@@ -23,21 +23,27 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
-    const {additionalColumns, contextUri: playlistURI, viewMode} = useContext(ContextListTracks)
+    const {tracks, additionalColumns, contextUri: playlistURI, viewMode, continuousPlayback} = useContext(ContextListTracks)
     const isDisabled = isTrackDisabled({userId, playlistURI: playlistURI || '', tracks: [{uri: track?.uri || ''}]})[0]
 
     const handleToggleTrack = () => {
         const uri = track?.uri || ''
         const action = toggleTrack(currentState, uri)
-        if(action === 'PLAY')
-            if(playlistURI)
-                playPlayer({accessToken,contextUri: playlistURI, offset: {uri: uri}})
-            else
-                playPlayer({accessToken,contextUri: playlistURI, uris: [uri]})
-        else if(action === 'PAUSE')
+
+        if(action === 'PLAY'){
+            if(playlistURI){
+                playPlayer({accessToken, contextUri: playlistURI, offset: {uri: uri}})
+            }else if(!playlistURI && continuousPlayback){
+                const uris: string[] = tracks.map(track => track?.uri || '')
+                playPlayer({accessToken, uris, offset: {uri: uri}})
+            }else{
+                playPlayer({accessToken, contextUri: playlistURI, uris: [uri]})
+            }
+        }else if(action === 'PAUSE'){
             pausePlayer({accessToken})
-        else if(action === 'RESUME')
+        }else{
             resumePlayer({accessToken}) 
+        }
     }
 
     const handleClickOnSecondColumn = () => {

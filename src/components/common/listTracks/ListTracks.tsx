@@ -27,7 +27,9 @@ const ListTracks: React.FC<ListTracksProps> = (props) => {
     },[tracks])
     
     return(
-        <ContextListTracks.Provider value={{...listTracks, ...props, viewMode: props.viewMode || 'full'}}>
+        <ContextListTracks.Provider value={{
+            ...listTracks, ...props, viewMode: props.viewMode || 'full', continuousPlayback: props.continuousPlayback || true
+        }}>
             <PlaylistTable qntColumns={qntColumns} additionalCSS={additionalCSS} showHeader={props.showHeader}>
                 <PlaylistTableRow>
                     <div>#</div>
