@@ -16,13 +16,15 @@ import AlertProvider from '../../../common/providers/AlertProvider'
 import Alerts from '../../common/alerts/Alerts'
 import NowPlaying from '../../common/nowPlaying/NowPlaying'
 import TabBar from '../../common/tabBar/TabBar'
+import { PrivateRouteComponent } from '../../../styles/style'
+import GlobalStylesProvider from '../../../common/providers/GlobalStylesProvider'
+import GlobalStylesManager from '../../common/globalStylesManager/GlobalStylesManager'
 
 const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshToken, expiresIn}) => {
     useDispatchToken(accessToken, refreshToken, expiresIn)
     usePlaybackSDK()
     useCurrentState()
     useDispatchUser()
-
     const user = useSelector<IStore, IUser>(store => store.user)
 
     const userIsPremium = useCallback(() =>
@@ -30,38 +32,35 @@ const PrivateRoute: React.FC<IPrivateRoute> = ({Component, accessToken, refreshT
     ,[user])
 
     return (
-        <AlertProvider>
-            <AddToPlaylistProvider>
-                <>
-                    <WrapperComponent>
-                        <Header/>
-                        <Component/>
-                        {!userIsPremium() ? <NotPremium/> : <></>}
-                        <StickyElements>
-                            <Alerts/>
-                            <NowPlaying/>
-                            <TabBar/>
-                        </StickyElements>
-                    </WrapperComponent>
-                    <AddPlaylist/>
-                </>
-            </AddToPlaylistProvider>
-        </AlertProvider>
+        <GlobalStylesProvider>
+            <AlertProvider>
+                <AddToPlaylistProvider>
+                    <>
+                        <GlobalStylesManager/>
+                        <PrivateRouteComponent>
+                            <Header/>
+                            <Component/>
+                            {!userIsPremium() ? <NotPremium/> : <></>}
+                            <StickyElements>
+                                <Alerts/>
+                                <NowPlaying/>
+                                <TabBar/>
+                            </StickyElements>
+                        </PrivateRouteComponent>
+                        <AddPlaylist/>
+                    </>
+                </AddToPlaylistProvider>
+            </AlertProvider>
+        </GlobalStylesProvider> 
     )
 }
 
-export default PrivateRoute
-
-const WrapperComponent = styled.div`
-    min-height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-`
-
-const StickyElements = styled.div`
+export const StickyElements = styled.div`
     width: 100%;
     position: sticky;
     bottom: 0;
     right: 0;
-    z-index: 2;
+    z-index: var(--zIndexSticky);
 `
+
+export default PrivateRoute

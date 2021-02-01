@@ -25,11 +25,11 @@ const NavigateHome = () => {
                             </span>
                         </Item>
                         <Item>
-                            <Link to="/building">
+                            <Link to="/mood">
                                 <figure><Smile/></figure>
                             </Link>
                             <span>
-                                <Link to="/building">Medidor de humor</Link>
+                                <Link to="/mood">Mood</Link>
                             </span>
                         </Item>
                         <Item>

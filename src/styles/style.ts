@@ -1,4 +1,4 @@
-import styled, { FlattenSimpleInterpolation, css } from 'styled-components'
+import styled, { FlattenSimpleInterpolation, css, FlattenInterpolation, ThemedStyledProps } from 'styled-components'
 import {ListTracksViewMode} from '../components/common/listTracks/types'
 import * as colors from './colors'
 import * as metrics from './metrics'
@@ -7,10 +7,16 @@ import GlobalStyles from './GlobalStyles'
 
 export {colors,metrics,breakpoints,GlobalStyles}
 
+export const PrivateRouteComponent = styled.div`
+    min-height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+`
+
 export const Page = styled.section`
     flex: 1;
     width: 100%;
-    padding: 0 var(--spacingSidesPage); 
+    padding: ${metrics.spacing3} var(--spacingSidesPage); 
     color: #fff;
     display: flex;
     flex-flow: column nowrap;
@@ -45,7 +51,7 @@ export const Title = styled.h1`
 
 export const Text = styled.p`
     display: block;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 300;
     line-height: 1.2;
     color: #fff;
@@ -99,6 +105,60 @@ export const Input = styled.input`
     @media(max-width: ${breakpoints.tbp}){
         font-size: 14px;
         padding: 12px ${metrics.spacing4};
+    }
+`
+
+export const FieldsetSelect = styled.div`
+    position: relative;
+    border: 1px solid ${colors.border};
+    border-radius: 24px;
+    --sizeArrow: 28px;
+    --spacingArrow: 4px;
+    --rightArrowBorder: calc(var(--sizeArrow) + var(--spacingArrow) * 2);
+
+    &:after,
+    &:before{
+        content: '';
+        display: block;
+        position: absolute;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    &:after{
+        width: 1px;
+        height: 100%;
+        background: ${colors.border};
+        top: 0;
+        right: var(--rightArrowBorder);
+    }
+
+    &:before{
+        content: 'expand_more';
+        top: 50%;
+        right: var(--spacingArrow);
+        margin-top: calc(var(--sizeArrow) / -2);
+        font-family: 'Material Icons';
+        font-size: var(--sizeArrow);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: 'liga';
+    }
+
+    select{
+        display: inline-block;
+        font-size: 1rem;
+        padding: 4px calc(var(--rightArrowBorder) + var(--spacingArrow) * 2) 4px 12px;
+        background-color: transparent;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        text-align: center;
+
+        option{
+            background: ${colors.darkerBackgroundTranslucent};
+        }
     }
 `
 
@@ -176,7 +236,7 @@ export const Dropdown = styled.ul<{show: Boolean}>`
     pointer-events: none;
     user-select: none;
     position: absolute;
-    z-index: 2;
+    z-index: var(--zIndexOverlay);
     min-width: 175px;
     top: 0;
     left: 0;
@@ -366,7 +426,13 @@ export const ListPlaylistsItemStyled = styled.li`
     }
 `
 
-export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: string | FlattenSimpleInterpolation, showHeader?: boolean}>`
+export interface PlaylistTableProps{
+    qntColumns: number
+    additionalCSS?: string | FlattenSimpleInterpolation | FlattenInterpolation<ThemedStyledProps<any, any>>
+    showHeader?: boolean
+}
+
+export const PlaylistTable = styled.ol<PlaylistTableProps>`
     display: flex;
     flex-flow: column nowrap;
     --qntColumns: ${({qntColumns}) => qntColumns ? qntColumns : 4};
@@ -383,7 +449,14 @@ export const PlaylistTable = styled.ol<{qntColumns: number, additionalCSS?: stri
     }}
 `
 
-export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, disabled?: boolean, viewMode?: ListTracksViewMode}>`
+export interface PlaylistTableRowProps{
+    playingUri?: string
+    uri?: string
+    disabled?: boolean
+    viewMode?: ListTracksViewMode
+}
+
+export const PlaylistTableRow = styled.li<PlaylistTableRowProps>`
     display: flex;
     width: 100%;
     border-radius: ${metrics.borderRadius};
@@ -439,8 +512,20 @@ export const PlaylistTableRow = styled.li<{playingUri?: string, uri?: string, di
         }
         &:nth-child(2){
             flex-grow: 5;
-            span strong{
-                color: ${ (props) => props.uri === props.playingUri && !props.disabled ? colors.primary : '#fff'};
+            span{
+                strong{
+                    color: #fff;
+                }
+
+                ${props => {
+                    if(!props.disabled && props.uri === props.playingUri)
+                        return `
+                            /* increase selector */
+                            &:nth-child(n+1) strong:nth-child(n+1){
+                                color: ${colors.primary};
+                            }
+                        `
+                }}
             }
         }
 

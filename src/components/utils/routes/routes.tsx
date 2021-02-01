@@ -9,6 +9,7 @@ import ImportTracks from '../../importTracks/ImportTracks'
 import Favorites from '../../favorites/Favorites'
 import { renderLanding, renderLogin, renderLogoff, renderPrivateRoute } from '../../../common/helpers/helperRouter'
 import Search from '../../search/Search'
+import Mood from '../../mood/Mood'
 
 const Routes = () => (
     <BrowserRouter>
@@ -19,6 +20,7 @@ const Routes = () => (
             <Route exact path="/home" render={() => renderPrivateRoute(Home)}/>
             <Route exact path="/search" render={() => renderPrivateRoute(Search)}/>
             <Route path="/search/:q" render={() => renderPrivateRoute(Search)}/>
+            <Route exact path="/mood" render={() => renderPrivateRoute(Mood)}/>
             <Route exact path="/my-library" render={() => renderPrivateRoute(MyLibrary)}/>
             <Route exact path="/playlist/:id" render={() => renderPrivateRoute(Playlist)}/>
             <Route exact path="/favorites" render={() => renderPrivateRoute(Favorites)}/>
