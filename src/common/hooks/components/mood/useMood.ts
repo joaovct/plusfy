@@ -36,11 +36,11 @@ const useMood: Hook = () => {
             if(track){
                 if(item.valence < .3 && item.energy < .4)
                     melancholic = [...melancholic, track]
-                if(item.valence > .6 && item.energy > .4)
+                if(item.energy > .4 && item.valence > .75)
                     happy = [...happy, track]
                 if(item.energy > .8)
                     energetic = [...energetic, track]
-                if(item.valence > .3 && item.danceability > .75)
+                if(item.valence > .4 && item.danceability > .75)
                     dancing = [...dancing, track]
                 if(item.valence > .3 && item.energy < .4){
                     relaxing = [...relaxing, track]
