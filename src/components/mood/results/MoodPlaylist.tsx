@@ -68,6 +68,7 @@ const listTracksCSS = css<PlaylistTableRowProps>`
 
         &:nth-child(n+1), &:nth-child(n+1):hover{
             background: #fff;
+            padding: 0;
         }
 
         div:nth-child(1){

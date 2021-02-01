@@ -38,7 +38,7 @@ const MoodPlaylists = () => {
             mountMansory()
         }
 
-        if(results && results.tracks[mood])
+        if(results && results.tracks[mood] && results.tracks[mood].length)
             return (
                 <MoodPlaylist
                     key={`mood-moodplaylists-playlist-${mood}${index}`}

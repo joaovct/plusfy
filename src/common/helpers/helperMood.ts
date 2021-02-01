@@ -86,7 +86,7 @@ export const getMoodDescription = (mood: Mood): string => {
     else if(mood === 'energetic')
         return `
             As músicas que você escuta são bem agitadas e cheias de energia.
-            Elas te empoderam a realizar grandes coisas.
+            Elas te motivam a realizar grandes coisas.
         `
     else if(mood === 'happy')
         return `
