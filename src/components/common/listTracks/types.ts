@@ -15,6 +15,11 @@ export interface AdditionalColumn{
     bodyContent: string[] | JSX.Element[]
 }
 
+interface Slice{
+    start: number
+    end: number
+}
+
 export interface ListTracksProps{
     tracks: Track[]
     contextUri?: string
@@ -24,6 +29,7 @@ export interface ListTracksProps{
     viewMode?: ListTracksViewMode
     showHeader?: boolean
     continuousPlayback?: boolean
+    slice?: Slice 
 }
 
 export interface ContextListTracksProps{

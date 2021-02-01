@@ -46,9 +46,14 @@ const ListTracks: React.FC<ListTracksProps> = (props) => {
                     <div></div>
                 </PlaylistTableRow>
                 {
-                    tracks.map((track, index) => (
-                        <TrackRow key={`listtracks${track?.uri}${index}`} track={track} index={index}/>
-                    ))
+                    props.slice ? 
+                        tracks.slice(props.slice.start, props.slice.end).map((track, index) => (
+                            <TrackRow key={`listtracks${track?.uri}${index}`} track={track} index={index}/>
+                        ))
+                    :
+                        tracks.map((track, index) => (
+                            <TrackRow key={`listtracks${track?.uri}${index}`} track={track} index={index}/>
+                        ))
                 }
             </PlaylistTable>
         </ContextListTracks.Provider>

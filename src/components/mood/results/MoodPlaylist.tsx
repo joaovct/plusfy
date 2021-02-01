@@ -38,10 +38,11 @@ const MoodPlaylist: React.FC<Props> = ({mood, tracks, handlePlaylistUpdate}) => 
                     <img src={getMoodIcon(mood)} alt={`${mood} playlist`}/>
                 </PlaylistName>
                 <ListTracks
-                    tracks={!seeMore ? tracks.slice(0, 5) : tracks}
+                    tracks={tracks}
                     showHeader={false}
                     viewMode="simplified"
                     additionalCSS={listTracksCSS}
+                    slice={{start: 0, end: !seeMore ? 5 : tracks.length}}
                 />
                 {
                     tracks.length > 5 ?
