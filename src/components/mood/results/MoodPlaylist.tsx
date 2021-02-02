@@ -27,7 +27,7 @@ const MoodPlaylist: React.FC<Props> = ({mood, tracks, handlePlaylistUpdate}) => 
     const clickSavePlaylist = () => {
         const uris = tracks.map(track => track?.uri || '').filter(uri => uri ? true : false)
         addPlaylist('create-playlist', uris, () => {
-            createAlert('normal', 'Playlist salva 🥳')
+            createAlert('normal', 'Sua playlist foi salva 🥳')
         }, {fullCloseCreatePlaylist: true})
     }
 
