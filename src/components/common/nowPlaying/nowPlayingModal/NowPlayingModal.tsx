@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { colors, metrics, breakpoints } from '../../../../styles/style'
 import Modal from '../../modal/Modal'
 import { HandleSetToggleModal } from '../types'
@@ -30,9 +30,7 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     const {playlist, closeModal, cssPreparer, status} = useNowPlayingModal({toggleModal, handleSetToggleModal})
     const {isTrackSaved, handleLike} = useNowPlayingLike()
     const history = useHistory()
-    const headerRef = useRef<HTMLDivElement>(null)
-    const imageRef = useRef<HTMLImageElement>(null)
-    const footerRef = useRef<HTMLDivElement>(null)
+    const [albumPhotoNode, setAlbumPhotoNode] = useState<HTMLDivElement | null>(null)
     const [sizePhoto, setSizePhoto] = useState(0)
     const mounted = useRef(true)
 
@@ -47,28 +45,36 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
         }
     }
 
-    useEffect(() => {
-        window.addEventListener('resize', calculateSizes)
-        calculateSizes()
-        function calculateSizes(){
-            if(headerRef.current && imageRef.current && footerRef.current){
-                const remainingHeight = window.innerHeight - headerRef.current.offsetHeight - footerRef.current.offsetHeight - verticalSpacingModal * 2 - verticalSpacingPhoto * 2
-                const remainingWidth = window.innerWidth - horizontalSpacingModal * 2
-                const finalSize = remainingWidth > remainingHeight ? remainingHeight : remainingWidth
-
-                if(mounted.current){
-                    setSizePhoto(finalSize)
-                }
-            }
+    function calculateSize(clientWidth: number, clientHeight: number){
+        if(clientWidth && clientHeight){
+            const remainingHeight = clientHeight - verticalSpacingPhoto * 2
+            const remainingWidth = clientWidth
+            return remainingWidth > remainingHeight ? remainingHeight : remainingWidth
         }
-    },[currentState])
+        return 0
+    }
+
+    const measuredRef = useCallback((node: HTMLDivElement | null) => {
+        if(node){
+            setAlbumPhotoNode(node)
+            setSizePhoto(calculateSize(node.clientWidth, node.clientHeight))
+        }
+    },[])
+
+    useEffect(() => {
+        if(albumPhotoNode){
+            window.addEventListener('resize', () => {
+                setSizePhoto(calculateSize(albumPhotoNode.clientWidth, albumPhotoNode.clientHeight))
+            })
+        }
+    },[albumPhotoNode])
 
     return(
         <>
             {
                 status === 'show' ?
                 <Modal cssPage={cssPreparer+cssModalPage} cssModal={cssModal}>
-                    <HeaderModal ref={headerRef}>
+                    <HeaderModal>
                         <Close onClick={closeModal}/>
                         <button onClick={redirectToPlaylist}>
                             <span>
@@ -93,10 +99,10 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                             : <></>
                         }
                     </HeaderModal>
-                    <AlbumPhoto sizePhoto={sizePhoto}>
-                        <img ref={imageRef} src={formatTrackPhoto(currentState.item)} alt="Album"/>
+                    <AlbumPhoto ref={measuredRef} sizePhoto={sizePhoto}>
+                        <img src={formatTrackPhoto(currentState.item)} alt="Album"/>
                     </AlbumPhoto>
-                    <footer ref={footerRef}> 
+                    <footer> 
                         <TrackInfo isTrackSaved={isTrackSaved}>
                             <article>
                                 <span>

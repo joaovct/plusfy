@@ -106,7 +106,7 @@ const Dropdown = styled(NowPlayingDropdown)`
     }
 
     @media(max-width: ${breakpoints.sml}){
-        width: calc(100vw - var(--sideSpacingModal) - var(--sideSpacingModal));
+        width: calc(100vw - var(--horizontalSpacingModal) * 2);
         max-width: 350px;
         max-height: 370px;
     }
