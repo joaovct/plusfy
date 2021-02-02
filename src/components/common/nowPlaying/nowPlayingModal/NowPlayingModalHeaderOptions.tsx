@@ -39,7 +39,8 @@ const WrapperDropdown = styled.div`
     svg{
         height: var(--sizeOptionsButton);
         width: var(--sizeOptionsButton);
-        cursor: pointer
+        cursor: pointer;
+        stroke-width: 1.5px;
     }
 
     ${Dropdown}{

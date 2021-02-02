@@ -1,14 +1,18 @@
 import styled from 'styled-components'
 import { IPlayer } from '../../../../common/api/webapi/types'
 import { handleRepeatState } from '../../../../common/helpers/helperNowPlaying'
-import { colors, breakpoints } from '../../../../styles/style'
+import { colors } from '../../../../styles/style'
 
 export const Controls = styled.div`
-    margin: 20px 0 0 0;
+    margin: 16px 0 0 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media(max-width: 360px){
+        margin: 8px 0 0 0;
+    }
 `
 
 interface ButtonProps{
@@ -20,18 +24,14 @@ interface ButtonProps{
 export const Button = styled.button<ButtonProps>`
     svg{
         cursor: pointer;
-        height: 25px;
-        width: 25px;
+        height: 20px;
+        width: 20px;
         transition: var(--iconOpacityTransition);
+        stroke-width: 1.5px;
 
-        @media(max-width: 400px){
-            height: 22.5px;
-            width: 22.5px;
-        }
-
-        @media(max-width: ${breakpoints.smp}){
-            height: 20px;
-            width: 20px;
+        @media(min-width: 480px){ 
+            height: 25px;
+            width: 25px;
         }
     }
 

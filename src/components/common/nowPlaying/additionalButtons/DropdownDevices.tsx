@@ -35,6 +35,7 @@ const DropdownDevices: React.FC<Props> = ({show, handleToggleDropdowns}) => {
                             onClick={() => {chooseDevice(device.id); handleToggleDropdowns(0)}}
                             active={device.is_active}
                             key={`dropdowndevices-${device.id}-${index}`}
+                            style={{fontSize: "large"}}
                         >
                             <span>
                                 {getDeviceIcon(device.type)}

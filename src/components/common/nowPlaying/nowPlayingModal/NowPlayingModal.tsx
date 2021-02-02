@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { colors, metrics, breakpoints } from '../../../../styles/style'
 import Modal from '../../modal/Modal'
 import { HandleSetToggleModal } from '../types'
@@ -30,6 +30,15 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
     const {playlist, closeModal, cssPreparer, status} = useNowPlayingModal({toggleModal, handleSetToggleModal})
     const {isTrackSaved, handleLike} = useNowPlayingLike()
     const history = useHistory()
+    const headerRef = useRef<HTMLDivElement>(null)
+    const imageRef = useRef<HTMLImageElement>(null)
+    const footerRef = useRef<HTMLDivElement>(null)
+    const [sizePhoto, setSizePhoto] = useState(0)
+    const mounted = useRef(true)
+
+    useEffect(() => () => {
+        mounted.current = false
+    },[])
 
     const redirectToPlaylist = () => {
         if(playlist){
@@ -38,16 +47,44 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
         }
     }
 
+    useEffect(() => {
+        window.addEventListener('resize', calculateSizes)
+        calculateSizes()
+        function calculateSizes(){
+            if(headerRef.current && imageRef.current && footerRef.current){
+                const remainingHeight = window.innerHeight - headerRef.current.offsetHeight - footerRef.current.offsetHeight - verticalSpacingModal * 2 - verticalSpacingPhoto * 2
+                const remainingWidth = window.innerWidth - horizontalSpacingModal * 2
+                const finalSize = remainingWidth > remainingHeight ? remainingHeight : remainingWidth
+
+                if(mounted.current){
+                    setSizePhoto(finalSize)
+                }
+            }
+        }
+    },[currentState])
+
     return(
         <>
             {
                 status === 'show' ?
                 <Modal cssPage={cssPreparer+cssModalPage} cssModal={cssModal}>
-                    <HeaderModal>
+                    <HeaderModal ref={headerRef}>
                         <Close onClick={closeModal}/>
                         <button onClick={redirectToPlaylist}>
                             <span>
-                                <strong>{playlist?.name || ''}</strong>
+                                {
+                                    playlist?.name ? 
+                                    <>
+                                        <small>
+                                            Tocando da playlist
+                                        </small>
+                                        <strong>{playlist.name}</strong>
+                                    </>
+                                    :
+                                    <>
+                                        <small>Tocando da fila</small>
+                                    </>
+                                }
                             </span>
                         </button>
                         {
@@ -56,28 +93,23 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                             : <></>
                         }
                     </HeaderModal>
-                    <AlbumPhoto>
-                        <figure>
-                            <img src={formatTrackPhoto(currentState.item)} alt="Album"/>
-                        </figure>
+                    <AlbumPhoto sizePhoto={sizePhoto}>
+                        <img ref={imageRef} src={formatTrackPhoto(currentState.item)} alt="Album"/>
                     </AlbumPhoto>
-                    <footer>
-                        {
-                            currentState.item ? 
-                            <TrackInfo isTrackSaved={isTrackSaved}>
-                                <article>
-                                    <span>
-                                        <strong>{currentState.item.name}</strong>
-                                    </span>
-                                    <span>
-                                        <small>{formatArtistName(currentState.item)}</small>
-                                    </span>
-                                </article>
-                                <button onClick={handleLike}>
-                                    <Heart/>
-                                </button>
-                            </TrackInfo> : <></>
-                        }
+                    <footer ref={footerRef}> 
+                        <TrackInfo isTrackSaved={isTrackSaved}>
+                            <article>
+                                <span>
+                                    <strong>{currentState.item?.name || ''}</strong>
+                                </span>
+                                <span>
+                                    <small>{currentState.item ? formatArtistName(currentState.item) : ''}</small>
+                                </span>
+                            </article>
+                            <button onClick={handleLike}>
+                                <Heart/>
+                            </button>
+                        </TrackInfo>
                         <Controls>
                             <Button
                                 onClick={clickShuffle}
@@ -140,14 +172,23 @@ const MainControls = styled.div`
             fill: #fff;
         }
         &:nth-child(2) svg{
-            height: 70px;
-            width: 70px;
-            margin: 0 20px;
+            height: 75px;
+            width: 75px;
+            margin: 0 32px;
         }
         
-        @media(max-width: ${breakpoints.sml}){
+        @media(max-width: 400px){
             &:nth-child(2) svg{
-                margin: 0 15px;
+                height: 70px;
+                width: 70px;
+            }
+        }
+
+        @media(max-width: 360px){
+            &:nth-child(2) svg{
+                height: 65px;
+                width: 65px;
+                margin: 0 24px;
             }
         }
 
@@ -155,32 +196,15 @@ const MainControls = styled.div`
             &:not(:nth-child(2)) svg{
                 height: 30px;
                 width: 30px;
-            }
-            &:nth-child(2) svg{
-                height: 65px;
-                width: 65px;
+                fill: #fff;
             }
         }
 
         @media(max-width: ${breakpoints.smp}){
-            &:not(:nth-child(2)) svg{
-                height: 25px;
-                width: 25px;
-            }
             &:nth-child(2) svg{
-                height: 60px;
-                width: 60px;
-            }
-        }
-
-        @media(max-width: 280px){
-            &:not(:nth-child(2)) svg{
-                height: 20px;
-                width: 20px;
-            }
-            &:nth-child(2) svg{
-                height: 55px;
-                width: 55px;
+                height: 62.5px;
+                width: 62.5px;
+                margin: 0 16px;
             }
         }
     }
@@ -191,7 +215,7 @@ const MainControls = styled.div`
 `
 
 const TrackInfo = styled.div<{isTrackSaved: boolean}>`
-    flex: 1 1 auto;
+    flex: 1;
     max-width: 100%;
     width: 100%;
     display: flex;
@@ -202,6 +226,7 @@ const TrackInfo = styled.div<{isTrackSaved: boolean}>`
         width: 20px;
         cursor: pointer;
         transition: var(--iconOpacityTransition);
+        stroke-width: 1.5px;
 
         ${({isTrackSaved}) => {
             if(isTrackSaved)
@@ -261,38 +286,25 @@ const TrackInfo = styled.div<{isTrackSaved: boolean}>`
     }
 `
 
-const AlbumPhoto = styled.div`
-    flex: 1 1 auto;
-    padding: 20px 0;
+const verticalSpacingPhoto = 32
+
+const AlbumPhoto = styled.div<{sizePhoto: number}>`
+    --size: ${({sizePhoto}) => sizePhoto + 'px'};
+    height: var(--size);
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
-
-    @media(max-width: ${breakpoints.smp}){
-        padding: 30px 0;
-    }
-
-    figure{
-        width: 100%;
-        position: relative;
-        max-width: 50vh;
+    --padding: ${verticalSpacingPhoto}px;
+    padding: var(--padding) 0;
+    
+    img{
+        height: var(--size);
+        width: var(--size);
+        object-fit: cover;
+        border-radius: ${metrics.borderRadius};
         box-shadow: ${metrics.boxShadow};
-
-        &:after{
-            content: "";
-            display: block;
-            padding-bottom: 100%;
-        }
-
-        img{
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            position: absolute;
-            border-radius: ${metrics.borderRadius};
-            box-shadow: ${metrics.boxShadow};
-        }
     }
 `
 
@@ -310,12 +322,25 @@ const HeaderModal = styled.div`
         height: var(--sizeCloseButton);
         width: var(--sizeCloseButton);
         cursor: pointer;
+        stroke-width: 1.5px;
     }
 
     span{
-        strong{
+        &, *{
+            font-style: normal;
             text-align: center;
-            font-size: 16px;
+        }
+        small{
+            font-size: 10px;
+            font-weight: 300;
+            color: ${colors.gray};
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+        }
+
+        strong{
+            margin: 4px 0 0 0;
+            font-size: 14px;
             font-weight: 500;
             --lineHeight: 1.2em;
             --numberLines: 2;
@@ -334,6 +359,9 @@ const cssModalPage = css`
     backdrop-filter: blur(8px);
 `
 
+const verticalSpacingModal = 20
+const horizontalSpacingModal = 20
+
 const cssModal = css`
     min-height: inherit;
     min-width: inherit;
@@ -346,10 +374,9 @@ const cssModal = css`
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
-    --topSpacingModal: 40px;
-    --sideSpacingModal: 40px;
-    --bottomSpacingModal: 20px;
-    --spacingModal: var(--topSpacingModal) var(--sideSpacingModal) var(--bottomSpacingModal) var(--sideSpacingModal);
+    --verticalSpacingModal: ${verticalSpacingModal}px;
+    --horizontalSpacingModal: ${horizontalSpacingModal}px;
+    --spacingModal: var(--verticalSpacingModal) var(--horizontalSpacingModal);
     padding: var(--spacingModal);
     ${cssVariables}
     z-index: var(--zIndexNowPlayingModal);
