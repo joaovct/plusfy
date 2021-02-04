@@ -380,6 +380,9 @@ const cssModal = css`
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
     --verticalSpacingModal: ${verticalSpacingModal}px;
     --horizontalSpacingModal: ${horizontalSpacingModal}px;
     --spacingModal: var(--verticalSpacingModal) var(--horizontalSpacingModal);
