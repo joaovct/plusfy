@@ -371,9 +371,9 @@ const horizontalSpacingModal = 20
 const cssModal = css`
     min-height: inherit;
     min-width: inherit;
-    max-height: 100%;
+    max-height: inherit;
     max-width: inherit;
-    height: 100%;
+    height: ${() => window.innerHeight+"px" || "100%"};
     width: 100%;
     background: ${colors.darkerBackgroundTranslucent};
     border-radius: 0px;

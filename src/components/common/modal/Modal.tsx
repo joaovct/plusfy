@@ -1,8 +1,8 @@
 import React from 'react'
-import styled, { FlattenSimpleInterpolation } from 'styled-components'
+import styled, { FlattenInterpolation, FlattenSimpleInterpolation, ThemeProps } from 'styled-components'
 import { metrics, colors } from '../../../styles/style'
 
-type css = FlattenSimpleInterpolation | string
+type css = FlattenSimpleInterpolation | string | FlattenInterpolation<ThemeProps<any>>
 
 interface Props{
     cssModal?: css
