@@ -14,8 +14,8 @@ interface UseModal{
 const useModal: UseModal = (configs) => {
     const [status, setStatus] = useState<Status>(configs?.initialStatus || 'show')
     const [cssPreparer, setCssPreparer] = useState('')
-    const delay = configs?.delay_ms|| 500
-    const transition = (configs?.transition_ms || 500) / 1000
+    const delay = configs?.delay_ms !== undefined ? configs?.delay_ms : 500
+    const transition = (configs?.transition_ms !== undefined ? configs?.transition_ms : 500) / 1000
 
     const showModal = () => {
         if(status === 'hide'){
@@ -26,7 +26,7 @@ const useModal: UseModal = (configs) => {
 
     const closeModal = () => {
         if(status === 'show'){
-            setTimeout(() => setStatus('hide'), delay)
+            setTimeout(() => setStatus('hide'), delay >= transition ? delay : transition * 1000)
             setCssPreparer(`animation: fadeOut ${transition}s; animation-fill-mode: forwards;`)
         }
     }

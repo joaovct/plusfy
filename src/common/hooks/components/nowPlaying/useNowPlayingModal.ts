@@ -26,7 +26,7 @@ const useNowPlayingModal: Hook = ({toggleModal, handleSetToggleModal}) => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
     const currentState = useSelector<IStore, ICurrentState>(store => store.currentState)
     const [playlist, setPlaylist] = useState<Playlist | undefined>()
-    const {showModal,closeModal,cssPreparer,status} = useModal({initialStatus: toggleModal ? 'show' : 'hide'})
+    const {showModal,closeModal,cssPreparer,status} = useModal({initialStatus: toggleModal ? 'show' : 'hide', delay_ms: 0, transition_ms: 250})
     const history = useHistory()
     const isMounted = useRef(true)
 
