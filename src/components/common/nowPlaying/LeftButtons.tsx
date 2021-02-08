@@ -56,15 +56,11 @@ const LeftTrackInfo = styled.div`
             color: ${colors.gray};
         }
 
-        strong,small{
+        strong, small{
             display: table-cell;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-
-            @media(max-width: ${breakpoints.tbp}){
-                user-select: none;
-            }
 
             &:hover{
                 cursor: pointer;
@@ -72,6 +68,12 @@ const LeftTrackInfo = styled.div`
                     text-decoration: underline;
                 }
             }
+        }
+
+        @media(max-width: ${breakpoints.tbp}){
+            pointer-events: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         @media(max-width: ${breakpoints.sml}){
