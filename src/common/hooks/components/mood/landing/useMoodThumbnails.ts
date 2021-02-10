@@ -3,7 +3,8 @@ import { useSelector } from "react-redux"
 import { IToken } from "../../../../../redux/store/token/types"
 import { IStore } from "../../../../../redux/store/types"
 import { getUserTopArtistsAndTracks } from "../../../../api/webapi/personalization"
-import { Artist, Track, UserTopArtistsAndTracksTimeRange } from "../../../../api/webapi/types"
+import { Artist, Track } from "../../../../api/webapi/types"
+import { TimeRange } from "../types"
 import useMoodContext from "../useMoodContext"
 import { ThumbnailTrack } from "./types"
 
@@ -20,7 +21,7 @@ interface Hook{
 
 const useMoodThumbnails: Hook = () => {
     const {updateTimeRange} = useMoodContext()
-    const [timeRange, setTimeRange] = useState<UserTopArtistsAndTracksTimeRange>('medium_term')
+    const [timeRange, setTimeRange] = useState<TimeRange>('medium_term')
     const [tracksImages, setTracksImages] = useState<ThumbnailTrack[]>([])
     const [artistsImages, setArtistsImages] = useState<string[]>([])
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
@@ -35,7 +36,7 @@ const useMoodThumbnails: Hook = () => {
             fetchTracks(6)
         }
         async function fetchTracks(numberImages: number){
-            const data = await getUserTopArtistsAndTracks<Track>(accessToken, "tracks", {time_range: timeRange})
+            const data = await getUserTopArtistsAndTracks<Track>(accessToken, "tracks", {time_range: timeRange === 'all_combined' ? "short_term" : timeRange})
             if(isMounted.current && data?.items){
                 let tracks: ThumbnailTrack[] = []
                 numberImages = numberImages > data?.items.length ? data?.items.length : numberImages
@@ -82,7 +83,10 @@ const useMoodThumbnails: Hook = () => {
     },[accessToken])
 
     const updateSelect: UpdateSelect = (e) => {
-        if(e.target.value === "long_term" || e.target.value === "medium_term" || e.target.value === "short_term"){
+        if(
+            e.target.value === "long_term" || e.target.value === "medium_term" ||
+            e.target.value === "short_term" || e.target.value === "all_combined"
+        ){
             setTimeRange(e.target.value)
             updateTimeRange(e.target.value)
         }

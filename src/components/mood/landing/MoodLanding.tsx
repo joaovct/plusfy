@@ -53,6 +53,7 @@ const MoodLanding = () => {
                             <option value="long_term">Todo o tempo</option>
                             <option value="medium_term">6 meses</option>
                             <option value="short_term">Último mês</option>
+                            <option value="all_combined">Todas combinadas</option>
                         </select>
                     </FieldsetSelect>
                 </span>

@@ -1,12 +1,18 @@
 import { useState } from 'react'
-import { Track, UserTopArtistsAndTracksTimeRange as TimeRange } from '../../../api/webapi/types'
-import { Hook, minAwaitTimingFade, UpdateTimeRange } from './types'
+import { AudioFeature, Track } from '../../../api/webapi/types'
+import { Hook, minAwaitTimingFade, UpdateTimeRange, TimeRange } from './types'
 import { Status, Results, Mood } from '../../../../components/mood/types'
 import { IToken } from '../../../../redux/store/token/types'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { getAllFavoriteTracksByRange } from '../../../helpers/helperMood'
 import { getAudioFeatures } from '../../../api/webapi/track'
+import _ from 'lodash'
+
+
+interface Features{
+    audio_features: AudioFeature[];
+}
 
 const useMood: Hook = () => {
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
@@ -21,8 +27,36 @@ const useMood: Hook = () => {
     const loadMood = async () => {
         setStatus('loading')
 
-        const tracks = await getAllFavoriteTracksByRange(accessToken, timeRange)
-        const features = await getAudioFeatures(accessToken, tracks.map(track => track?.id || ''))
+        let tracks: Track[] = []
+        let features: Features = {audio_features: []}
+
+        if(timeRange === 'all_combined'){
+            tracks = [...tracks, ...await getAllFavoriteTracksByRange(accessToken, "long_term")]
+            tracks = [...tracks, ...await getAllFavoriteTracksByRange(accessToken, "medium_term")]
+            tracks = [...tracks, ...await getAllFavoriteTracksByRange(accessToken, "short_term")]
+
+            tracks = tracks.filter((track, n) => {
+                let include = true
+
+                for(let i = 0; i < n; i++){
+                    if(!track || (track.uri === tracks[i]?.uri)){
+                        include = false
+                    }
+                }
+                return include
+            })
+
+            const chunks = _.chunk(tracks, 99)
+
+            for(let i = 0; i < chunks.length; i++){
+                const newAudioFeatures = (await getAudioFeatures(accessToken, chunks[i].map(track => track?.id || ''))).audio_features
+                features.audio_features = [...features.audio_features, ...newAudioFeatures]
+            }
+            
+        }else{
+            tracks = await getAllFavoriteTracksByRange(accessToken, timeRange)
+            features = await getAudioFeatures(accessToken, tracks.map(track => track?.id || ''))
+        }
 
         let happy: Track[] = []
         let energetic: Track[] = []

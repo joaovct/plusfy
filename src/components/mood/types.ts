@@ -1,9 +1,9 @@
-import { Track, UserTopArtistsAndTracksTimeRange } from "../../common/api/webapi/types";
-import { UpdateTimeRange } from "../../common/hooks/components/mood/types";
+import { Track } from "../../common/api/webapi/types";
+import { TimeRange, UpdateTimeRange } from "../../common/hooks/components/mood/types";
 
 export interface ContextProps {
     status: Status
-    timeRange: UserTopArtistsAndTracksTimeRange
+    timeRange: TimeRange
     results: Results | null
     loadMood: () => void
     resetMood: () => void
