@@ -111,7 +111,7 @@ export const cssVariables = `
     --innerPaddingHorizontal: ${metrics.spacing4};
     --innerPadding: var(--innerPaddingVertical) var(--innerPaddingHorizontal);
     --iconOpacityDisabled: .4;
-    --iconOpacity: .7;
+    --iconOpacity: .9;
     --iconOpacityActivate: 1;
     --iconOpacityTransition: .15s;
 `

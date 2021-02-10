@@ -93,6 +93,14 @@ const ActionButton = styled.figure<AvailableAction>`
         height: 20px;
         width: 20px;
         fill: #fff;
+
+        polygon{
+            stroke-linejoin: initial;
+        }
+
+        line{
+            stroke-linecap: square;
+        }
     }
 
     ${({isAvailable}) => {
@@ -163,14 +171,24 @@ const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
     svg{
         height: 40px;
         width: 40px;
-        opacity: var(--iconOpacity);
+        opacity: 1;
+        fill: #fff;
+    }
 
+    @media(min-width: ${breakpoints.absoluteDimensions.tbp + 1 + "px"}){
         circle{
             stroke-width: 1px;
         }
 
         polygon{
-            fill: #fff;
+            fill: ${colors.darkerBackground};
+            stroke: ${colors.darkerBackground};
+            stroke-width: 0;
+        }
+
+        line{
+            stroke: ${colors.darkerBackground};
+            stroke-linecap: square;
         }
     }
 

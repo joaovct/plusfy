@@ -6,8 +6,8 @@ import styled, {css} from 'styled-components'
 import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
-import { Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
-import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause} from '@material-ui/icons'
+import { PlayCircle as Play, PauseCircle as Pause, Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
+// import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause} from '@material-ui/icons'
 import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylistTable'
 import ModalAdditionalButtons from './ModalAdditionalButtons'
 import NowPlayingModalHeaderOptions from './NowPlayingModalHeaderOptions'
@@ -176,11 +176,36 @@ const MainControls = styled.div`
             height: 35px;
             width: 35px;
             fill: #fff;
+
+            polygon{
+                stroke-linejoin: initial;
+            }
+
+            line{
+                stroke-linecap: square;
+            }
         }
         &:nth-child(2) svg{
             height: 75px;
             width: 75px;
             margin: 0 32px;
+            fill: #fff;
+
+            circle{
+                stroke-width: 1px;
+            }
+
+            polygon{
+                fill: ${colors.darkerBackground};
+                stroke: ${colors.darkerBackground};
+                stroke-width: 0;
+            }
+
+            line{
+                stroke: ${colors.darkerBackground};
+                stroke-width: 2px;
+                stroke-linecap: square;
+            }
         }
         
         @media(max-width: 400px){
