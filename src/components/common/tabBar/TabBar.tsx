@@ -1,8 +1,9 @@
 import React from 'react'
 import {HomeRounded as Home, SearchRounded as Search, AudiotrackRounded as AudioTrack} from '@material-ui/icons'
 import styled from 'styled-components'
-import { colors, breakpoints } from '../../../styles/style'
+import { colors } from '../../../styles/style'
 import TabBarItem from './TabBarItem'
+import { nowPlayingMobileBreakpoint } from '../nowPlaying/style'
 
 const TabBar = () => {
     return(
@@ -37,7 +38,7 @@ const TabBarStyled = styled.nav`
     background: ${colors.darkerBackground};
     border-top: 1px solid ${colors.border};
 
-    @media(min-width: ${breakpoints.tbp}){
+    @media(min-width: calc(1px + ${nowPlayingMobileBreakpoint})){
         display: none;
     }
 `

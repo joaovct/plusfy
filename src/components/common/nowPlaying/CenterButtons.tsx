@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import {PlayCircle, PauseCircle, Play, Pause, SkipBack as Prev, SkipForward as Next, Shuffle, Repeat} from 'react-feather'
-import { breakpoints, colors, metrics } from '../../../styles/style';
+import { breakpoints, colors } from '../../../styles/style';
 import useNowPlayingMainButtons from '../../../common/hooks/components/nowPlaying/useNowPlayingMainButtons';
 import { ICurrentState } from '../../../redux/store/currentState/types';
 import { IStore } from '../../../redux/store/types';
 import { useSelector } from 'react-redux';
 import { handleRepeatState } from '../../../common/helpers/helperNowPlaying';
+import { nowPlayingMobileBreakpoint } from './style';
 
 const CenterButtons = () => {
     const {clickShuffle, clickPrevious, clickPlayPause, clickNext, clickRepeat} = useNowPlayingMainButtons()
@@ -87,7 +88,7 @@ interface RepeatButton extends AvailableAction{
 }
 
 const ActionButton = styled.figure<AvailableAction>`
-    margin: 0 ${metrics.spacing4};
+    margin: 0 24px;
 
     svg{
         height: 20px;
@@ -120,12 +121,11 @@ const ActionButton = styled.figure<AvailableAction>`
         `
     }}
 
-    @media(max-width: ${breakpoints.tbl}){
-        margin: 0 ${metrics.spacing3};
+    @media(max-width: 900px){
+        margin: 0 16px;
     }
 
-    @media(max-width: ${breakpoints.tbp}){
-        margin: 0 10px;
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         &:first-child{
             margin-left: 0;
         }
@@ -134,30 +134,16 @@ const ActionButton = styled.figure<AvailableAction>`
         justify-content: center;
         align-items: center;
     }
-
-    @media(max-width: ${breakpoints.smp}){
-        margin: 0 7.5px;
-    }
 `
 
-const MockupShuffleAndRepeat = styled(ActionButton)`
-    @media(max-width: ${breakpoints.lg}){
-        margin: 0 ${metrics.spacing3};
-    }
-    
-    @media(max-width: ${breakpoints.tbl}){
-        margin: 0 ${metrics.spacing2};
-    }
-`
-
-const ShuffleButton = styled(MockupShuffleAndRepeat)<ShuffleButton>`
+const ShuffleButton = styled(ActionButton)<ShuffleButton>`
     svg{
         fill: none;
         ${({isActive}) => isActive ? `stroke: ${colors.primary}; opacity: 1;` : ''}
     }
 `
 
-const RepeatButton = styled(MockupShuffleAndRepeat)<RepeatButton>`
+const RepeatButton = styled(ActionButton)<RepeatButton>`
     svg{
         fill: none;
     }
@@ -175,7 +161,7 @@ const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
         fill: #fff;
     }
 
-    @media(min-width: ${breakpoints.absoluteDimensions.tbp + 1 + "px"}){
+    @media(min-width: calc(1px + ${nowPlayingMobileBreakpoint})){
         circle{
             stroke-width: 1px;
         }
@@ -192,7 +178,7 @@ const PlayPauseButton = styled.figure<{isPlaying: boolean}>`
         }
     }
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         display: flex;
         justify-content: center;
         height: 35px;
@@ -226,7 +212,7 @@ const Mobile = styled.div`
     padding: var(--innerPadding);
     padding-right: 0;
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         display: flex;
     }
 `
@@ -244,7 +230,7 @@ const Desktop = styled.div`
         justify-content: space-between;
     }
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         display: none;
     }
 

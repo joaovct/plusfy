@@ -1,4 +1,4 @@
-import { breakpoints } from "../../styles/style"
+import { nowPlayingMobileBreakpointAbsolute } from "../../components/common/nowPlaying/style"
 
 export const positionOptionsElement = (ul: HTMLUListElement) => {
     const section = ul?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement
@@ -24,7 +24,7 @@ export function nowPlayingPositionDropdown(ul: HTMLUListElement, addLeftOnMobile
 }
 
 function nowPlayingDoPositionDropdown(ul: HTMLUListElement, addLeftOnMobile?: boolean){
-    if(window.innerWidth >= breakpoints.absoluteDimensions.tbp){
+    if(window.innerWidth >= nowPlayingMobileBreakpointAbsolute){
         const nowPlayingRight = ul.parentElement?.parentElement?.parentElement?.getBoundingClientRect().right || 0
         const ulRight = ul.getBoundingClientRect().right
         const difference = ulRight - nowPlayingRight

@@ -8,6 +8,7 @@ import DropdownDevices from './additionalButtons/DropdownDevices'
 import DropdownVolume from './additionalButtons/DropdownVolume'
 import {Heart} from 'react-feather'
 import useNowPlayingLike from '../../../common/hooks/components/nowPlaying/useNowPlayingLike'
+import { nowPlayingMobileBreakpoint } from './style'
 
 const RightButtons = () => {
     const {toggleDropdowns, volume, updateFatherVolume, handleToggleDropdowns} = useNowPlayingAdditionalButtons()    
@@ -47,11 +48,15 @@ export default RightButtons
 const WrapperDropdown = styled.div<{isTrackSaved?: boolean}>`
     height: 100%;
     position: relative;
-    padding: 0 var(--innerPaddingHorizontal);
+    padding: 0 16px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
+
+    @media(max-width: ${breakpoints.tbl}){
+        padding: 0 12px;
+    }
 
     svg{
         height: 22.5px;
@@ -87,7 +92,7 @@ const Right = styled.div`
     padding-top: 0;
     padding-bottom: 0;  
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         display: none;
     }
 `

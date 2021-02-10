@@ -115,3 +115,6 @@ export const cssVariables = `
     --iconOpacityActivate: 1;
     --iconOpacityTransition: .15s;
 `
+
+export const nowPlayingMobileBreakpointAbsolute = 700
+export const nowPlayingMobileBreakpoint = nowPlayingMobileBreakpointAbsolute + 'px'

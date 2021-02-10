@@ -6,6 +6,7 @@ import { IStore } from '../../../redux/store/types'
 import { ICurrentState } from '../../../redux/store/currentState/types'
 import { formatArtistName, formatTrackPhoto } from '../../../common/helpers/helperPlaylistTable'
 import { HandleSetToggleModal } from './types'
+import { nowPlayingMobileBreakpoint } from './style'
 
 interface Props{
     handleSetToggleModal: HandleSetToggleModal
@@ -64,13 +65,13 @@ const LeftTrackInfo = styled.div`
 
             &:hover{
                 cursor: pointer;
-                @media(min-width: ${breakpoints.tbp}){
+                @media(min-width: ${nowPlayingMobileBreakpoint}){
                     text-decoration: underline;
                 }
             }
         }
 
-        @media(max-width: ${breakpoints.tbp}){
+        @media(max-width: ${nowPlayingMobileBreakpoint}){
             pointer-events: none;
             -webkit-user-select: none;
             user-select: none;
@@ -109,7 +110,7 @@ const LeftTrackImg = styled.figure`
         margin: 0 ${metrics.spacing2} 0 0;
     }
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         --sizeThumbnail: 60px;
         margin: 0 ${metrics.spacing3} 0 0;
     }
@@ -130,7 +131,7 @@ const Left = styled.div`
     align-items: center;
     padding: var(--innerPadding);
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         padding-left: 0;
         padding-right: 0;
     }

@@ -8,7 +8,7 @@ import CenterButtons from './CenterButtons'
 import LeftButtons from './LeftButtons'
 import NowPlayingModal from './nowPlayingModal/NowPlayingModal'
 import RightButtons from './RightButtons'
-import { cssVariables } from './style'
+import { cssVariables, nowPlayingMobileBreakpoint, nowPlayingMobileBreakpointAbsolute} from './style'
 import { HandleSetToggleModal } from './types'
 
 const NowPlaying: React.FC = () => {
@@ -16,7 +16,7 @@ const NowPlaying: React.FC = () => {
     const [toggleModal, setToggleModal] = useState(false)
     
     const handleSetToggleModal: HandleSetToggleModal = (state) => {
-        if(!state || (currentState.item?.uri && window.innerWidth <= breakpoints.absoluteDimensions.tbp))
+        if(!state || (currentState.item?.uri && window.innerWidth <= nowPlayingMobileBreakpointAbsolute))
             setToggleModal(state)
     }
 
@@ -57,7 +57,7 @@ const NowPlayingInner = styled.div`
         --innerPaddingHorizontal: ${metrics.spacing2};
     }
 
-    @media(max-width: ${breakpoints.tbp}){
+    @media(max-width: ${nowPlayingMobileBreakpoint}){
         --iconOpacity: 1;
         --innerPaddingVertical: 0;
         grid-template-columns: 1fr auto;
