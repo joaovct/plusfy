@@ -126,6 +126,8 @@ const ActionButton = styled.figure<AvailableAction>`
     }
 
     @media(max-width: ${nowPlayingMobileBreakpoint}){
+        margin: 0 8px;
+
         &:first-child{
             margin-left: 0;
         }
