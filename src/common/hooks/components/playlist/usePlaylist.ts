@@ -21,6 +21,17 @@ const usePlaylist = () => {
     const isMounted = useRef(true)
     const location = useLocation()
 
+    useEffect(() => {
+        if(isMounted.current){
+            let el = document.getElementById('root')
+            
+            if(el){
+                el.scrollTop = 0
+            }
+        }
+
+    },[location])
+
     const updatePlaylist = useCallback(async () => {
         const response = await fetchPlaylist(accessToken, id)
 
