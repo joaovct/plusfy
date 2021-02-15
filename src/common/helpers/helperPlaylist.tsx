@@ -1,6 +1,7 @@
 import { ICurrentState } from "../../redux/store/currentState/types";
 import { Playlist, Track } from "../api/webapi/types";
 import emptyAlbumPhoto from '../../assets/empty-playlist-photo.svg'
+import { FakePlaylist } from "../../components/playlist/types";
 
 export const isPlayingTrack = (currentState: ICurrentState, trackUri: string) => {
     if(currentState?.item?.uri === trackUri)
@@ -49,6 +50,26 @@ export const calculatePlaylistDuration = (playlist: Playlist | null) => {
     }
     return ''
  }
+
+ export const formatPlaylistImage = (playlist: (Playlist | null), fakePlaylist: (FakePlaylist | null)): string => {
+    if(playlist && playlist.images.length){
+        return playlist.images[0].url
+    }else if(fakePlaylist){
+        let image: string = ''
+
+        for(let i = 0; i < fakePlaylist.tracks.length; i++){
+            if(fakePlaylist.tracks[0]?.album.images[0]){
+                image = fakePlaylist.tracks[0]?.album.images[0].url
+                break
+            }
+        }
+
+        if(image){
+            return image
+        }
+    }
+    return emptyAlbumPhoto
+}
 
 export const formatTrackPhoto = (track?: Track) => {
     if(track?.album.images.length)

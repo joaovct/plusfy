@@ -12,11 +12,11 @@ import { checkUserFollowPlaylist, followPlaylist, unfollowPlaylist } from '../..
 import { IUser } from '../../../redux/store/user/types'
 
 const HeaderPlaylistButtons = () => {
-    const {playlist} = useContext(ContextPlaylist)
+    const { playlist, fakePlaylist } = useContext(ContextPlaylist)
     const [showOptions, setShowOptions] = useState(false)
     const [isPlaylistFollowed, setIsPlaylistFollowed] = useState(false)
-    const {accessToken} = useSelector<IStore, IToken>(store => store.token)
-    const {id: userId = ''} = useSelector<IStore, IUser>(store => store.user)
+    const { accessToken } = useSelector<IStore, IToken>(store => store.token)
+    const { id: userId = '' } = useSelector<IStore, IUser>(store => store.user)
     const addToPlaylist = useAddToPlaylist()
 
     useEffect(() => {
@@ -32,8 +32,12 @@ const HeaderPlaylistButtons = () => {
 
     const handlePlayPlaylist = () => {
         if(playlist){
-            const randomPosition = Math.floor(Math.random() * playlist.tracks.items.length || 0)
+            const randomPosition = Math.floor(Math.random() * playlist?.tracks.items.length || 0)
             playPlayer({accessToken, contextUri: playlist.uri, offset: {position: randomPosition}})
+        }else if(fakePlaylist){
+            const uris = fakePlaylist.tracks.map(track => track?.uri || '').filter(uri => uri ? true : false)
+            const randomPosition = Math.floor(Math.random() * uris.length || 0)
+            playPlayer({accessToken, uris, offset: {uri: uris[randomPosition]}})
         }
     }
 
@@ -49,8 +53,15 @@ const HeaderPlaylistButtons = () => {
     }
 
     const copyPlaylist = () => {
-        if(playlist){
-            const uris = playlist?.tracks.items.map(item => item.track ? item.track.uri : '').filter(uri => uri ? true : false)
+        if(playlist || fakePlaylist){
+            let uris: string[] = []
+
+            if(playlist){
+                uris = playlist.tracks.items.map(item => item.track?.uri || '').filter(uri => uri ? true : false)
+            }else if(fakePlaylist){
+                uris = fakePlaylist.tracks.map(track => track?.uri || '').filter(uri => uri ? true : false)
+            }
+
             addToPlaylist('add-track', uris)
         }
     }
@@ -60,7 +71,7 @@ const HeaderPlaylistButtons = () => {
             <Button onClick={handlePlayPlaylist}>Play</Button>
             <WrapperOptions>
                 {
-                    playlist?.owner.id !== userId ?
+                    playlist && playlist?.owner.id !== userId ?
                         <ButtonIcon followed={isPlaylistFollowed} title="Seguir playlist" onClick={clickHeart}>
                             <Heart/>
                         </ButtonIcon>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { formatArtistGenres } from '../../../common/helpers/helperPlaylistTable'
+import { formatArtistGenres } from '../../../common/helpers/helperPlaylist'
 import { ArtistsTable, ArtistsTableRow } from '../../../styles/style'
 import { ListArtistsProps } from './types'
 import emptyAlbumPhoto from '../../../assets/empty-playlist-photo.svg'

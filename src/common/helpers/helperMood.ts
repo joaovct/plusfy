@@ -95,7 +95,7 @@ export const getMoodDescription = (mood: Mood): string => {
         `
     else if(mood === 'melancholic')
         return `
-            A maioria de suas músicas são lentas e calmas, um bom remédio para um coração quebrado.
+            A maioria de tuas músicas são lentas e calmas, um bom remédio para um coração quebrado.
         `
     else if(mood === 'relaxing')
         return `

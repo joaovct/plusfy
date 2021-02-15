@@ -22,6 +22,7 @@ const Routes = () => (
             <Route path="/search/:q" render={() => renderPrivateRoute(Search)}/>
             <Route exact path="/mood" render={() => renderPrivateRoute(Mood)}/>
             <Route exact path="/my-library" render={() => renderPrivateRoute(MyLibrary)}/>
+            <Route exact path="/playlist" render={() => renderPrivateRoute(Playlist)}/>
             <Route exact path="/playlist/:id" render={() => renderPrivateRoute(Playlist)}/>
             <Route exact path="/favorites" render={() => renderPrivateRoute(Favorites)}/>
             <Route exact path="/import-tracks" render={() => renderPrivateRoute(ImportTracks)}/>

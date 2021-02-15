@@ -1,7 +1,7 @@
 import React, { memo, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Track } from '../../../../common/api/webapi/types'
-import { formatArtistName, formatDuration, formatTrackPhoto, toggleTrack } from '../../../../common/helpers/helperPlaylistTable'
+import { formatArtistName, formatDuration, formatTrackPhoto, toggleTrack } from '../../../../common/helpers/helperPlaylist'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import { IStore } from '../../../../redux/store/types'
 import { breakpoints, PlaylistTableRow } from '../../../../styles/style'

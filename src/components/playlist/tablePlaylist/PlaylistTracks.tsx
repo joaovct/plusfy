@@ -9,15 +9,19 @@ import ListTracks from '../../common/listTracks/ListTracks';
 import ContextPlaylist from '../ContextPlaylist';
 
 const PlaylistTracks = () => {
-    const {playlist} = useContext(ContextPlaylist)
-    const {tracks, additionalColumns, additionalOptions} = usePlaylistTracks()
+    const {playlist, fakePlaylist} = useContext(ContextPlaylist)
+    const {tracks, continuousPlayback, additionalColumns, additionalOptions} = usePlaylistTracks()
     const {id: userId = ''} = useSelector<IStore, IUser>(store => store.user)
 
     return (
-        <ComponentContent isUserOwner={playlist?.owner.id === userId}>
+        <ComponentContent
+            isUserOwner={playlist?.owner.id === userId}
+            isFakePlaylist={!playlist && fakePlaylist ? true : false}
+        >
             <Container>
                 <ListTracks
                     tracks={tracks}
+                    continuousPlayback={continuousPlayback}
                     additionalColumns={additionalColumns}
                     additionalTrackRowOptions={additionalOptions}
                     contextUri={playlist?.uri}
@@ -30,7 +34,7 @@ const PlaylistTracks = () => {
 export default PlaylistTracks
 
 
-const ComponentContent = styled(Page)<{isUserOwner: boolean}>`
+const ComponentContent = styled(Page)<{isUserOwner: boolean, isFakePlaylist: boolean}>`
     flex: 1 1 auto;
     margin: ${metrics.spacing5} 0 0 0;
     background: ${colors.darkerBackground};
@@ -48,24 +52,26 @@ const ComponentContent = styled(Page)<{isUserOwner: boolean}>`
                 }
             }
             &:last-child{
-                ${({isUserOwner}) => {
-                    if(isUserOwner)
-                        return`
+                ${({isUserOwner, isFakePlaylist}) => {
+                    if(!isFakePlaylist){
+                        if(isUserOwner)
+                            return`
+                                ${Dropdown}{
+                                    li:nth-child(2),
+                                    li:nth-child(3){
+                                        display: none;
+                                    }
+                                }
+                            `
+                        return `
                             ${Dropdown}{
-                                li:nth-child(2),
-                                li:nth-child(3){
+                                li:nth-last-child(2),
+                                li:nth-last-child(3){
                                     display: none;
                                 }
-                            }
+                            }      
                         `
-                    return `
-                        ${Dropdown}{
-                            li:nth-last-child(2),
-                            li:nth-last-child(3){
-                                display: none;
-                            }
-                        }      
-                    `
+                    }
                 }}
             }
         }

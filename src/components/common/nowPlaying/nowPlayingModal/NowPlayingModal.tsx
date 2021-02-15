@@ -7,8 +7,7 @@ import { useSelector } from 'react-redux'
 import { IStore } from '../../../../redux/store/types'
 import { ICurrentState } from '../../../../redux/store/currentState/types'
 import { PlayCircle as Play, PauseCircle as Pause, Heart, Shuffle, Repeat, SkipBack, SkipForward} from 'react-feather'
-// import {PlayCircleFilledRounded as Play, PauseCircleFilledRounded as Pause} from '@material-ui/icons'
-import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylistTable'
+import { formatArtistName, formatTrackPhoto } from '../../../../common/helpers/helperPlaylist'
 import ModalAdditionalButtons from './ModalAdditionalButtons'
 import NowPlayingModalHeaderOptions from './NowPlayingModalHeaderOptions'
 import useNowPlayingLike from '../../../../common/hooks/components/nowPlaying/useNowPlayingLike'
@@ -95,7 +94,10 @@ const NowPlayingModal: React.FC<Props> = ({toggleModal, handleSetToggleModal}) =
                         </button>
                         {
                             currentState.item ?
-                                <NowPlayingModalHeaderOptions track={currentState.item}/>
+                                <NowPlayingModalHeaderOptions
+                                    track={currentState.item}
+                                    closeModal={closeModal}
+                                />
                             : <></>
                         }
                     </HeaderModal>

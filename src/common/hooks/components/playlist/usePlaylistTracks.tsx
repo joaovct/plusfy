@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AdditionalColumn, AdditionalTrackRowOption } from '../../../../components/common/listTracks/types';
 import ContextPlaylist from '../../../../components/playlist/ContextPlaylist';
@@ -6,7 +6,7 @@ import { IStore } from '../../../../redux/store/types';
 import { IUser } from '../../../../redux/store/user/types';
 import { Track } from "../../../api/webapi/types"
 import {Calendar} from 'react-feather'
-import { formatAddedAt } from '../../../helpers/helperPlaylistTable';
+import { formatAddedAt } from '../../../helpers/helperPlaylist';
 import useDisabledTracks from '../../state/useDisabledTracks';
 import { isTrackDisabled } from '../../../api/disabledTracks/disabledTracks';
 import { addToQueue } from '../../../api/webapi/player';
@@ -20,11 +20,13 @@ interface HookProps{
         tracks: Track[]
         additionalColumns: AdditionalColumn[]
         additionalOptions: AdditionalTrackRowOption[]
+        continuousPlayback: boolean
     }
 }
 
 const usePlaylistTracks: HookProps = () => {
-    const {playlist, updatePlaylist} = useContext(ContextPlaylist)
+    const {playlist, fakePlaylist, updatePlaylist} = useContext(ContextPlaylist)
+    const [continuousPlayback, setContinuousPlayback] = useState(false)
     const actionDisableTracks = useDisabledTracks()
     const {id: userId} = useSelector<IStore, IUser>(store => store.user)
     const {accessToken} = useSelector<IStore, IToken>(store => store.token)
@@ -32,15 +34,24 @@ const usePlaylistTracks: HookProps = () => {
     const createAlert = useAlert()
 
     const tracks = useMemo(() => {
-        return playlist?.tracks.items.map(item => item.track).filter(track => track !== null) || []
-    },[playlist])
-
-    const additionalColumns = useMemo<AdditionalColumn[]>(() => [
-        {
-            headerContent: <Calendar/>,
-            bodyContent: playlist?.tracks.items.map(item => formatAddedAt(item.added_at)) || []
+        if(playlist){
+            return playlist?.tracks.items.filter(item => item.track ? true : false).map(item => item.track)
+        }else{
+            setContinuousPlayback(true)
+            return fakePlaylist?.tracks.filter(track => track ? true : false) || []
         }
-    ],[playlist])
+    },[playlist, fakePlaylist])
+
+
+    const additionalColumns = useMemo<AdditionalColumn[]>(() => {
+        if(playlist){
+            return [{
+                headerContent: <Calendar/>,
+                bodyContent: playlist?.tracks.items.map(item => formatAddedAt(item.added_at)) || []
+            }]
+        }
+        return []
+    },[playlist])
 
     const additionalOptions = useMemo<AdditionalTrackRowOption[]>(() => {
         if(playlist){
@@ -95,7 +106,7 @@ const usePlaylistTracks: HookProps = () => {
         return []
     },[addToPlaylist, playlist, actionDisableTracks, userId, accessToken, createAlert, updatePlaylist])
 
-    return {tracks, additionalColumns, additionalOptions}
+    return {tracks, continuousPlayback, additionalColumns, additionalOptions}
 }
 
 export default usePlaylistTracks

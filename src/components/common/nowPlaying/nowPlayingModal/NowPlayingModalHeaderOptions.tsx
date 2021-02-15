@@ -7,11 +7,18 @@ import useTrackRowOptions from '../../../../common/hooks/components/listTracks/u
 
 interface Props{
     track: Track
+    closeModal: () => void
 }
 
-const NowPlayingModalHeaderOptions: React.FC<Props> = ({track}) => {
+const NowPlayingModalHeaderOptions: React.FC<Props> = ({track, closeModal}) => {
     const [showOptions, setShowOptions] = useState(false)
-    const {actionAddToPlaylist, actionAddToQueue} = useTrackRowOptions({track, index: 0, isContextAvailable: false, callbackContextUnavailable: () => setShowOptions(false)})
+    const {actionAddToPlaylist, actionAddToQueue, actionTrackRecommendation} = useTrackRowOptions({track, index: 0, isContextAvailable: false, callbackContextUnavailable: () => setShowOptions(false)})
+
+    const handleActionTrackRecommendation = () => {
+        setShowOptions(state => !state)
+        closeModal()
+        actionTrackRecommendation()
+    }
 
     return(
         <WrapperDropdown>
@@ -24,6 +31,9 @@ const NowPlayingModalHeaderOptions: React.FC<Props> = ({track}) => {
                 </li>
                 <li onClick={actionAddToPlaylist}>
                     <span>Adicionar à playlist</span>
+                </li>
+                <li onClick={handleActionTrackRecommendation}>
+                    <span>Recomendações</span>
                 </li>
             </Dropdown>
         </WrapperDropdown>

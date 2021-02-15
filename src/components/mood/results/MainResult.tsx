@@ -10,7 +10,7 @@ const MainResult = () => {
 
     return(
         <MainResultStyled>
-            <Subtitle>O seu principal mood é:</Subtitle>
+            <Subtitle>O teu principal mood é:</Subtitle>
             <MoodIcon mood={results?.mood}>
                 <video autoPlay loop>
                     <source src={getMoodAnimation(results?.mood || '')} type="video/webm"/>

@@ -1,35 +1,40 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Page, Container, Title, metrics, colors, breakpoints } from '../../../styles/style'
-import emptyPlaylistPhoto from '../../../assets/empty-playlist-photo.svg'
 import { Link } from 'react-router-dom'
 import HeaderPlaylistButtons from './HeaderPlaylistButtons'
 import ContextPlaylist from '../ContextPlaylist'
-import { calculatePlaylistDuration, formatNumberTracks } from '../../../common/helpers/helperPlaylistTable'
+import { calculatePlaylistDuration, formatNumberTracks, formatPlaylistImage } from '../../../common/helpers/helperPlaylist'
 
 
 const HeaderPlaylist = () => {
-    const {playlist} = useContext(ContextPlaylist)
+    const { playlist, fakePlaylist } = useContext(ContextPlaylist)
+    const name = playlist?.name || fakePlaylist?.name || ''
+    const image = formatPlaylistImage(playlist, fakePlaylist) 
     const playlistDuration = calculatePlaylistDuration(playlist)
     const numberTracks = formatNumberTracks(playlist)
-
+    
     return (
-        <>{playlist ?
+        <>{playlist || fakePlaylist ?
             <Header>
                 <Container>
                     <HeaderInner>  
                         <figure>
-                            <img src={playlist.images.length ? playlist.images[0].url : emptyPlaylistPhoto} alt={`Playlist: ${playlist.name}`} />
+                            <img src={image} alt={`Playlist: ${name}`} />
                         </figure>
                         <span>
                             <small>Playlist</small>
-                            <Title>{playlist.name}</Title>
-                            <p>
-                                <Link to={`/user/${playlist.owner.id}`}>
-                                    De {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
-                                </Link> 
-                                <span> - {numberTracks}, {playlistDuration}</span>
-                            </p>
+                            <Title>{name}</Title>
+                            {
+                                playlist ? 
+                                <p>
+                                    <Link to={`/user/${playlist.owner.id}`}>
+                                        De {playlist.owner.display_name || `Usuário - ${playlist.owner.id}`}
+                                    </Link> 
+                                    <span> - {numberTracks}, {playlistDuration}</span>
+                                </p>
+                                : <></>
+                            }
                             <HeaderPlaylistButtons/>
                         </span>
                     </HeaderInner>

@@ -49,7 +49,7 @@ const MoodPlaylist: React.FC<Props> = ({mood, tracks, handlePlaylistUpdate}) => 
                     <SeeMore>
                         <button onClick={toggleSeeMore}>
                             {
-                                !seeMore ? "Ver tudo" : "Mostrar menos"
+                                !seeMore ? "Mostrar tudo" : "Ver menos"
                             }
                         </button>
                     </SeeMore>
@@ -91,9 +91,11 @@ const listTracksCSS = css<PlaylistTableRowProps>`
 
                 //increase selector
                 strong:nth-child(n+1){
-                    font-size: 18px;
-                    font-weight: 600;
-                    color: #000;
+                    &,font{
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #000;
+                    }
 
                     @media(max-width: ${breakpoints.sml}){
                         font-size: 16px;
@@ -106,10 +108,12 @@ const listTracksCSS = css<PlaylistTableRowProps>`
 
                 //increase selector
                 small:nth-child(n+1){
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: ${colors.darkerGray};
-                    margin: 0;
+                    &,font{
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: ${colors.darkerGray};
+                        margin: 0;
+                    }
                 }
             }
 
@@ -150,12 +154,14 @@ const SeeMore = styled.span`
     margin: 10px 0 0 0;
 
     button{
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: underline;
-        color: ${colors.primary};
-        text-transform: uppercase;
-        cursor: pointer;
+        &, font{
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: underline;
+            color: ${colors.primary};
+            text-transform: uppercase;
+            cursor: pointer;
+        }
     }
 ` 
 

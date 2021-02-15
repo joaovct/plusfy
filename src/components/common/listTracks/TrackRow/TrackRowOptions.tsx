@@ -15,7 +15,7 @@ interface TrackRowOptionsProps{
 const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({track, index}) => {
     const optionsRef = useRef<HTMLUListElement>(null)
     const {handleToggleOption, toggleOptions, additionalTrackRowOptions} = useContext(ContextListTracks)
-    const {actionSaveTrack, actionRemoveSavedTrack,actionAddToPlaylist, actionAddToQueue, trackSaved} = useTrackRowOptions({track, index})
+    const {actionSaveTrack, actionRemoveSavedTrack,actionAddToPlaylist, actionTrackRecommendation, actionAddToQueue, trackSaved} = useTrackRowOptions({track, index})
 
     useEffect(() => {
         if(optionsRef.current)
@@ -52,6 +52,9 @@ const TrackRowOptions: React.FC<TrackRowOptionsProps> = ({track, index}) => {
                 </li>
                 <li onClick={actionAddToPlaylist}>
                     <span>Adicionar à playlist</span>
+                </li>
+                <li onClick={actionTrackRecommendation}>
+                    <span>Ir para recomendações</span>
                 </li>
                 {
                     additionalTrackRowOptions?.map((option, index) => {
