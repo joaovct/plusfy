@@ -14,7 +14,7 @@ const ListArtists: React.FC<ListArtistsProps> = ({artists, additionalCSS}) => {
                             <span>{index + 1}</span>
                         </div>
                         <div>
-                            <img src={artist.images[0].url || emptyAlbumPhoto} alt={artist.name} />
+                            <img loading="lazy" src={artist.images[0].url || emptyAlbumPhoto} alt={artist.name} />
                             <span>
                                 <strong>{artist.name}</strong>
                                 <small>{formatArtistGenres(artist.genres)}</small>

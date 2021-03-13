@@ -67,7 +67,7 @@ const TrackRow: React.FC<TrackProps> = ({track, index}) => {
                 }
             </div>
             <div onClick={handleClickOnSecondColumn}>
-                <img src={formatTrackPhoto(track)} alt={`Album ${track?.name}`} />
+                <img loading="lazy" src={formatTrackPhoto(track)} alt={`Album ${track?.name}`} />
                 <span>
                     <strong>{track?.name}</strong>
                     <small>{formatArtistName(track)}</small>

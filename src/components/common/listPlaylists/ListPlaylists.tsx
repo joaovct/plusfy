@@ -9,7 +9,7 @@ const ListPlaylists: React.FC<ListPlaylistsProps> = ({playlists, actionOnClick})
         <ListPlaylistsStyled>
             {
                 playlists.map((item, index) => {
-                    const Figure = <figure> <img src={item.images.length ? item.images[0].url : emptyPlaylistPhoto} alt={item.name} /> </figure>
+                    const Figure = <figure> <img loading="lazy" src={item.images.length ? item.images[0].url : emptyPlaylistPhoto} alt={item.name} /> </figure>
                     const Strong = <strong>{item.name}</strong>
                     const Small = <small>De {item.owner.display_name}</small>
 
